@@ -1,0 +1,13 @@
+[direction='rtl']{
+	.bootstrap-select .dropdown-toggle .filter-option{
+		text-align: right
+	}
+	.input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){
+		border-top-left-radius: 5px;
+  		border-bottom-left-radius: 5px;
+	}
+	.input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+}

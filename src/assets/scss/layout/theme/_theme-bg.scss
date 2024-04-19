@@ -1,0 +1,358 @@
+:root{
+	--nav-headbg: #FFFFFF;
+	--sidebar-bg: #FFFFFF;
+	--headerbg: #FFFFFF;
+}
+
+//background for nav header
+.nav-header{
+	.brand-logo{
+		.brand-title{
+			path{
+				fill:var(--primary);
+			}
+		}
+	}
+	.logo-abbr{
+		g{
+			rect{
+				fill: var(--primary);
+			}
+		}
+	}
+	.logo-abbr{
+		g{
+			path{
+				fill: var(--primary);
+			}
+		}
+	}
+
+}
+@each $name, $color in $theme_backgrounds {
+	[data-nav-headerbg="#{$name}"][data-theme-version="dark"],
+    [data-nav-headerbg="#{$name}"] {
+        @if $name != "color_1"  {
+			--nav-headbg: #{$color};
+			.nav-header{
+				.logo-abbr{
+					g{
+						path{
+							fill: $white;
+						}
+					}
+				}
+				.brand-logo{
+					.brand-title{
+						path{
+							fill:$white;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+//background for nav header
+@each $name, $color in $theme_backgrounds {
+	[data-sidebarbg="#{$name}"][data-theme-version="dark"],
+    [data-sidebarbg="#{$name}"] {
+        @if $name != "color_1"  {
+			--sidebar-bg: #{$color};
+
+			.menu-toggle .dlabnav .metismenu li > ul{
+				background:$color!important;
+			}
+			
+			&[data-sidebar-style="mini"],
+			&[data-sidebar-style="modern"],
+			&[data-sidebar-style="compact"],
+			&[data-sidebar-style="icon-hover"][data-layout="horizontal"],
+			&[data-sidebar-style="full"][data-layout="horizontal"]
+			{
+				.dlabnav{
+					.metismenu li ul{
+						background-color: darken($color: $color, $amount: 8%);
+					}
+				} 
+			}
+		}
+	}
+}
+
+[data-sidebarbg="color_2"],[data-sidebarbg="color_3"],[data-sidebarbg="color_4"],[data-sidebarbg="color_5"],[data-sidebarbg="color_6"],[data-sidebarbg="color_7"],[data-sidebarbg="color_8"],
+[data-sidebarbg="color_9"],[data-sidebarbg="color_10"],[data-sidebarbg="color_11"],[data-sidebarbg="color_12"],[data-sidebarbg="color_13"],[data-sidebarbg="color_14"],
+[data-sidebarbg="color_15"]{
+	.dlabnav {
+		.metismenu {
+			.nav-label{
+				color:$white;
+				border-top: 0.0625rem solid rgba($white,0.5);
+				&.first{
+					border: 0;
+				}
+			}
+			a{
+				color:rgba($white,0.75);
+			}
+			ul a:before{
+				background:rgba($white,0.5);
+			}
+			li{
+				ul{
+					a{
+						&:hover,
+						&:focus,
+						&.mm-active {
+							color:$white;
+						}
+					}
+				}
+			}
+			&>li{
+				&>a{
+					color:rgba($white,0.85);
+					i{
+						color:rgba($white,0.85);
+					}
+				}
+				&.mm-active{
+					&>a{
+						background:rgba($white,0.15);
+						color:$white;
+						i{
+							color:$white;
+						}
+						&:before{
+							background:$white;
+							}
+					}
+				}
+			}
+			.has-arrow:after{
+				border-color: rgba($white,0.85) transparent transparent rgba($white,0.85);
+			}	
+		}
+		.header-info2{
+			background-color: rgba($black,0.15);
+			span{
+				color: $white;
+			}
+		}
+		.sidebar-info{
+			color: $white; 
+			i{
+				color: $white!important; 		
+			}
+		}
+	}
+	.plus-box{
+		background-color: rgba($white,0.15);
+	}
+	.copyright{
+		color:$white;
+		strong{
+			color:$white;
+		}
+	}
+	&[data-sidebar-style="full"][data-layout="vertical"]{
+		.dlabnav {
+			.metismenu{
+				&>li{
+					&.mm-active{
+						&>a{
+							i{
+								color:$white;
+							}
+						}
+					}
+				}		
+				ul a::before{
+					background: rgba($white,0.25);
+				}		
+			} 
+		}
+		.menu-toggle .dlabnav .metismenu {
+			& > li.mm-active,
+			& > li:hover {
+				& > a {
+					background: rgba($white,0.15);
+					i{
+						color: $white;
+					}
+				}
+			}
+		}
+	}
+	&[data-sidebar-style="mini"][data-layout="vertical"]{
+		.dlabnav .metismenu > li{
+			&.mm-active,
+			&:hover{
+				& > a i {
+					color: $white;
+				}
+			}
+		}
+	}
+	&[data-sidebar-style="modern"],
+	&[data-sidebar-style="overlay"],
+	&[data-sidebar-style="icon-hover"][data-layout="vertical"],
+	&[data-layout="horizontal"]{
+		.dlabnav .metismenu > li{
+			&:hover,
+			&.mm-active{
+				& > a{
+					color: $white;
+					i{
+						color: $white;
+					}
+				}
+			} 
+		}
+	}
+	&[data-sidebar-style="icon-hover"][data-layout="vertical"]{
+		.dlabnav .metismenu > li{
+			&:hover,
+			&.mm-active{
+				& > a{
+					background-color: rgba($white,0.15);
+				}
+			} 
+		}
+	}
+	&[data-sidebar-style="compact"][data-layout="vertical"]{
+		.dlabnav {
+			.metismenu {
+				&>li {
+					a{
+						&:hover{
+							color:$white;
+						}
+					}
+					&>a{
+						&>i{
+							background: rgba($white,0.15)!important;
+							color:rgba($white,0.7);
+						}
+					}
+					&.mm-active,&:hover{
+						&>a {
+							box-shadow:none;
+							background:transparent!important;
+							color:$white!important;
+							i{
+								background: rgba($white,0.15)!important;
+								color:$white!important;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	&[data-sidebar-style="mini"],
+	&[data-sidebar-style="modern"],
+	&[data-sidebar-style="compact"],
+	&[data-sidebar-style="icon-hover"][data-layout="horizontal"],
+	&[data-sidebar-style="full"][data-layout="horizontal"]
+	{
+		.dlabnav .metismenu > li.mm-active > a,
+		.dlabnav .metismenu > li:hover > a{
+				background:rgba($black,0.4)!important;
+		}
+	}
+}
+
+
+
+
+
+
+//background for nav header
+@each $name, $color in $theme_backgrounds {
+	[data-headerbg="#{$name}"][data-theme-version="dark"],
+    [data-headerbg="#{$name}"] {
+        @if $name != "color_1"  {
+			--headerbg: #{$color};
+				
+			.header-right{
+				.notification_dropdown .nav-link {
+					.badge{
+						color: $color!important;
+					}
+				}
+			}
+			
+			
+			
+		}
+	}
+}
+
+[data-headerbg="color_2"],[data-headerbg="color_3"],[data-headerbg="color_4"],[data-headerbg="color_5"],[data-headerbg="color_6"],[data-headerbg="color_7"],[data-headerbg="color_8"],
+[data-headerbg="color_9"],[data-headerbg="color_10"],[data-headerbg="color_11"],[data-headerbg="color_12"],[data-headerbg="color_13"],[data-headerbg="color_14"],
+[data-headerbg="color_15"]{
+	.search-area .input-group-text,
+	.search-area .form-control,.search-area .form-control::placeholder{
+		color:$white;
+	}
+	.search-area .input-group-append .input-group-text i{
+		color:$white;
+	}
+	.header-profile > a.nav-link .header-info small, .header-profile > a.nav-link .header-info span{
+		color:$white;	
+	}
+	.hamburger .line{
+		background:$white!important;
+	}
+	.header-left{
+		.search-area .form-control,
+		.search-area .input-group-text{
+			background-color: rgba($white,0.15);
+			i{
+				color:$white;
+			}
+		}
+		.dashboard_bar{
+			color:$white;	
+		}
+		.plus-icon a{
+			background-color: rgba($white,0.15);	
+			color: $white;
+		}
+			
+	}
+	.header-right{
+		#icon{
+			&-light,&-dark{
+				color: $white !important;
+			}
+		}
+		svg{
+			path{
+				fill:transparent;
+			}
+		}
+		#icon-dark{
+			color:$white;
+		}
+		.notification_dropdown .nav-link {
+			.badge{
+				background-color: $white!important;
+			}
+			svg path{
+				fill: $white;
+			}
+		}
+		.nav-item .nav-link{
+			color: $white;
+		}
+	}
+}
+
+[data-sidebarbg="color_5"],[data-sidebarbg="color_15"]{
+	span.heart.heart-blast{
+		filter: invert(1);
+	}
+}

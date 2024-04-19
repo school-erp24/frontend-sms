@@ -1,0 +1,178 @@
+/////////////////
+// Header
+/////////////////
+.header {
+    height: var(--dz-header-height);
+    position: var(--dz-header-pos);
+    padding: 0rem;
+    background-color: var(--headerbg);
+    z-index: 15;
+    padding-#{$dlab-pos-left}: var(--dz-sidebar-width);
+    transition: all .2s ease;
+	box-shadow: $shadow;
+	
+    .header-content {
+        height: 100%;
+        padding-#{$dlab-pos-left}: 5.3125rem;
+        padding-#{$dlab-pos-right}: 1.875rem;
+        align-items: center;
+        display: flex;
+		
+        @include custommq($max: 575px) {
+            padding-#{$dlab-pos-left}: 4.5rem;
+			padding-#{$dlab-pos-right}: 0.938rem;
+        }
+		
+    }
+    .navbar {
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        .navbar-collapse {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+
+////////////////////////
+// CSS Pulse Effect
+////////////////////////
+@mixin circle($circleSize) {
+    width: $circleSize;
+    height: $circleSize;
+    border-radius: $circleSize/2;
+}
+
+
+/* pulse in SVG */
+
+svg.pulse-svg {
+    overflow: visible;
+    .first-circle {
+        -webkit-transform: scale(0.3);
+        transform: scale(0.3);
+        -webkit-transform-origin: center center;
+        transform-origin: center center;
+        -webkit-animation: pulse-me 3s linear infinite;
+        animation: pulse-me 3s linear infinite;
+        fill: var(--primary);
+    }
+    .second-circle {
+        @extend .first-circle;
+        -webkit-animation-delay: 1s;
+        animation-delay: 1s;
+    }
+    .third-circle {
+        @extend .first-circle;
+        -webkit-animation-delay: 2s;
+        animation-delay: 2s;
+    }
+}
+
+
+/* pulse in CSS */
+
+.pulse-css {
+    @include circle(1rem);
+    border-radius: 3.5rem;
+    height: .4rem;
+    position: absolute;
+    background: var(--primary);
+    #{$dlab-pos-right} :  5px;
+    top: .6rem;
+    width: .4rem;
+    &:after,
+    &:before {
+        content: '';
+        @include circle(1rem);
+        position: absolute;
+        top: 0;
+        #{$dlab-pos-right} :  0;
+        bottom: 0;
+        #{$dlab-pos-left} : -.2rem;
+        background-color: var(--primary);
+        margin: auto;
+        -webkit-transform: scale(0.3);
+        transform: scale(0.3);
+        -webkit-transform-origin: center center;
+        transform-origin: center center;
+        -webkit-animation: pulse-me 3s linear infinite;
+        animation: pulse-me 3s linear infinite;
+    }
+}
+
+@-webkit-keyframes pulse-me {
+    0% {
+        -webkit-transform: scale(0.3);
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.1;
+    }
+    70% {
+        opacity: 0.09;
+    }
+    100% {
+        -webkit-transform: scale(3);
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse-me {
+    0% {
+        -webkit-transform: scale(0.3);
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.1;
+    }
+    70% {
+        opacity: 0.09;
+    }
+    100% {
+        -webkit-transform: scale(3);
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+[data-sidebar-style="full"],
+[data-sidebar-style="overlay"] {
+    .header {
+        width: 100%;
+        @include respond('phone-land') {
+            width: 100%;
+            padding-#{$dlab-pos-left}: 3.75rem;
+        }
+    }
+}
+
+[data-sidebar-style="mini"] {
+    .header {
+        width: 100%;
+        padding-#{$dlab-pos-left}: var(--dz-sidebar-width);
+    }
+}
+
+[data-header-position="fixed"] {
+    .header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+    .content-body {
+        padding-top: 4.7rem;
+    }
+    .dlabnav {
+        margin-top: 0;
+    }
+}
+[data-sidebar-style="compact"][data-header-position="fixed"][data-container="boxed"][data-layout="vertical"] {
+    .header {
+        width: 1199px;
+    }
+}

@@ -1,0 +1,13 @@
+.media{
+    display: flex;
+    align-items: start;
+    h5{
+        color: var(--text-dark);
+    }
+    .media-body{
+        flex-grow: 1;
+    }
+    img{
+        border-radius: 3px;
+    }
+}

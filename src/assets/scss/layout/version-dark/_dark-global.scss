@@ -1,0 +1,254 @@
+
+[data-theme-version="dark"] {
+	.btn-outline-dark:hover{
+		background-color: $d-bg;
+		border-color: $d-bg;
+	}
+	.tdl-holder input[type=text],
+	.tdl-holder li{
+	    background-color: $dark-card;
+		border-color:var(--border);
+	}
+	.tdl-holder input[type=text]{
+		&::placeholder {
+			color: $d-ctl;
+		}
+	}
+    .tdl-holder label:hover {
+		background-color: $d-border;
+		color: $white;
+	}
+	.text-muted {
+		color: $d-ctl !important;
+	}
+	.close{
+	    font-weight: 400;
+		color: $white;
+		text-shadow: none;
+		
+		&:hover{
+			color: $white;
+		}
+	}
+	.text-dark {
+		color: $d-ctl !important;
+	}
+	.btn-primary:hover,
+	.star-rating .product-review,
+	.new-arrival-content .item,
+	.table{
+		color: $white;
+	}
+	.custom-dropdown .dropdown-menu{
+		border-color: $d-border;
+	}
+	.widget-stat .media > span{
+	    background: $d-border;
+	    border-color: $d-border;
+		color:$white;
+	}
+	.plus-minus-input .custom-btn{
+		background: $d-bg;
+	    border-color: $d-border;
+	}
+	.dropdown-divider,
+	.size-filter ul li{
+		border-color: $d-border;
+	}
+	.custom-select{
+	    border-color: $d-border;
+		color: $d-ctl;
+		background:$d-bg;
+	}
+	.mail-list .list-group-item.active i {
+		color: $white;
+	}
+	hr{
+		border-color: var(--border);
+	}
+	.noUi-target{
+		border-color:var(--border);
+		border-radius: 8px;
+		box-shadow: none;
+		.noUi-connects{
+			background:$d-border;
+		}
+	}
+	.noUi-marker-large,
+	.noUi-marker{
+		background:$d-border;
+	}
+	.note-editor.note-frame{
+		border-color:var(--border);
+		.btn{
+			color:$white;
+		}
+		.note-editing-area .note-editable{
+			color:$white;
+		}
+	}
+	.border-bottom{
+		border-bottom: 1px solid var(--border) !important;
+	}
+	table.dataTable.display tbody tr:hover{
+		box-shadow: 0px 0px 10px rgba(255,255,255,0.1);
+	}
+	.logo-abbr{
+		g{
+			rect{
+				fill: $white;
+			}
+		}
+	}
+	.logo-compact{
+		filter: invert(1);	
+	}
+	.form-check-input{
+		background-color: var(--border);
+	}
+	tspan{
+		color: $white;
+	}
+	.nav-tabs{
+		--bs-nav-tabs-link-active-border-color : var(--border);
+		i{
+			color: var(--primary);
+		}
+	}
+	.nav-link{
+		&:hover{
+			border-color: var(--border);
+		}
+	}
+	div:where(.swal2-container) div:where(.swal2-popup){
+		background: var(--card);
+		color: var(--text-dark);
+	}
+	.daterangepicker {
+		background-color: var(--light);
+		border-color: var(--border);
+		.drp-buttons{
+			border-color: var(--border);    
+		}
+		.drp-calendar.left,.drp-calendar.right{
+			.calendar-table{
+				background-color: var(--light);
+				border-color: var(--border);
+				.next.available,.prev.available{
+					&:hover{
+						span{
+							border-color: #000;
+						}    
+					}
+					span{
+						border-color: var(--text-dark);
+					}
+				}
+				td.off{
+					background-color: var(--card);
+				}
+				td.in-range{
+					background-color: var(--light);
+					color: var(--text);
+				}
+			}
+		}
+	}
+	.auth-form{
+		svg{
+			path{
+				fill: $white;
+			}
+		}
+	}
+	#morris_donught_2,#morris_donught{
+		svg{
+			text{
+				tspan{
+					fill: var(--text);
+				}
+			}
+		}
+	}
+	.dropdown-dots{
+		background: var(--text-dark);
+		&::before,&::after{
+			background: var(--text-dark);
+		}
+	}
+	.alert-light{
+		&.solid{
+			.btn-close{
+				&::before{
+					color: var(--text);
+				}
+			}
+		}
+	} 
+	.select2-container--open .select2-dropdown{
+		box-shadow: 0rem 2rem 2.5rem 0rem rgba(0, 0, 0, 0.4);
+	}
+	.list-group-item-action:active{
+		background-color: var(--light);
+	}
+
+	@media (min-width: 992px) {
+		&[data-container="boxed"]{
+			#main-wrapper {
+				box-shadow: 0 0 1.875rem 0 rgba(0, 0, 0, 0.8);
+			}
+		}
+	}
+
+	#universchart {
+		line {
+		  stroke: transparent;
+		}
+	}	
+
+	.custom-react-select{		
+		& > div:nth-child(4){
+			& > div{
+				background-color: transparent;
+				& > div{					
+					@include transitionMedium;
+					&:hover{
+						background-color: var(--rgba-primary-1);
+						color: #000;
+					}
+				}
+			}
+		}
+		& > div {
+			&:nth-child(3){				
+				background-color: transparent;				
+				border-color: var(--border)!important;			
+			}			
+			& > div{
+				&:first-child{
+					div{
+						font-size: 0.875rem;
+						color: #6e6e6e;
+					}
+				}
+				
+			}
+		}
+		
+	}
+
+	.input-hasicon{
+		.rs-input-group{
+			border-color: var(--border);
+		}
+		.rs-input{
+			background-color: transparent;
+		}
+	}
+	.dropzone {
+		background: $d-bg !important;
+		.rs-uploader-trigger {
+			background: $d-bg;
+		}
+	}
+}

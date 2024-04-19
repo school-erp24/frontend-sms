@@ -1,0 +1,19 @@
+.footer {
+    padding-#{$dlab-pos-left}: var(--dz-sidebar-width);
+    background-color: $body-bg;
+    
+    .copyright {
+        padding: 0.9375rem;
+        p {
+            text-align: center;
+            margin: 0;
+            color: var(--text-gray);
+        }
+
+        a{
+            color: var(--primary);
+        }
+    }
+}
+
+

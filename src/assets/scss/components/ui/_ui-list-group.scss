@@ -1,0 +1,35 @@
+.list-group-item {
+    background-color: rgba(255,255,255,0);
+    border: 1px solid var(--border);
+	padding: 0.7rem 1.5rem;
+    --bs-list-group-color:var(--text-dark);
+    --bs-list-group-action-hover-bg : var(--light);
+    h5{
+        color: var(--text-dark);
+    }
+    &:hover{
+       color:  var(--text-dark);
+    }
+    &.active{
+        color: $white;
+    }
+}
+
+.list-group-item.disabled, .list-group-item:disabled {
+    color: #fff;
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+[class*="bg-"]{
+	.list-group-item{
+		border-color:rgba($white, 0.05);
+	}
+}
+.bg-warning{
+	.list-group-item{
+		border-color:rgba($black, 0.05);
+	}
+}
+// .list-group-item-action {
+//     color: #fff;
+// }

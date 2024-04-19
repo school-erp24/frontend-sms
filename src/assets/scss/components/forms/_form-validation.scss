@@ -1,0 +1,77 @@
+/////////////////////////////
+// Bootstrap validation
+/////////////////////////////
+.form-control.is-valid {
+    border-color: $success !important;
+    border-#{$dlab-pos-right} : 0px !important;
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+.form-control.is-warning {
+    border-color: $warning !important;
+    border-#{$dlab-pos-right} : 0px !important;
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+.form-control.is-invalid {
+    border-color: $danger !important;
+    border-#{$dlab-pos-right} : 0px !important;
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+.eye {   
+    position: absolute;
+    #{$dlab-pos-right} : 20px;
+    top: 57%;
+	&.style-2{
+		#{$dlab-pos-right} : 30px;
+        top: 28%;
+	}
+}
+
+////////////////////////
+// Jquery Validation 
+////////////////////////
+.is-valid {
+    .input-group-prepend {
+        .input-group-text {
+            i {
+                color: $success;
+            }
+        }
+    }
+}
+
+.is-invalid {
+    .input-group-prepend {
+        .input-group-text {
+            i {
+                color: var(--primary-light);
+            }
+        }
+    }
+}
+
+// Show Pass
+.show-pass{
+	cursor:pointer;
+	
+	.fa-eye{
+		display:none;
+	}
+	
+	&.active{
+		.fa-eye-slash{
+			display:none;
+		}
+		.fa-eye{
+			display:inline-block;
+		}
+	}
+}
