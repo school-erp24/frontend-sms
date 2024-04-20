@@ -16,7 +16,9 @@ const AdmissionSetting = () => {
 		getAdmissionSetting()
 			.then((resp) => {
 				setId(resp.data.data.rows[0].id);
-				console.log(resp.data.data.rows[0].list);
+				// console.log(resp.data.data.rows[0].list);
+				console.log(resp.data.data);
+
 				setRows(resp.data.data.rows[0].list);
 			})
 			.catch((error) => {
@@ -62,6 +64,43 @@ const AdmissionSetting = () => {
 									id="addStaffForm"
 									onSubmit={handleSubmit}
 								>
+									<div className="table-responsive">
+										<div id="job_data" className="dataTables_wrapper">
+											<table
+												className="display w-100 dataTable "
+												id="example5"
+												role="grid"
+												aria-describedby="example5_info"
+											>
+												<thead>
+													<tr role="row">
+														<th style={{ width: "177px" }}>Sno</th>
+														<th style={{ width: "177px" }}>Field</th>
+														<th style={{ width: "278px" }}>Enable</th>
+													</tr>
+												</thead>
+
+												<tbody>
+													{rows.map((row, index) => (
+														<tr key={index}>
+															<td>{index + 1}</td>
+															<td>{row.field}</td>
+															<td>
+																<input
+																	type="checkbox"
+																	className="checkbox"
+																	checked={row.status === "1"}
+																	disabled={row.default === "true"}
+																	onChange={() => handleCheckboxChange(index)}
+																/>
+															</td>
+														</tr>
+													))}
+												</tbody>
+											</table>
+										</div>
+									</div>
+
 									<div className="table-responsive">
 										<div id="job_data" className="dataTables_wrapper">
 											<table

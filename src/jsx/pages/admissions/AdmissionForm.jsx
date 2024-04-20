@@ -5,6 +5,8 @@ import { Accordion } from "react-bootstrap";
 
 import PageTitle from "../../layouts/PageTitle";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AdmissionAccordian } from "./AdmissionAccordian";
+import { StudentAccordian } from "./StudentAccordian";
 
 const options1 = [
 	{ value: "1", label: "Department" },
@@ -1012,8 +1014,6 @@ const CustomAccordion = [
 ];
 
 const AdmissionForm = () => {
-	const [changeText, setChangeText] = useState(false);
-	const [showPassword, setShowPassword] = useState(false);
 	return (
 		<>
 			<PageTitle activeMenu={"Admission Form"} motherMenu={"Admissions"} />
@@ -1044,6 +1044,9 @@ const AdmissionForm = () => {
 										</Accordion.Item>
 									))}
 								</Accordion>
+
+								{/* <AdmissionAccordian />
+								<StudentAccordian /> */}
 
 								<div className="col-lg-12 col-md-12 col-sm-12">
 									<button type="submit" className="btn btn-primary me-1">

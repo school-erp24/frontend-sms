@@ -169,7 +169,7 @@ const EnquiryList = () => {
 
 	const handlePageChange = (page, rows) => {
 		setPageNo(page);
-		// setUnChecked(true);
+		setUnChecked(true);
 
 		getEnquiries({
 			limit: rows,
@@ -223,9 +223,6 @@ const EnquiryList = () => {
 			pno: 1,
 			fromDate: start,
 			toDate: end,
-
-			// pno: search !== "" ? 1 : pageno,
-			// searchString: search,
 		})
 			.then((resp) => {
 				const updatedRows = resp.data.data.rows.map((row) => {
@@ -291,6 +288,14 @@ const EnquiryList = () => {
 						<div className="card-header">
 							<h4 className="card-title">Enquiry List</h4>
 							<span style={{ display: "flex", gap: ".5rem" }}>
+								<Link to={"/add-admission"} className="btn btn-primary">
+									+ Admission
+								</Link>
+
+								<Link to={"/add-enquiry"} className="btn btn-primary">
+									+ Add New
+								</Link>
+
 								<Link
 									to={""}
 									className="btn btn-primary"
@@ -310,14 +315,6 @@ const EnquiryList = () => {
 									onClick={() => setBasicModal(true)}
 								>
 									<i class="fa-regular fa-trash-can"></i>
-								</Link>
-
-								<Link to={"/add-admission"} className="btn btn-primary">
-									+ Admission
-								</Link>
-
-								<Link to={"/add-enquiry"} className="btn btn-primary">
-									+ Add New
 								</Link>
 							</span>
 						</div>
