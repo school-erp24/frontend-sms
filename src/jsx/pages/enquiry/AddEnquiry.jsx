@@ -5,10 +5,10 @@ import { DatePicker } from "rsuite";
 
 import {
 	createEnquiry,
-	getClass,
 	getVillage,
 	getDistrict,
 } from "../../../services/EnquiryService";
+import { getClass } from "../../../services/CommonService";
 import { validationEnquirySchema } from "./EnquirySchema";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -146,10 +146,6 @@ const AddEnquiry = () => {
 			setCreatableOptionsForDistrict(options);
 		});
 	}, []);
-
-	useEffect(() => {
-		console.log(errors);
-	}, [errors]);
 
 	return (
 		<>

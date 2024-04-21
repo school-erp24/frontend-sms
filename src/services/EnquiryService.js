@@ -20,10 +20,6 @@ export function deleteEnquiry(ids) {
 	return AxiosInstance.post(BASE_URL + "/school/enquiry/delete", ids);
 }
 
-export function getClass() {
-	return AxiosInstance.get(BASE_URL + "/school/class/get");
-}
-
 export function getVillage() {
 	return AxiosInstance.get(BASE_URL + "/school/village/get");
 }

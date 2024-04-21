@@ -16,7 +16,7 @@ export const MenuList = [
 	{
 		title: "Enquiry Management",
 		classsChange: "mm-collapse",
-		iconStyle: <i class="la la-comment" />,
+		iconStyle: <i className="la la-comment" />,
 		content: [
 			{
 				title: "Add Enquiry",
@@ -33,7 +33,7 @@ export const MenuList = [
 	{
 		title: "Admissions",
 		classsChange: "mm-collapse",
-		iconStyle: <i class="la la-file" />,
+		iconStyle: <i className="la la-file" />,
 		content: [
 			{
 				title: "Add Admission",

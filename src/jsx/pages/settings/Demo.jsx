@@ -6,6 +6,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { getClasses, createClasses } from "../../../services/SettingsService";
 
 const ClassSetting = () => {
+	const navigate = useNavigate();
 	const [sections, setSections] = useState([
 		// {
 		// 	id: 2,
@@ -165,9 +166,9 @@ const ClassSetting = () => {
 										Submit
 									</button>
 									<button
-										type="submit"
 										className="btn"
 										style={{ border: "1px solid #888888" }}
+										onClick={() => navigate("/dashboard")}
 									>
 										Cancel
 									</button>

@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import { DatePicker } from "rsuite";
+// import { DatePicker } from "rsuite";
+import DatePicker from "react-datepicker";
+
 import { Accordion } from "react-bootstrap";
 
 import PageTitle from "../../layouts/PageTitle";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AdmissionAccordian } from "./AdmissionAccordian";
 import { StudentAccordian } from "./StudentAccordian";
+import { getAdmissionSetting } from "../../../services/SettingsService";
+import { getClass, getSections } from "../../../services/CommonService";
 
 const options1 = [
 	{ value: "1", label: "Department" },
@@ -1014,6 +1018,71 @@ const CustomAccordion = [
 ];
 
 const AdmissionForm = () => {
+	const initialState = {
+		session: "",
+		admissionDate: "",
+		admissionNo: "",
+		rollNo: "",
+		firstName: "",
+		lastName: "",
+		classId: "",
+		sectionId: "",
+		fatherName: "",
+		contactNo: "",
+	};
+
+	const [formData, setFormData] = useState(initialState);
+
+	const [admissionRows, setAdmissionRows] = useState([]);
+	const [admissionDate, setAdmissionDate] = useState(new Date());
+	const [classOptions, setClassOptions] = useState([]);
+	const [sectionOptions, setSectionOptions] = useState([]);
+	const [selectedClass, setSelectedClass] = useState("");
+	const [selectedSection, setSelectedSection] = useState("");
+
+	const handleChange = (e) => {
+		setFormData({
+			...formData,
+			[e.target.id]: e.target.value,
+		});
+	};
+
+	const handleGetSections = (id) => {
+		getSections({ classId: id }).then((resp) => {
+			const options = resp.data.data.rows.map((option) => ({
+				value: option.section,
+				label: option.section,
+				id: option.id,
+			}));
+			setSectionOptions(options);
+		});
+	};
+
+	useEffect(() => {
+		getAdmissionSetting()
+			.then((resp) => {
+				setAdmissionRows(resp.data.data.rows[0].list);
+			})
+			.catch((error) => {
+				console.error("Error fetching enquiries:", error);
+			});
+	}, []);
+
+	useEffect(() => {
+		getClass().then((resp) => {
+			const options = resp.data.data.rows.map((option) => ({
+				value: option.class,
+				label: option.class,
+				id: option.id,
+			}));
+			setClassOptions(options);
+		});
+	}, []);
+
+	useEffect(() => {
+		console.log(formData);
+	}, [formData]);
+
 	return (
 		<>
 			<PageTitle activeMenu={"Admission Form"} motherMenu={"Admissions"} />
@@ -1022,7 +1091,7 @@ const AdmissionForm = () => {
 					<div className="card">
 						<div className="card-body">
 							<form action="#" method="post" id="addStaffForm">
-								<Accordion
+								{/* <Accordion
 									className="accordion accordion-with-icon"
 									defaultActiveKey="0"
 									alwaysOpen
@@ -1043,10 +1112,229 @@ const AdmissionForm = () => {
 											</Accordion.Collapse>
 										</Accordion.Item>
 									))}
-								</Accordion>
+								</Accordion> */}
 
-								{/* <AdmissionAccordian />
-								<StudentAccordian /> */}
+								<Accordion
+									className="accordion accordion-with-icon"
+									defaultActiveKey="0"
+									alwaysOpen
+								>
+									<Accordion.Item className="accordion-item" eventKey="0">
+										<Accordion.Header className="accordion-header rounded-lg">
+											<span className="accordion-header-icon"></span>
+											<span className="accordion-header-text">
+												Admission Details
+											</span>
+											<span className="accordion-header-indicator indicator-bordered"></span>
+										</Accordion.Header>
+										<Accordion.Collapse eventKey="0">
+											<div className="accordion-body">
+												<div className="row">
+													{/* Session */}
+													<div className="col-sm-6">
+														<div className="form-group">
+															<label className="form-label" htmlFor="session">
+																Session <span className="text-danger">*</span>
+															</label>
+															<input
+																placeholder=""
+																id="session"
+																type="text"
+																className="form-control"
+																required
+																value={formData.session}
+																onChange={handleChange}
+															/>
+														</div>
+													</div>
+
+													{/* Admission Date */}
+													<div className="col-sm-6">
+														<div className="form-group">
+															<label
+																className="form-label"
+																htmlFor="admissionDate"
+															>
+																Admission Date
+																<span className="text-danger">*</span>
+															</label>
+															<div>
+																<DatePicker
+																	selected={admissionDate}
+																	onChange={(date) => setAdmissionDate(date)}
+																	className="form-control"
+																/>
+															</div>
+														</div>
+													</div>
+
+													<div className="col-sm-6">
+														<div className="form-group">
+															<label
+																className="form-label"
+																htmlFor="admissionNo"
+															>
+																Admission No{" "}
+																<span className="text-danger">*</span>
+															</label>
+															<input
+																placeholder=""
+																id="admissionNo"
+																type="text"
+																className="form-control"
+																required
+																value={formData.admissionNo}
+																onChange={handleChange}
+															/>
+														</div>
+													</div>
+
+													<div className="col-sm-6">
+														<div className="form-group">
+															<label className="form-label" htmlFor="rollNo">
+																Roll no. <span className="text-danger">*</span>
+															</label>
+															<input
+																placeholder=""
+																id="rollNo"
+																type="text"
+																className="form-control"
+																required
+																value={formData.rollNo}
+																onChange={handleChange}
+															/>
+														</div>
+													</div>
+
+													<div className="col-sm-6">
+														<div className="form-group">
+															<label className="form-label" htmlFor="firstName">
+																First Name{" "}
+																<span className="text-danger">*</span>
+															</label>
+															<input
+																placeholder="Enter First Name"
+																id="firstName"
+																type="text"
+																className="form-control"
+																required
+																value={formData.firstName}
+																onChange={handleChange}
+															/>
+														</div>
+													</div>
+
+													{admissionRows.find(
+														(row) =>
+															row.field === "Last Name" && row.status === "1"
+													) && (
+														<div className="col-sm-6">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="lastName"
+																>
+																	Last Name
+																</label>
+																<input
+																	placeholder="Enter Last Name"
+																	id="lastName"
+																	type="text"
+																	className="form-control"
+																	value={formData.lastName}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													<div className="col-sm-6">
+														<div className="form-group">
+															<label className="form-label">
+																Class
+																<span className="text-danger">*</span>
+															</label>
+															<Select
+																isSearchable={false}
+																options={classOptions}
+																className="custom-react-select"
+																onChange={(selectedOption) => {
+																	handleGetSections(selectedOption.id);
+																	// setSelectedClass(selectedOption.value);
+																	setFormData({
+																		...formData,
+																		classId: selectedOption.id,
+																	});
+																}}
+															/>
+														</div>
+													</div>
+
+													<div className="col-sm-6">
+														<div className="form-group">
+															<label className="form-label">
+																Section
+																<span className="text-danger">*</span>
+															</label>
+															<Select
+																isSearchable={false}
+																options={sectionOptions}
+																className="custom-react-select"
+																onChange={(selectedOption) => {
+																	setSelectedSection(selectedOption.value);
+																	setFormData({
+																		...formData,
+																		sectionId: selectedOption.id,
+																	});
+																}}
+															/>
+														</div>
+													</div>
+
+													<div className="col-sm-6">
+														<div className="form-group">
+															<label
+																className="form-label"
+																htmlFor="fatherName"
+															>
+																Father's Name{" "}
+																<span className="text-danger">*</span>
+															</label>
+															<input
+																placeholder="Enter Last Name"
+																id="fatherName"
+																type="text"
+																className="form-control"
+																required
+																value={formData.fatherName}
+																onChange={handleChange}
+															/>
+														</div>
+													</div>
+
+													<div className="col-sm-6">
+														<div className="form-group">
+															<label className="form-label" htmlFor="contactNo">
+																Contact No{" "}
+																<span className="text-danger">*</span>
+															</label>
+															<input
+																placeholder="Enter Last Name"
+																id="contactNo"
+																type="text"
+																className="form-control"
+																required
+																value={formData.contactNo}
+																onChange={handleChange}
+															/>
+														</div>
+													</div>
+												</div>
+											</div>
+										</Accordion.Collapse>
+									</Accordion.Item>
+								</Accordion>
+								<StudentAccordian />
 
 								<div className="col-lg-12 col-md-12 col-sm-12">
 									<button type="submit" className="btn btn-primary me-1">

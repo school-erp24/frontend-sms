@@ -5,10 +5,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
 	getEnquiries,
 	updateEnquiry,
-	getClass,
 	getDistrict,
 	getVillage,
 } from "../../../services/EnquiryService";
+import { getClass } from "../../../services/CommonService";
+
 import { validationEnquirySchema } from "./EnquirySchema";
 
 import PageTitle from "../../layouts/PageTitle";
