@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 
-import { getClasses, createClasses } from "../../../services/SettingsService";
+import { createClasses } from "../../../services/SettingsService";
+import { getClass } from "../../../services/CommonService";
 
 const ClassSetting = () => {
 	const navigate = useNavigate();
@@ -54,7 +55,7 @@ const ClassSetting = () => {
 	}, [sections]);
 
 	useEffect(() => {
-		getClasses()
+		getClass()
 			.then((resp) => {
 				const updatedData = resp.data.data.rows.map((classObj, index) => {
 					// Extract section names from sectionList array
