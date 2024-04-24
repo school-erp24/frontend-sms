@@ -16,7 +16,6 @@ import { selectIsAuthenticated } from "./store/features/auth/authSlice";
 import { checkIfAuthenticated } from "./store/features/auth/authService";
 
 /// Style
-import "rsuite/dist/rsuite-no-reset.min.css";
 import "./assets/css/style.css";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -49,19 +48,6 @@ function App() {
 
 	const isAuthenticated = useSelector(selectIsAuthenticated);
 
-	// useEffect(() => {
-	// 	dispatch(checkAutoLogin(localStorage.getItem("userDetails")))
-	// 		.then((resultAction) => {
-	// 			const tokenDetails = resultAction;
-	// 			console.log("Auto login successful!", tokenDetails);
-	// 			// navigate("/dashboard");
-	// 		})
-	// 		.catch((errorAction) => {
-	// 			const errorMessage = errorAction.error.message;
-	// 			console.error("Auto login failed:", errorMessage);
-	// 		});
-	// }, []);
-
 	useEffect(() => {
 		checkIfAuthenticated(
 			localStorage.getItem("userDetails"),
@@ -69,10 +55,6 @@ function App() {
 			navigate
 		);
 	}, []);
-
-	// useEffect(() => {
-	// 	console.log(isAuthenticated);
-	// }, [isAuthenticated]);
 
 	let routeblog = (
 		<Routes>

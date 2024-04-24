@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { DatePicker } from "rsuite";
+import DatePicker from "react-datepicker";
 
 import {
 	createEnquiry,
@@ -156,22 +156,20 @@ const AddEnquiry = () => {
 						<div className="card-body">
 							<form onSubmit={confirmSubmit}>
 								<div className="row">
+									{/* Enquiry Date */}
 									<div className="col-sm-6">
 										<div className="form-group">
 											<label className="form-label" htmlFor="datepicker">
 												Enquiry Date <span className="text-danger">*</span>
 											</label>
-											<div className="input-hasicon mb-xl-0 mb-3">
+
+											<div>
 												<DatePicker
-													placeholder="Enquiry Date"
-													className="picker-suit"
-													value={enquiryDate}
+													selected={enquiryDate}
 													onChange={(date) => setEnquiryDate(date)}
-													disabledDate={(date) => date > new Date()}
+													className="form-control"
+													maxDate={new Date()}
 												/>
-												<div className="icon">
-													<i className="far fa-calendar" />
-												</div>
 											</div>
 										</div>
 									</div>
@@ -339,23 +337,13 @@ const AddEnquiry = () => {
 											<label className="form-label" htmlFor="followUpDate">
 												Follow-up Date
 											</label>
-											<div className="input-hasicon mb-xl-0 mb-3">
+											<div>
 												<DatePicker
-													placeholder="Follow-up Date"
-													className="picker-suit"
-													value={followUpDate}
+													selected={followUpDate}
 													onChange={(date) => setFollowUpDate(date)}
-													disabledDate={(date) =>
-														date <
-														new Date(
-															new Date().setDate(new Date().getDate() - 1)
-														)
-													}
+													className="form-control"
+													minDate={new Date().setDate(new Date().getDate() + 7)}
 												/>
-
-												<div className="icon">
-													<i className="far fa-calendar" />
-												</div>
 											</div>
 										</div>
 									</div>

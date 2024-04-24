@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { DatePicker } from "rsuite";
+import DatePicker from "react-datepicker";
+
 import { useLocation, useNavigate } from "react-router-dom";
 
 import {
@@ -161,23 +162,18 @@ const UpdateEnquiry = () => {
 						<div className="card-body">
 							<form onSubmit={(e) => handleSubmit(e)}>
 								<div className="row">
-									<div className="col-sm-6" style={{ zIndex: 0 }}>
+									<div className="col-sm-6">
 										<div className="form-group">
 											<label className="form-label" htmlFor="datepicker">
 												Enquiry Date <span className="text-danger">*</span>
 											</label>
-											<div className="input-hasicon mb-xl-0 mb-3">
+											<div>
 												<DatePicker
-													placeholder="Enquiry Date"
-													className="picker-suit"
-													value={enquiryDate}
+													selected={enquiryDate}
 													onChange={(date) => setEnquiryDate(date)}
-													disabledDate={(date) => date > new Date()}
+													className="form-control"
+													maxDate={new Date()}
 												/>
-
-												<div className="icon">
-													<i className="far fa-calendar" />
-												</div>
 											</div>
 										</div>
 									</div>
@@ -345,23 +341,13 @@ const UpdateEnquiry = () => {
 											<label className="form-label" htmlFor="followUpDate">
 												Follow-up Date
 											</label>
-											<div className="input-hasicon mb-xl-0 mb-3">
+											<div>
 												<DatePicker
-													placeholder="Follow up Date"
-													className="picker-suit"
-													value={followUpDate}
+													selected={followUpDate}
 													onChange={(date) => setFollowUpDate(date)}
-													disabledDate={(date) =>
-														date <
-														new Date(
-															new Date().setDate(new Date().getDate() - 1)
-														)
-													}
+													className="form-control"
+													minDate={new Date().setDate(new Date().getDate() + 7)}
 												/>
-
-												<div className="icon">
-													<i className="far fa-calendar" />
-												</div>
 											</div>
 										</div>
 									</div>

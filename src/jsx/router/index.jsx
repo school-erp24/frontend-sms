@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 /// Css
@@ -15,8 +15,7 @@ import { ThemeContext } from "../../context/ThemeContext";
 import ScrollToTop from "./../layouts/ScrollToTop";
 
 /// Dashboard
-import Home from "./../pages/dashboard/Dashboard2";
-import Dashboard2 from "./../pages/dashboard/Dashboard2";
+import Home from "../pages/dashboard/Dashboard";
 import EmptyPage from "./../pages/dashboard/EmptyPage";
 
 // Enquiry List
@@ -44,12 +43,7 @@ import SparklineChart from "./../pages/charts/Sparkline";
 import ApexChart from "./../pages/charts/apexcharts";
 
 /// Pages
-import LockScreen from "./../pages/error/LockScreen";
-import Error400 from "./../pages/error/Error400";
-import Error403 from "./../pages/error/Error403";
 import Error404 from "./../pages/error/Error404";
-import Error500 from "./../pages/error/Error500";
-import Error503 from "./../pages/error/Error503";
 
 const Markup = () => {
 	const allroutes = [
@@ -85,26 +79,39 @@ const Markup = () => {
 		{ url: "empty", component: <EmptyPage /> },
 	];
 
-	function NotFound() {
-		const url = allroutes.map((route) => route.url);
-		let path = window.location.pathname;
-		path = path.split("/");
-		path = path[path.length - 1];
+	// function NotFound() {
+	// 	const url = allroutes.map((route) => route.url);
+	// 	let path = window.location.pathname;
+	// 	path = path.split("/");
+	// 	path = path[path.length - 1];
 
-		if (url.indexOf(path) <= 0) {
-			return <Error404 />;
-		}
+	// 	if (url.indexOf(path) <= 0) {
+	// 		return <Error404 />;
+	// 	}
+	// }
+
+	function NotFound() {
+		return <Error404 />;
+	}
+
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			setLoading(false);
+		}, 1000);
+
+		return () => clearTimeout(timeout);
+	}, []);
+
+	if (loading) {
+		return <Loading />;
 	}
 
 	return (
 		<>
 			<Routes>
-				<Route path="/page-lock-screen" element={<LockScreen />} />
-				<Route path="/page-error-400" element={<Error400 />} />
-				<Route path="/page-error-403" element={<Error403 />} />
 				<Route path="/page-error-404" element={<Error404 />} />
-				<Route path="/page-error-500" element={<Error500 />} />
-				<Route path="/page-error-503" element={<Error503 />} />
 				<Route element={<MainLayout />}>
 					{allroutes.map((data, i) => (
 						<Route
@@ -121,6 +128,18 @@ const Markup = () => {
 		</>
 	);
 };
+
+function Loading() {
+	return (
+		<div id="preloader">
+			<div className="sk-three-bounce">
+				<div className="sk-child sk-bounce1"></div>
+				<div className="sk-child sk-bounce2"></div>
+				<div className="sk-child sk-bounce3"></div>
+			</div>
+		</div>
+	);
+}
 
 function MainLayout() {
 	const { sidebariconHover } = useContext(ThemeContext);
