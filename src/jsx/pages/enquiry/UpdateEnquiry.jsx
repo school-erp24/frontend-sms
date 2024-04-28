@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-
 import { useLocation, useNavigate } from "react-router-dom";
+import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
+import moment from "moment";
 
 import {
 	getEnquiries,
@@ -10,12 +12,8 @@ import {
 	getVillage,
 } from "../../../services/EnquiryService";
 import { getClass } from "../../../services/CommonService";
-
 import { validationEnquirySchema } from "./EnquirySchema";
-
 import PageTitle from "../../layouts/PageTitle";
-import Select from "react-select";
-import CreatableSelect from "react-select/creatable";
 
 const UpdateEnquiry = () => {
 	const location = useLocation();
@@ -129,6 +127,7 @@ const UpdateEnquiry = () => {
 		getEnquiries({ id: data.id })
 			.then((resp) => {
 				setFormData(resp.data.data.rows[0]);
+				console.log(resp.data.data.rows[0]);
 
 				setEnquiryDate(new Date(resp.data.data.rows[0].enquiryDate));
 				setFollowUpDate(new Date(resp.data.data.rows[0].followUpDate));
@@ -162,29 +161,42 @@ const UpdateEnquiry = () => {
 						<div className="card-body">
 							<form onSubmit={(e) => handleSubmit(e)}>
 								<div className="row">
-									<div className="col-sm-6">
+									{/* Enquiry Date */}
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label" htmlFor="datepicker">
 												Enquiry Date <span className="text-danger">*</span>
 											</label>
 											<div>
 												<DatePicker
+													showIcon
+													icon={"far fa-calendar"}
 													selected={enquiryDate}
-													onChange={(date) => setEnquiryDate(date)}
+													onChange={(date) => {
+														setEnquiryDate(date);
+														setFormData((prevState) => ({
+															...prevState,
+															enquiryDate: moment
+																.utc(date)
+																.local()
+																.format("YYYY-MM-DD HH:mm:ss"),
+														}));
+													}}
 													className="form-control"
 													maxDate={new Date()}
+													dateFormat="dd/MM/yy"
 												/>
 											</div>
 										</div>
 									</div>
 
-									<div className="col-sm-6">
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label" htmlFor="name">
-												Name <span className="text-danger">*</span>
+												First Name <span className="text-danger">*</span>
 											</label>
 											<input
-												placeholder="Enter Name"
+												placeholder="Enter First Name"
 												id="name"
 												type="text"
 												className="form-control"
@@ -197,7 +209,26 @@ const UpdateEnquiry = () => {
 										</div>
 									</div>
 
-									<div className="col-sm-6">
+									<div className="col-sm-4">
+										<div className="form-group">
+											<label className="form-label" htmlFor="lastName">
+												Last Name
+											</label>
+											<input
+												placeholder="Enter Last Name"
+												id="lastName"
+												type="text"
+												className="form-control"
+												value={formData.lastName}
+												onChange={handleChange}
+											/>
+											{errors.lastName && (
+												<p className="text-danger">{errors.lastName}</p>
+											)}
+										</div>
+									</div>
+
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label" htmlFor="parentName">
 												Parent's Name <span className="text-danger">*</span>
@@ -216,10 +247,10 @@ const UpdateEnquiry = () => {
 										</div>
 									</div>
 
-									<div className="col-sm-6">
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label">
-												Class <span className="text-danger">*</span>
+												Seeking Class <span className="text-danger">*</span>
 											</label>
 											<Select
 												isSearchable={false}
@@ -239,7 +270,7 @@ const UpdateEnquiry = () => {
 										</div>
 									</div>
 
-									<div className="col-sm-6">
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label" htmlFor="contactNo">
 												Contact Number <span className="text-danger">*</span>
@@ -260,23 +291,7 @@ const UpdateEnquiry = () => {
 										</div>
 									</div>
 
-									<div className="col-sm-6">
-										<div className="form-group">
-											<label className="form-label" htmlFor="previousSchool">
-												Previous School
-											</label>
-											<input
-												placeholder="Enter Previous School"
-												id="previousSchool"
-												type="text"
-												className="form-control"
-												value={formData.previousSchool}
-												onChange={handleChange}
-											/>
-										</div>
-									</div>
-
-									<div className="col-sm-6">
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label">Village / City</label>
 
@@ -302,11 +317,14 @@ const UpdateEnquiry = () => {
 													setVillage(newValue);
 												}}
 												value={village}
+												noOptionsMessage={() => null}
+												formatCreateLabel={() => undefined}
+												promptTextCreator={() => false}
 											/>
 										</div>
 									</div>
 
-									<div className="col-sm-6">
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label">District</label>
 
@@ -332,23 +350,54 @@ const UpdateEnquiry = () => {
 													setDistrict(newValue);
 												}}
 												value={district}
+												noOptionsMessage={() => null}
+												formatCreateLabel={() => undefined}
+												promptTextCreator={() => false}
 											/>
 										</div>
 									</div>
 
-									<div className="col-sm-6" style={{ zIndex: 0 }}>
+									<div className="col-sm-4" style={{ zIndex: 0 }}>
 										<div className="form-group">
 											<label className="form-label" htmlFor="followUpDate">
 												Follow-up Date
 											</label>
 											<div>
 												<DatePicker
+													showIcon
+													icon={"far fa-calendar"}
 													selected={followUpDate}
-													onChange={(date) => setFollowUpDate(date)}
+													onChange={(date) => {
+														setFollowUpDate(date);
+														setFormData((prevState) => ({
+															...prevState,
+															followUpDate: moment
+																.utc(date)
+																.local()
+																.format("YYYY-MM-DD HH:mm:ss"),
+														}));
+													}}
 													className="form-control"
 													minDate={new Date().setDate(new Date().getDate() + 7)}
+													dateFormat="dd/MM/yy"
 												/>
 											</div>
+										</div>
+									</div>
+
+									<div className="col-sm-6">
+										<div className="form-group">
+											<label className="form-label" htmlFor="previousSchool">
+												Previous School
+											</label>
+											<input
+												placeholder="Enter Previous School"
+												id="previousSchool"
+												type="text"
+												className="form-control"
+												value={formData.previousSchool}
+												onChange={handleChange}
+											/>
 										</div>
 									</div>
 
@@ -357,27 +406,12 @@ const UpdateEnquiry = () => {
 											<label className="form-label" htmlFor="remarks">
 												Remarks
 											</label>
-											<input
+											<textarea
 												placeholder="Enter Remarks"
 												id="remarks"
 												type="text"
 												className="form-control"
 												value={formData.remarks}
-												onChange={handleChange}
-											/>
-										</div>
-									</div>
-
-									<div className="col-sm-6">
-										<div className="form-group">
-											<label className="form-label" htmlFor="parentConcern">
-												Parent's Concern
-											</label>
-											<textarea
-												placeholder="Enter Parent's Concern"
-												id="parentConcern"
-												className="form-control"
-												value={formData.parentConcern}
 												onChange={handleChange}
 											/>
 										</div>
@@ -389,7 +423,7 @@ const UpdateEnquiry = () => {
 										</button>
 										<button
 											className="btn btn-danger light"
-											onClick={() => navigate("/all-enquiries")}
+											onClick={() => navigate("/enquiry-list")}
 										>
 											Cancel
 										</button>

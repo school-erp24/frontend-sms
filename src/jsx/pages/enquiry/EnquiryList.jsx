@@ -6,6 +6,7 @@ import Pagination from "../../components/Pagination";
 import { getEnquiries, deleteEnquiry } from "../../../services/EnquiryService";
 
 import DatePicker from "react-datepicker";
+import moment from "moment";
 
 const theadData = [
 	{ heading: "Sr.no", sortingVale: "sno", sortable: true },
@@ -18,9 +19,11 @@ const theadData = [
 	{ heading: "Village", sortingVale: "villageOrCity", sortable: true },
 	// { heading: "District", sortingVale: "district", sortable: true }, commented for now
 	{ heading: "Followup Date", sortingVale: "followUpDate", sortable: true },
-	{ heading: "Parent's concern", sortingVale: "parentConcern", sortable: true },
+	// { heading: "Parent's concern", sortingVale: "parentConcern", sortable: true }, commented for now
 	{ heading: "Actions", sortingVale: "", sortable: false },
 ];
+
+// dd-mm-yy
 
 const EnquiryList = () => {
 	const navigate = useNavigate();
@@ -37,17 +40,14 @@ const EnquiryList = () => {
 
 	const [filterCriteria, setFilterCriteria] = useState(null);
 
-	const [startDate, setStartDate] = useState(new Date());
+	const [startDate, setStartDate] = useState(null);
 	const [endDate, setEndDate] = useState(null);
-	const onChange = (dates) => {
-		const [start, end] = dates;
-		setStartDate(start);
-		setEndDate(end);
 
-		if (start && end !== null) {
-			handleDate(start, end);
+	useEffect(() => {
+		if (startDate && endDate !== null) {
+			handleDate(startDate, endDate);
 		}
-	};
+	}, [startDate, endDate]);
 
 	const [tableData, setTableData] = useState([]);
 	const [iconData, setIconDate] = useState({ complete: false, ind: Number });
@@ -140,11 +140,6 @@ const EnquiryList = () => {
 		getEnquiries({
 			limit: rows,
 			pno: pageno,
-
-			// pno: search !== "" ? 1 : pageno,
-			// searchString: search,
-			// fromDate: startDate,
-			// toDate: endDate,
 		})
 			.then((resp) => {
 				const updatedRows = resp.data.data.rows.map((row) => {
@@ -169,17 +164,14 @@ const EnquiryList = () => {
 
 	const handlePageChange = (page, rows) => {
 		setPageNo(page);
-		setUnChecked(true);
+		// setUnChecked(true);
+		if (unchecked === false) setUnChecked(true);
+		handleCheckedAll(false); // in testing phase
 
 		getEnquiries({
 			limit: rows,
 			pno: page,
 			searchString: search,
-
-			// pno: search !== "" ? 1 : pageno,
-			// searchString: search,
-			// fromDate: startDate,
-			// toDate: endDate,
 		})
 			.then((resp) => {
 				const updatedRows = resp.data.data.rows.map((row) => {
@@ -229,11 +221,10 @@ const EnquiryList = () => {
 					return { ...row, inputchecked: false };
 				});
 
-				console.log(resp.data.data);
 				setTotalRecords(resp.data.data.totalRecords);
 				setTableData(updatedRows);
 				setCurrentPage(resp.data.data.currentPno);
-				setStartDate(new Date());
+				setStartDate(null);
 				setEndDate(null);
 				setFilterCriteria((prevCriteria) => ({
 					...prevCriteria,
@@ -276,10 +267,6 @@ const EnquiryList = () => {
 		setBasicModal(false);
 	};
 
-	useEffect(() => {
-		console.log(currentPage);
-	}, [currentPage]);
-
 	return (
 		<>
 			<Row>
@@ -305,7 +292,7 @@ const EnquiryList = () => {
 										borderColor: "#25D366",
 									}}
 								>
-									<i class="fa-brands fa-whatsapp"></i>
+									<i className="fa-brands fa-whatsapp"></i>
 								</Link>
 
 								<Link
@@ -314,7 +301,7 @@ const EnquiryList = () => {
 									style={{ backgroundColor: "white", color: "#ff1616" }}
 									onClick={() => setBasicModal(true)}
 								>
-									<i class="fa-regular fa-trash-can"></i>
+									<i className="fa-regular fa-trash-can"></i>
 								</Link>
 							</span>
 						</div>
@@ -322,7 +309,13 @@ const EnquiryList = () => {
 							<div className="table-responsive">
 								<div id="holidayList" className="dataTables_wrapper no-footer">
 									<div className="justify-content-between d-sm-flex">
-										<div className="dataTables_length">
+										<div
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												alignItems: "center",
+											}}
+										>
 											<Link to={""} className="btn btn-primary">
 												Print
 											</Link>
@@ -337,35 +330,64 @@ const EnquiryList = () => {
 											</Link>
 										</div>
 
-										<div className="col-md-3 ">
+										<div
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												alignItems: "center",
+												gap: ".5rem",
+											}}
+										>
 											<div
-												className="example rangeDatePicker"
 												style={{
 													display: "flex",
 													justifyContent: "center",
 													alignItems: "center",
+													width: "150px",
 												}}
 											>
-												<label htmlFor="edt">Filter:</label>
+												<label htmlFor="sdt">From:</label>
+
 												<DatePicker
 													selected={startDate}
-													onChange={onChange}
-													startDate={startDate}
-													endDate={endDate}
+													onChange={(date) => setStartDate(date)}
+													className="form-control"
 													maxDate={new Date()}
-													selectsRange
-													selectsDisabledDaysInRange
+													id="sdt"
+												/>
+											</div>
+
+											<div
+												style={{
+													display: "flex",
+													justifyContent: "center",
+													alignItems: "center",
+													width: "150px",
+												}}
+											>
+												<label htmlFor="edt">To:</label>
+												<DatePicker
+													selected={endDate}
+													onChange={(date) => setEndDate(date)}
+													className="form-control"
+													maxDate={new Date()}
 													id="edt"
 												/>
 											</div>
 										</div>
 
-										<div className="dataTables_filter">
+										<div
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												alignItems: "center",
+												gap: ".5rem",
+											}}
+										>
 											<label>
 												Search :
 												<input
 													type="search"
-													className=""
 													placeholder=""
 													onChange={DataSearch}
 												/>
@@ -373,11 +395,8 @@ const EnquiryList = () => {
 										</div>
 									</div>
 
-									<div className="ovrf-x">
-										<table
-											id="example4"
-											className="display dataTable no-footer w-100 "
-										>
+									<div className="cus_ovrfx">
+										<table className="display dataTable no-footer w-100 ">
 											<thead>
 												<tr>
 													{theadData.map((item, ind) => (
@@ -386,7 +405,7 @@ const EnquiryList = () => {
 															onClick={() => {
 																if (item.sortable) {
 																	if (ind === 0) {
-																		handleCheckedAll(unchecked);
+																		// handleCheckedAll(unchecked);
 																	} else {
 																		SortingData(item.sortingVale);
 																		setIconDate((prevState) => ({
@@ -398,14 +417,15 @@ const EnquiryList = () => {
 															}}
 														>
 															{ind === 0 ? (
-																<div className="form-check custom-checkbox checkbox-success check-lg me-3 bs_exam_topper_all">
+																<div className="form-check custom-checkbox cus_nolp">
 																	<input
 																		type="checkbox"
-																		// className="form-check-input"
-																		className="checkbox"
+																		className="cus_checkbox"
 																		id="checkAll"
 																		checked={!unchecked}
-																		onChange={handleCheckedAll}
+																		onChange={(e) =>
+																			handleCheckedAll(e.target.checked)
+																		}
 																	/>
 																	<label
 																		className="form-check-label"
@@ -444,11 +464,10 @@ const EnquiryList = () => {
 												{tableData.map((data, ind) => (
 													<tr key={ind}>
 														<td>
-															<div className="form-check custom-checkbox checkbox-success check-lg me-3 bs_exam_topper">
+															<div className="form-check custom-checkbox cus_nolp">
 																<input
 																	type="checkbox"
-																	// className="form-check-input"
-																	className="checkbox"
+																	className="cus_checkbox"
 																	id={`checkbox-${ind}`}
 																	checked={data.inputchecked}
 																	onChange={() => handleChecked(data.id)}
@@ -463,7 +482,9 @@ const EnquiryList = () => {
 
 														{/* Render other table cells */}
 
-														<td>{new Date(data.enquiryDate).toDateString()}</td>
+														<td>
+															{moment(data.enquiryDate).format("DD/MM/YY")}
+														</td>
 														<td>{data.name}</td>
 														<td>{data.parentName}</td>
 														<td>{data.class}</td>
@@ -472,14 +493,13 @@ const EnquiryList = () => {
 														<td>{data.villageOrCity || "N/A"}</td>
 														{/* <td>{data.district || "N/A"}</td> */}
 														<td>
-															{new Date(data.followUpDate).toDateString() ||
+															{moment(data.followUpDate).format("DD/MM/YY") ||
 																"N/A"}
 														</td>
-														<td>{data.parentConcern || "N/A"}</td>
+														{/* <td>{data.parentConcern || "N/A"}</td> */}
 
 														<td>
 															<span
-																// to={"#"}
 																className="btn btn-xs sharp btn-primary me-1"
 																onClick={() => {
 																	navigate("/update-enquiry", {
@@ -492,27 +512,6 @@ const EnquiryList = () => {
 															>
 																<i className="fa fa-pencil" />
 															</span>
-
-															{/* <span
-																// to={"#"}
-																className="btn btn-xs sharp btn-primary me-1"
-																onClick={() => {
-																	navigate("/add-admission", {
-																		state: {
-																			id: data.id,
-																			name: data.name,
-																		},
-																	});
-																}}
-															>
-																<i className="fa fa-plus" />
-															</span> */}
-															{/* <Link
-																to={"#"}
-																className="btn btn-xs sharp btn-danger"
-															>
-																<i className="fa fa-trash" />
-															</Link> */}
 														</td>
 													</tr>
 												))}
@@ -521,13 +520,7 @@ const EnquiryList = () => {
 									</div>
 
 									<div className="d-sm-flex text-center justify-content-between align-items-center mt-3">
-										<div className="dataTables_info">
-											{/* Showing {activePag.current * rows + 1} to
-											{data.length > (activePag.current + 1) * rows
-												? (activePag.current + 1) * rows
-												: data.length}
-											of {data.length} entries */}
-										</div>
+										<div className="dataTables_info"></div>
 
 										<Pagination
 											totalItems={totalRecords}

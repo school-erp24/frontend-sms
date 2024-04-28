@@ -1,14 +1,60 @@
-.ovrf-x {
-	overflow-x: scroll !important;
+/* React Date picker Styles */
+
+.react-datepicker-wrapper {
+	width: 100% !important;
 }
 
-.checkbox {
+.react-datepicker__input-container .react-datepicker__calendar-icon {
+	z-index: 1;
+	top: 50%;
+	left: 0%;
+	transform: translateY(-50%);
+}
+
+/* React Select Styles */
+
+.Select-menu-outer .Select-create-option-placeholder {
+	display: none !important;
+}
+
+/* Overridden Styles */
+
+.text-danger {
+	margin-top: 0.5rem;
+}
+
+/* Custom Styles */
+
+.cus_ovrfx {
+	overflow-x: scroll !important;
+	overflow-y: scroll !important;
+	scrollbar-width: auto !important;
+	scrollbar-color: rgb(167, 166, 166) !important;
+}
+
+.cus_nolp {
+	padding-left: 0rem !important;
+}
+
+.cus_checkbox {
 	accent-color: #6a73fa;
 	cursor: pointer;
 	width: 16px;
 	height: 16px;
 }
 
-.react-datepicker-wrapper {
-	width: 100% !important;
+@media only screen and (min-width: 768px) {
+	body > * {
+		scrollbar-width: 10px !important;
+		scrollbar-color: rgb(167, 166, 166) !important;
+	}
+
+	::-webkit-scrollbar {
+		width: 10px !important;
+		opacity: 0 !important ;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: rgb(167, 166, 166) !important;
+	}
 }

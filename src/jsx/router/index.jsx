@@ -27,7 +27,7 @@ import EnquiryList from "../pages/enquiry/EnquiryList";
 import AdmissionForm from "../pages/admissions/AdmissionForm";
 
 // Settings
-import ClassSetting from "../pages/settings/Demo";
+import ClassSetting from "../pages/settings/ClassSetting";
 import AdmissionSetting from "../pages/settings/AdmissionSetting";
 
 /// App

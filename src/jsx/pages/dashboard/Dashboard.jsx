@@ -201,7 +201,7 @@ const Dashboard2 = () => {
 			.then((resp) => {
 				const response = resp.data.data.followUps;
 				const newData = {
-					title: "Follow Ups",
+					title: "Pending Follow Ups",
 					number: response.count,
 					percent: new Date(response.date).toISOString().split("T")[0],
 					color: "primary",

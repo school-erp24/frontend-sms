@@ -13,9 +13,13 @@ import { toast } from "react-toastify";
 import logoFull from "../../../assets/images/logo-full.png";
 
 function Login() {
-	const [email, setEmail] = useState("subramanyam@gmail.com");
+	// const [email, setEmail] = useState("subramanyam@gmail.com");
 
-	const [pwd, setPwd] = useState("Dpschool@1");
+	// const [pwd, setPwd] = useState("Dpschool@1");
+
+	const [email, setEmail] = useState("");
+
+	const [pwd, setPwd] = useState("");
 
 	const dispatch = useDispatch();
 
