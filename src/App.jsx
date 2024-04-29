@@ -19,18 +19,11 @@ import globalRouter from "./globalRouter";
 
 /// Style
 import "./assets/css/style.css";
-import "bootstrap-daterangepicker/daterangepicker.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-toastify/dist/ReactToastify.css";
 
 // custom style
 import "./custom.css";
-
-// const Login = lazy(() => {
-// 	return new Promise((resolve) => {
-// 		setTimeout(() => resolve(import("./jsx/pages/authentication/Login")), 500);
-// 	});
-// });
 
 function withRouter(Component) {
 	function ComponentWithRouterProp(props) {
@@ -59,13 +52,6 @@ function App() {
 		);
 	}, []);
 
-	let routeblog = (
-		<Routes>
-			<Route path="/login" element={<Login />} />
-		</Routes>
-	);
-
-	// if (isAuthenticated) {
 	return (
 		<>
 			<Suspense
@@ -83,25 +69,6 @@ function App() {
 			</Suspense>
 		</>
 	);
-	// } else {
-	// 	return (
-	// 		<div className="vh-100">
-	// 			<Suspense
-	// 				fallback={
-	// 					<div id="preloader">
-	// 						<div className="sk-three-bounce">
-	// 							<div className="sk-child sk-bounce1"></div>
-	// 							<div className="sk-child sk-bounce2"></div>
-	// 							<div className="sk-child sk-bounce3"></div>
-	// 						</div>
-	// 					</div>
-	// 				}
-	// 			>
-	// 				{routeblog}
-	// 			</Suspense>
-	// 		</div>
-	// 	);
-	// }
 }
 
 export default withRouter(App);

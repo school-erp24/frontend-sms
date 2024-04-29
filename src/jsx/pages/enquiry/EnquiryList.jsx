@@ -224,8 +224,8 @@ const EnquiryList = () => {
 				setTotalRecords(resp.data.data.totalRecords);
 				setTableData(updatedRows);
 				setCurrentPage(resp.data.data.currentPno);
-				setStartDate(null);
-				setEndDate(null);
+				// setStartDate(null);
+				// setEndDate(null);
 				setFilterCriteria((prevCriteria) => ({
 					...prevCriteria,
 					start,
