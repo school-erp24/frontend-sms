@@ -1,31 +1,13 @@
 import axios from "axios";
+import globalRouter from "../globalRouter";
+import { toast } from "react-toastify";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-
-// const axiosInstance = axios.create({
-// 	baseURL: BASE_URL,
-// 	headers: {
-// 		// "Access-Control-Allow-Origin": "*",
-// 		// "ngrok-skip-browser-warning": true,
-// 		"Content-Type": "application/json; charset=UTF-8",
-// 	},
-// });
-
-// axiosInstance.interceptors.request.use((config) => {
-// 	const state = store.getState();
-// 	const token = state.auth.auth.idToken;
-// 	config.params = config.params || {};
-// 	config.params["auth"] = token;
-// 	return config;
-// });
-
-// export default axiosInstance;
 
 const axiosInstance = axios.create({
 	baseURL: BASE_URL,
-	headers: {
-		// "Content-Type": "multipart/form-data",
-	},
 });
+
+let refresh = false;
 
 axiosInstance.interceptors.request.use((config) => {
 	let user = localStorage.getItem("userDetails");
@@ -44,18 +26,14 @@ axiosInstance.interceptors.response.use(
 		}
 	},
 	(error) => {
-		if (error.status) {
-			switch (error.response.status) {
-				case 401:
-					// route this to login page when it is not authenticated
-					// window.location.href = "/";
-					break;
-				case 402:
-					//TODO.
-					break;
-			}
-			return Promise.reject(error.response);
+		if (error.response && error.response.status === 401 && !refresh) {
+			refresh = true;
+
+			toast.error("Unauthorized, Login again");
+			localStorage.removeItem("userDetails");
+			globalRouter.navigate("/login");
 		}
+		return Promise.reject(error);
 	}
 );
 

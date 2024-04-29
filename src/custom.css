@@ -19,6 +19,22 @@
 
 /* Overridden Styles */
 
+@media only screen and (min-width: 768px) {
+	body > * {
+		scrollbar-width: 10px !important;
+		scrollbar-color: rgb(167, 166, 166) !important;
+	}
+
+	::-webkit-scrollbar {
+		width: 10px !important;
+		opacity: 0 !important ;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: rgb(167, 166, 166) !important;
+	}
+}
+
 .text-danger {
 	margin-top: 0.5rem;
 }
@@ -41,20 +57,4 @@
 	cursor: pointer;
 	width: 16px;
 	height: 16px;
-}
-
-@media only screen and (min-width: 768px) {
-	body > * {
-		scrollbar-width: 10px !important;
-		scrollbar-color: rgb(167, 166, 166) !important;
-	}
-
-	::-webkit-scrollbar {
-		width: 10px !important;
-		opacity: 0 !important ;
-	}
-
-	::-webkit-scrollbar-thumb {
-		background: rgb(167, 166, 166) !important;
-	}
 }

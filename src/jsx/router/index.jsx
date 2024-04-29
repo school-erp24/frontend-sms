@@ -6,6 +6,8 @@ import "./../index.css";
 import "./../chart.css";
 import "./../step.css";
 
+import Login from "../pages/authentication/Login";
+
 /// Layout
 import Nav from "./../layouts/nav";
 import Footer from "./../layouts/Footer";
@@ -112,6 +114,8 @@ const Markup = () => {
 		<>
 			<Routes>
 				<Route path="/page-error-404" element={<Error404 />} />
+				<Route path="/login" element={<Login />} />
+
 				<Route element={<MainLayout />}>
 					{allroutes.map((data, i) => (
 						<Route

@@ -13,13 +13,13 @@ import { toast } from "react-toastify";
 import logoFull from "../../../assets/images/logo-full.png";
 
 function Login() {
-	// const [email, setEmail] = useState("subramanyam@gmail.com");
+	const [email, setEmail] = useState("subramanyam@gmail.com");
 
-	// const [pwd, setPwd] = useState("Dpschool@1");
+	const [pwd, setPwd] = useState("Dpschool@1");
 
-	const [email, setEmail] = useState("");
+	// const [email, setEmail] = useState("");
 
-	const [pwd, setPwd] = useState("");
+	// const [pwd, setPwd] = useState("");
 
 	const dispatch = useDispatch();
 
@@ -34,7 +34,7 @@ function Login() {
 
 		try {
 			const userDetails = await login({ email, pwd }, dispatch);
-			console.log("Login successful!", userDetails);
+			// console.log("Login successful!", userDetails);
 			navigate("/dashboard");
 			toast.success("Login sucessful");
 		} catch (error) {
@@ -61,12 +61,12 @@ function Login() {
 								</div>
 
 								<h4 className="text-center mb-4">Sign in your account</h4>
-								{errorMessage && (
+								{/* {errorMessage && (
 									<div className="text-danger p-1 my-2">{errorMessage}</div>
-								)}
-								{successMessage && (
+								)} */}
+								{/* {successMessage && (
 									<div className="text-danger p-1 my-2">{successMessage}</div>
-								)}
+								)} */}
 								<form
 									onSubmit={(e) => {
 										handleLogin(e, dispatch);

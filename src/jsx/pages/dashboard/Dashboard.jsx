@@ -203,14 +203,14 @@ const Dashboard2 = () => {
 				const newData = {
 					title: "Pending Follow Ups",
 					number: response.count,
-					percent: new Date(response.date).toISOString().split("T")[0],
+					percent: response.date,
 					color: "primary",
 				};
 
 				setCardData((prevCardData) => [newData, ...prevCardData]);
 			})
 			.catch((error) => {
-				console.error("Error fetching enquiries:", error);
+				// console.error("Error fetching enquiries:", error);
 			});
 	}, []);
 
