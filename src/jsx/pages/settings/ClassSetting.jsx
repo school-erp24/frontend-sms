@@ -1,41 +1,29 @@
 import React, { useEffect, useState } from "react";
-
-import PageTitle from "../../layouts/PageTitle";
+import Form from "react-bootstrap/Form";
 import { useNavigate, Link } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { Modal, Button } from "react-bootstrap";
 
 import { components } from "../../components/SelectStyles";
-import { createClasses } from "../../../services/SettingsService";
+import {
+	createClasses,
+	updateClasses,
+} from "../../../services/SettingsService";
 import { getClass } from "../../../services/CommonService";
+import PageTitle from "../../layouts/PageTitle";
 
 const ClassSetting = () => {
 	const [classSettings, setClassSettings] = useState([
-		{ tid: 1, class: "", sections: [] },
+		// { tid: 1, class: "", sections: [] },
 	]);
 	const [idCounter, setIdCounter] = useState(1);
 
 	const [cls, setCls] = useState("");
-	const [enquiryModal, setEnquiryModal] = useState(false);
+	const [selectedClass, setSelectedClass] = useState({});
+	const [updateModal, setUpdateModal] = useState(false);
 
 	const [inputValue, setInputValue] = useState("");
 	const [value, setValue] = useState([]);
-
-	// const handleAddSection = () => {
-	// 	// Add a new section with default values to the classSettings array
-	// 	const newSection = {
-	// 		tid: idCounter,
-	// 		class: cls,
-	// 		sectionList: value.map((option) => ({ section: option.value })),
-	// 	};
-	// 	setClassSettings((prevSettings) => [...prevSettings, newSection]);
-	// 	setIdCounter(idCounter + 1); // Increment the id counter
-
-	// 	// Clear the input field value and selected options
-	// 	setInputValue("");
-	// 	setValue([]);
-	// 	setCls("");
-	// };
 
 	const handleAddSection = (e) => {
 		e.preventDefault();
@@ -49,13 +37,13 @@ const ClassSetting = () => {
 		};
 		const updatedClassSettings = [...classSettings, newSection];
 		setClassSettings(updatedClassSettings);
-		setIdCounter(idCounter + 1); // Increment the id counter
+		setIdCounter(idCounter + 1);
 
 		createClasses({ data: updatedClassSettings }).then((res) => {
 			console.log(res);
+			getClassData();
 		});
 
-		// Clear the input field value and selected options
 		setInputValue("");
 		setValue([]);
 		setCls("");
@@ -82,24 +70,20 @@ const ClassSetting = () => {
 	}, [classSettings]);
 
 	useEffect(() => {
-		console.log(cls, value, inputValue);
-	}, [cls, value]);
+		console.log(selectedClass);
+	}, [selectedClass]);
 
-	useEffect(() => {
+	const getClassData = () => {
 		getClass()
 			.then((resp) => {
-				console.log(resp);
-
 				const updatedData = resp.data.data.rows.map((classObj, index) => {
-					// Extract section names from sectionList array
 					const sectionsArray = classObj.sectionList.map(
 						(section) => section.section
 					);
 
-					// Return the updated class object with sections as an array
 					return {
 						...classObj,
-						sections: sectionsArray, // Assign the sections as an array
+						sections: sectionsArray,
 						tid: index + 1,
 					};
 				});
@@ -111,7 +95,39 @@ const ClassSetting = () => {
 			.catch((error) => {
 				console.error("Error fetching classes:", error);
 			});
+	};
+
+	useEffect(() => {
+		getClassData();
 	}, []);
+
+	const handleCheckboxChange = (sectionId) => {
+		setSelectedClass((prevState) => ({
+			...prevState,
+			sectionList: prevState.sectionList.map((section) => {
+				if (section.id === sectionId) {
+					const updatedStatus = section.status === 1 ? 0 : 1;
+					return { ...section, status: updatedStatus };
+				}
+				return section;
+			}),
+		}));
+	};
+
+	const handleUpdateClass = () => {
+		updateClasses(selectedClass)
+			.then((resp) => {
+				console.log(resp.status);
+				setSelectedClass({});
+				setUpdateModal(false);
+				getClassData();
+			})
+			.catch((error) => {
+				console.error("Error fetching classes:", error);
+				setUpdateModal(false);
+				// alert(error.message);
+			});
+	};
 
 	return (
 		<>
@@ -136,7 +152,7 @@ const ClassSetting = () => {
 								</Link>
 								<form action="#" method="post" id="addStaffForm">
 									<div className="row">
-										<div className="col">
+										<div className="col-sm-4">
 											<div className="form-group">
 												<label className="form-label" htmlFor="class_field">
 													Class
@@ -152,10 +168,10 @@ const ClassSetting = () => {
 												/>
 											</div>
 										</div>
-										<div className="col">
+										<div className="col-sm-8">
 											<div className="form-group">
 												<label className="form-label" htmlFor="section_field">
-													Section
+													Sections
 												</label>
 												<CreatableSelect
 													className="custom-react-select"
@@ -179,41 +195,44 @@ const ClassSetting = () => {
 									</div>
 								</form>
 
-								<table className="display dataTable no-footer w-50 ">
-									<thead>
-										<tr>
-											<th>Class</th>
-											<th>Sections</th>
-											<th>Actions</th>
-										</tr>
-									</thead>
-									<tbody>
-										{/* Render each section in the table */}
-										{classSettings.map((section, index) => (
-											<tr key={section.id}>
-												<td>{section.class}</td>
-												<td>{section.sections.join(", ")}</td>
+								<div className="row" style={{ margin: "0" }}>
+									<div className="col-md-8 offset-md-2">
+										<table className="table table-bordered">
+											<thead>
+												<tr>
+													<th>Class</th>
+													<th>Sections</th>
+													<th>Actions</th>
+												</tr>
+											</thead>
+											<tbody>
+												{classSettings.map((section, index) => (
+													<tr key={section.id}>
+														<td>{section.class}</td>
+														<td>{section.sections.join(", ")}</td>
 
-												<td>
-													<span
-														className="btn btn-xs sharp btn-primary me-1"
-														onClick={() => {
-															// navigate("/update-enquiry", {
-															// 	state: {
-															// 		id: data.id,
-															// 		class: data.class,
-															// 	},
-															// });
-															setEnquiryModal(true);
-														}}
-													>
-														<i className="fa fa-pencil" />
-													</span>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
+														<td>
+															<span
+																className="btn btn-xs sharp btn-primary me-1"
+																onClick={() => {
+																	setSelectedClass({
+																		id: section.id,
+																		class: section.class,
+																		sectionList: section.sectionList,
+																		status: section.status,
+																	});
+																	setUpdateModal(true);
+																}}
+															>
+																<i className="fa fa-pencil" />
+															</span>
+														</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
+									</div>
+								</div>
 
 								{/* <button type="submit" className="btn btn-primary me-1">
 										Submit
@@ -228,35 +247,98 @@ const ClassSetting = () => {
 
 								<Modal
 									className="fade"
-									show={enquiryModal}
-									onHide={setEnquiryModal}
+									show={updateModal}
+									onHide={setUpdateModal}
 									centered
+									size="lg"
 								>
 									<Modal.Header>
-										<Modal.Title>Alert</Modal.Title>
+										<Modal.Title>Update Class</Modal.Title>
 										<Button
 											variant=""
 											className="btn-close"
-											onClick={() => setEnquiryModal(false)}
+											onClick={() => setUpdateModal(false)}
 										></Button>
 									</Modal.Header>
-									<Modal.Body>Would you like to add enquiry?</Modal.Body>
+									<Modal.Body>
+										<div
+											className="container"
+											style={{
+												maxHeight: "400px",
+												overflow: "scroll",
+												scrollbarWidth: "auto",
+											}}
+										>
+											<div className="row ">
+												<div className="col-sm-3">
+													<div className="form-group">
+														<label className="form-label" htmlFor="class_field">
+															Class
+														</label>
+														<input
+															placeholder=""
+															type="text"
+															className="form-control"
+															required
+															defaultValue={
+																selectedClass ? selectedClass.class : ""
+															}
+														/>
+													</div>
+												</div>
+											</div>
+
+											<div className="row">
+												{selectedClass &&
+													selectedClass.sectionList &&
+													selectedClass.sectionList.map((section) => (
+														<div className="col-sm-3" key={section.id}>
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="class_field"
+																>
+																	Section
+																</label>
+																<div className="input-group mb-3">
+																	<div className="input-group-text">
+																		<input
+																			type="checkbox"
+																			checked={section.status === 1}
+																			onChange={() =>
+																				handleCheckboxChange(section.id)
+																			}
+																		/>
+																	</div>
+																	<input
+																		type="text"
+																		className="form-control"
+																		defaultValue={section.section}
+																	/>
+																</div>
+															</div>
+														</div>
+													))}
+											</div>
+										</div>
+									</Modal.Body>
 									<Modal.Footer>
 										<Button
 											onClick={() => {
-												// handleSubmit("no");
+												setUpdateModal(false);
+												setSelectedClass({});
 											}}
 											variant="danger light"
 										>
-											No
+											Close
 										</Button>
 										<Button
 											variant="primary"
 											onClick={() => {
-												// handleSubmit("yes");
+												handleUpdateClass();
 											}}
 										>
-											Yes
+											Submit
 										</Button>
 									</Modal.Footer>
 								</Modal>

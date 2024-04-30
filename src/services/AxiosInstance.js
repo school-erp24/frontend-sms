@@ -31,7 +31,8 @@ axiosInstance.interceptors.response.use(
 
 			toast.error("Unauthorized, Login again");
 			localStorage.removeItem("userDetails");
-			globalRouter.navigate("/login");
+			// globalRouter.navigate("/login");
+			window.location.href = "/login";
 		}
 		return Promise.reject(error);
 	}

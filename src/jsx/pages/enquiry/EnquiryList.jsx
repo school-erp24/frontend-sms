@@ -23,8 +23,6 @@ const theadData = [
 	{ heading: "Actions", sortingVale: "", sortable: false },
 ];
 
-// dd-mm-yy
-
 const EnquiryList = () => {
 	const navigate = useNavigate();
 
@@ -98,7 +96,6 @@ const EnquiryList = () => {
 					return { ...row, inputchecked: false };
 				});
 
-				console.log(resp.data.data);
 				setTotalRecords(resp.data.data.totalRecords);
 				setTableData(updatedRows);
 				setCurrentPage(resp.data.data.currentPno);
@@ -165,8 +162,10 @@ const EnquiryList = () => {
 	const handlePageChange = (page, rows) => {
 		setPageNo(page);
 		// setUnChecked(true);
-		if (unchecked === false) setUnChecked(true);
-		handleCheckedAll(false); // in testing phase
+		if (unchecked === false) {
+			setUnChecked(true);
+			handleCheckedAll(false);
+		} // in testing phase
 
 		getEnquiries({
 			limit: rows,
@@ -199,6 +198,8 @@ const EnquiryList = () => {
 				});
 
 				console.log(resp.data.data);
+				setStartDate(null);
+				setEndDate(null);
 				setTotalRecords(resp.data.data.totalRecords);
 				setTableData(updatedRows);
 				setCurrentPage(resp.data.data.currentPno);
@@ -354,6 +355,7 @@ const EnquiryList = () => {
 													className="form-control"
 													maxDate={new Date()}
 													id="sdt"
+													dateFormat="dd/MM/yy"
 												/>
 											</div>
 
@@ -372,6 +374,7 @@ const EnquiryList = () => {
 													className="form-control"
 													maxDate={new Date()}
 													id="edt"
+													dateFormat="dd/MM/yy"
 												/>
 											</div>
 										</div>

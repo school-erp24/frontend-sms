@@ -17,3 +17,7 @@ export function postAdmissionSetting(rows) {
 export function createClasses(classes) {
 	return AxiosInstance.post("/school/class/create", classes);
 }
+
+export function updateClasses(classes) {
+	return AxiosInstance.post("/school/class/update", classes);
+}

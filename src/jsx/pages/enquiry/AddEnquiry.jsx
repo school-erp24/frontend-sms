@@ -270,6 +270,7 @@ const AddEnquiry = () => {
 										<div className="form-group">
 											<label className="form-label" htmlFor="lastName">
 												Last Name
+												<span className="text-danger">*</span>
 											</label>
 											<input
 												placeholder="Enter Last Name"
