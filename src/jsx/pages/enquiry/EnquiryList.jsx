@@ -225,8 +225,6 @@ const EnquiryList = () => {
 				setTotalRecords(resp.data.data.totalRecords);
 				setTableData(updatedRows);
 				setCurrentPage(resp.data.data.currentPno);
-				// setStartDate(null);
-				// setEndDate(null);
 				setFilterCriteria((prevCriteria) => ({
 					...prevCriteria,
 					start,
@@ -498,6 +496,11 @@ const EnquiryList = () => {
 														<td>
 															{moment(data.followUpDate).format("DD/MM/YY") ||
 																"N/A"}
+
+															{moment(data.followUpDate).isSameOrBefore(
+																moment(),
+																"day"
+															) && <span className="text-danger">*</span>}
 														</td>
 														{/* <td>{data.parentConcern || "N/A"}</td> */}
 
@@ -505,12 +508,9 @@ const EnquiryList = () => {
 															<span
 																className="btn btn-xs sharp btn-primary me-1"
 																onClick={() => {
-																	navigate("/update-enquiry", {
-																		state: {
-																			id: data.id,
-																			class: data.class,
-																		},
-																	});
+																	navigate(
+																		`/update-enquiry/${data.class}/${data.id}`
+																	);
 																}}
 															>
 																<i className="fa fa-pencil" />

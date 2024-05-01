@@ -27,6 +27,10 @@ import EnquiryList from "../pages/enquiry/EnquiryList";
 
 // Admissions
 import AdmissionForm from "../pages/admissions/AdmissionForm";
+import AdmissionList from "../pages/admissions/AdmissionList";
+
+// Student Management
+import StudentList from "../pages/students/StudentList";
 
 // Settings
 import ClassSetting from "../pages/settings/ClassSetting";
@@ -55,11 +59,15 @@ const Markup = () => {
 
 		//Enquiry
 		{ url: "add-enquiry", component: <AddEnquiry /> },
-		{ url: "update-enquiry", component: <UpdateEnquiry /> },
+		{ url: "update-enquiry/:classParam/:id", component: <UpdateEnquiry /> },
 		{ url: "enquiry-list", component: <EnquiryList /> },
 
 		// admissions
 		{ url: "add-admission", component: <AdmissionForm /> },
+		{ url: "admission-list", component: <AdmissionList /> },
+
+		// students
+		{ url: "student-list", component: <StudentList /> },
 
 		// settings
 		{ url: "class-setting", component: <ClassSetting /> },

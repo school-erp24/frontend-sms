@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import moment from "moment";
@@ -16,8 +16,7 @@ import { validationEnquirySchema } from "./EnquirySchema";
 import PageTitle from "../../layouts/PageTitle";
 
 const UpdateEnquiry = () => {
-	const location = useLocation();
-	const data = location.state;
+	const { classParam, id } = useParams();
 	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState({
@@ -124,10 +123,9 @@ const UpdateEnquiry = () => {
 	}, []);
 
 	useEffect(() => {
-		getEnquiries({ id: data.id })
+		getEnquiries({ id: id })
 			.then((resp) => {
 				setFormData(resp.data.data.rows[0]);
-				console.log(resp.data.data.rows[0]);
 
 				setEnquiryDate(new Date(resp.data.data.rows[0].enquiryDate));
 				setFollowUpDate(new Date(resp.data.data.rows[0].followUpDate));
@@ -255,8 +253,8 @@ const UpdateEnquiry = () => {
 											<Select
 												isSearchable={false}
 												defaultValue={{
-													value: data.class,
-													label: data.class,
+													value: classParam,
+													label: classParam,
 												}}
 												options={options}
 												className="custom-react-select"

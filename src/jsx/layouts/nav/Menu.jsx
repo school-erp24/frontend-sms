@@ -39,6 +39,24 @@ export const MenuList = [
 				title: "Add Admission",
 				to: "add-admission",
 			},
+
+			{
+				title: "Admission List",
+				to: "admission-list",
+			},
+		],
+	},
+
+	// Student Management
+	{
+		title: "Student Management",
+		classsChange: "mm-collapse",
+		iconStyle: <i className="la la-user" />,
+		content: [
+			{
+				title: "Student List",
+				to: "student-list",
+			},
 		],
 	},
 
