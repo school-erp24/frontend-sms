@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 /// Css
 import "./../index.css";
@@ -52,22 +52,119 @@ import ApexChart from "./../pages/charts/apexcharts";
 import Error404 from "./../pages/error/Error404";
 
 const Markup = () => {
+	const USER_TYPES = {
+		// SUPER_ADMIN: "Super Admin",
+		SCHOOL_ADMIN: "School Admin",
+		ACCOUNTANT_1: "Accountant 1",
+		ACCOUNTANT_2: "Accountant 2",
+		STAFF: "Staff",
+	};
+
+	const CURRENT_USER_TYPE = USER_TYPES.STAFF;
+
+	function PublicElement({ children }) {
+		return <>{children}</>;
+	}
+
+	function UserElement({ children }) {
+		if (
+			CURRENT_USER_TYPE === USER_TYPES.SCHOOL_ADMIN ||
+			CURRENT_USER_TYPE === USER_TYPES.ACCOUNTANT_1 ||
+			CURRENT_USER_TYPE === USER_TYPES.ACCOUNTANT_2 ||
+			CURRENT_USER_TYPE === USER_TYPES.STAFF
+		) {
+			return <>{children}</>;
+		} else {
+			// return <Navigate to={"/page-error-404"} />;
+			return <div>You have no access to the page</div>;
+		}
+	}
+
+	function Specific1({ children }) {
+		if (
+			CURRENT_USER_TYPE === USER_TYPES.SCHOOL_ADMIN ||
+			CURRENT_USER_TYPE === USER_TYPES.ACCOUNTANT_1
+		) {
+			return <>{children}</>;
+		} else {
+			return <div>You have no access to the page</div>;
+			// return <Navigate to={"/page-error-404"} />;
+		}
+	}
+
 	const allroutes = [
 		/// Dashboard
-		{ url: "", component: <Home /> },
-		{ url: "dashboard", component: <Home /> },
+		{
+			url: "",
+			component: (
+				<UserElement>
+					<Home />
+				</UserElement>
+			),
+		},
+
+		{
+			url: "dashboard",
+			component: (
+				<UserElement>
+					<Home />
+				</UserElement>
+			),
+		},
 
 		//Enquiry
-		{ url: "add-enquiry", component: <AddEnquiry /> },
-		{ url: "update-enquiry/:classParam/:id", component: <UpdateEnquiry /> },
-		{ url: "enquiry-list", component: <EnquiryList /> },
+		{
+			url: "add-enquiry",
+			component: (
+				<UserElement>
+					<AddEnquiry />
+				</UserElement>
+			),
+		},
+		{
+			url: "update-enquiry/:classParam/:id",
+			component: (
+				<UserElement>
+					<UpdateEnquiry />
+				</UserElement>
+			),
+		},
+		{
+			url: "enquiry-list",
+			component: (
+				<UserElement>
+					<EnquiryList />
+				</UserElement>
+			),
+		},
 
 		// admissions
-		{ url: "add-admission", component: <AdmissionForm /> },
-		{ url: "admission-list", component: <AdmissionList /> },
+		{
+			url: "add-admission",
+			component: (
+				<UserElement>
+					<AdmissionForm />
+				</UserElement>
+			),
+		},
+		{
+			url: "admission-list",
+			component: (
+				<UserElement>
+					<AdmissionList />
+				</UserElement>
+			),
+		},
 
 		// students
-		{ url: "student-list", component: <StudentList /> },
+		{
+			url: "student-list",
+			component: (
+				<Specific1>
+					<StudentList />
+				</Specific1>
+			),
+		},
 
 		// settings
 		{ url: "class-setting", component: <ClassSetting /> },
@@ -88,21 +185,6 @@ const Markup = () => {
 		/// pages
 		{ url: "empty", component: <EmptyPage /> },
 	];
-
-	// function NotFound() {
-	// 	const url = allroutes.map((route) => route.url);
-	// 	let path = window.location.pathname;
-	// 	path = path.split("/");
-	// 	path = path[path.length - 1];
-
-	// 	if (url.indexOf(path) <= 0) {
-	// 		return <Error404 />;
-	// 	}
-	// }
-
-	function NotFound() {
-		return <Error404 />;
-	}
 
 	const [loading, setLoading] = useState(true);
 
@@ -134,7 +216,7 @@ const Markup = () => {
 						/>
 					))}
 				</Route>
-				<Route path="*" element={<NotFound />} />
+				<Route path="*" element={<Error404 />} />
 			</Routes>
 			<ScrollToTop />
 		</>

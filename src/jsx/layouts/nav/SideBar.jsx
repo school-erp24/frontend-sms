@@ -6,9 +6,6 @@ import { MenuList } from "./Menu";
 
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { ThemeContext } from "../../../context/ThemeContext";
-// import LogoutPage from './Logout';
-/// Image
-// import profile from "../../../assets/images/profile/pic1.jpg";
 
 const reducer = (previousState, updatedState) => ({
 	...previousState,
@@ -21,7 +18,6 @@ const initialState = {
 };
 
 const SideBar = () => {
-	let dat = new Date();
 	const {
 		iconHover,
 		sidebarposition,
@@ -39,6 +35,20 @@ const SideBar = () => {
 			if (isShow !== hideOnScroll) setHideOnScroll(isShow);
 		},
 		[hideOnScroll]
+	);
+
+	const USER_TYPES = {
+		SUPER_ADMIN: "Super Admin",
+		SCHOOL_ADMIN: "School Admin",
+		ACCOUNTANT_1: "Accountant 1",
+		ACCOUNTANT_2: "Accountant 2",
+		STAFF: "Staff",
+	};
+
+	const CURRENT_USER_TYPE = USER_TYPES.STAFF;
+
+	const filteredMenuList = MenuList.filter((menuItem) =>
+		menuItem.accessRights.includes(CURRENT_USER_TYPE)
 	);
 
 	const handleMenuActive = (status) => {
@@ -90,7 +100,7 @@ const SideBar = () => {
 		>
 			<div className="dlabnav-scroll">
 				<ul className="metismenu" id="menu">
-					{MenuList.map((data, index) => {
+					{filteredMenuList.map((data, index) => {
 						let menuClass = data.classsChange;
 						if (menuClass === "menu-title") {
 							return (

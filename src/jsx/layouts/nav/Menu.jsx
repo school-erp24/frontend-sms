@@ -4,12 +4,14 @@ export const MenuList = [
 		title: "Main Menu",
 		classsChange: "menu-title",
 		extraclass: "first",
+		accessRights: ["School Admin", "Accountant 1", "Accountant 2", "Staff"],
 	},
 	//Dashboard
 	{
 		title: "Dashboard",
 		iconStyle: <i className="la la-home" />,
 		to: "dashboard",
+		accessRights: ["School Admin", "Accountant 1", "Accountant 2", "Staff"],
 	},
 
 	// Enquiry Management
@@ -27,6 +29,7 @@ export const MenuList = [
 				to: "enquiry-list",
 			},
 		],
+		accessRights: ["School Admin", "Accountant 1", "Accountant 2", "Staff"],
 	},
 
 	// Admission Management
@@ -45,6 +48,7 @@ export const MenuList = [
 				to: "admission-list",
 			},
 		],
+		accessRights: ["School Admin", "Accountant 1", "Accountant 2", "Staff"],
 	},
 
 	// Student Management
@@ -58,6 +62,7 @@ export const MenuList = [
 				to: "student-list",
 			},
 		],
+		accessRights: ["School Admin", "Accountant 1"],
 	},
 
 	// Settings
@@ -76,5 +81,6 @@ export const MenuList = [
 				to: "admission-setting",
 			},
 		],
+		accessRights: ["School Admin", "Accountant 1", "Accountant 2", "Staff"],
 	},
 ];

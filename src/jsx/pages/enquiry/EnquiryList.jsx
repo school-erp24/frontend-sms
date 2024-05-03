@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Row, Modal, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import Pagination from "../../components/Pagination";
-
-import { getEnquiries, deleteEnquiry } from "../../../services/EnquiryService";
-
 import DatePicker from "react-datepicker";
 import moment from "moment";
 
+import Pagination from "../../components/Pagination";
+import { getEnquiries, deleteEnquiry } from "../../../services/EnquiryService";
+
 const theadData = [
-	{ heading: "Sr.no", sortingVale: "sno", sortable: true },
-	{ heading: "Enquiry Date", sortingVale: "enquiryDate", sortable: true },
-	{ heading: "Name", sortingVale: "name", sortable: true },
-	{ heading: "Parent's Name", sortingVale: "parentName", sortable: true },
-	{ heading: "Class", sortingVale: "class", sortable: true },
-	{ heading: "Mobile", sortingVale: "contactNo", sortable: true },
-	// { heading: "Previous School", sortingVale: "previousSchool", sortable: true }, commented for now
-	{ heading: "Village", sortingVale: "villageOrCity", sortable: true },
-	// { heading: "District", sortingVale: "district", sortable: true }, commented for now
-	{ heading: "Followup Date", sortingVale: "followUpDate", sortable: true },
-	// { heading: "Parent's concern", sortingVale: "parentConcern", sortable: true }, commented for now
-	{ heading: "Actions", sortingVale: "", sortable: false },
+	{ heading: "Sr.no", sortingValue: "sno", sortable: true },
+	{ heading: "Enquiry Date", sortingValue: "enquiryDate", sortable: true },
+	{ heading: "Name", sortingValue: "name", sortable: true },
+	{ heading: "Parent's Name", sortingValue: "parentName", sortable: true },
+	{ heading: "Class", sortingValue: "class", sortable: true },
+	{ heading: "Mobile", sortingValue: "contactNo", sortable: true },
+	// { heading: "Previous School", sortingValue: "previousSchool", sortable: true }, commented for now
+	{ heading: "Village", sortingValue: "villageOrCity", sortable: true },
+	// { heading: "District", sortingValue: "district", sortable: true }, commented for now
+	{ heading: "Followup Date", sortingValue: "followUpDate", sortable: true },
+	// { heading: "Parent's concern", sortingValue: "parentConcern", sortable: true }, commented for now
+	{ heading: "Actions", sortingValue: "", sortable: false },
 ];
 
 const EnquiryList = () => {
@@ -39,18 +38,20 @@ const EnquiryList = () => {
 	const [filterCriteria, setFilterCriteria] = useState(null);
 
 	const [startDate, setStartDate] = useState(null);
+
 	const [endDate, setEndDate] = useState(null);
 
-	useEffect(() => {
-		if (startDate && endDate !== null) {
-			handleDate(startDate, endDate);
-		}
-	}, [startDate, endDate]);
+	const [search, setSearch] = useState("");
+
+	const [unchecked, setUnChecked] = useState(true);
+
+	const [selectedIds, setSelectedIds] = useState([]);
 
 	const [tableData, setTableData] = useState([]);
+
 	const [iconData, setIconDate] = useState({ complete: false, ind: Number });
 
-	function SortingData(name) {
+	const SortData = (name) => {
 		const sortedPeople = [...tableData];
 		switch (name) {
 			case "sno":
@@ -79,11 +80,9 @@ const EnquiryList = () => {
 				break;
 		}
 		setTableData(sortedPeople);
-	}
+	};
 
-	const [search, setSearch] = useState("");
-
-	function DataSearch(e) {
+	const Search = (e) => {
 		setSearch(e.target.value);
 
 		getEnquiries({
@@ -107,11 +106,7 @@ const EnquiryList = () => {
 			.catch((error) => {
 				console.error("Error fetching enquiries:", error);
 			});
-	}
-
-	const [unchecked, setUnChecked] = useState(true);
-
-	const [selectedIds, setSelectedIds] = useState([]);
+	};
 
 	const handleChecked = (id) => {
 		let tempFeeData = tableData.map((data) => {
@@ -133,39 +128,13 @@ const EnquiryList = () => {
 		setUnChecked(!unchecked);
 	};
 
-	useEffect(() => {
-		getEnquiries({
-			limit: rows,
-			pno: pageno,
-		})
-			.then((resp) => {
-				const updatedRows = resp.data.data.rows.map((row) => {
-					return { ...row, inputchecked: false };
-				});
-
-				console.log(resp.data.data);
-				setTotalRecords(resp.data.data.totalRecords);
-				setTableData(updatedRows);
-				setCurrentPage(resp.data.data.currentPno);
-			})
-			.catch((error) => {
-				console.error("Error fetching enquiries:", error);
-			});
-	}, []);
-
-	useEffect(() => {
-		const selectedRows = tableData.filter((data) => data.inputchecked);
-		const ids = selectedRows.map((data) => data.id);
-		setSelectedIds(ids);
-	}, [tableData]);
-
 	const handlePageChange = (page, rows) => {
 		setPageNo(page);
 		// setUnChecked(true);
 		if (unchecked === false) {
 			setUnChecked(true);
 			handleCheckedAll(false);
-		} // in testing phase
+		}
 
 		getEnquiries({
 			limit: rows,
@@ -177,7 +146,6 @@ const EnquiryList = () => {
 					return { ...row, inputchecked: false };
 				});
 
-				console.log(resp.data.data);
 				setTotalRecords(resp.data.data.totalRecords);
 				setTableData(updatedRows);
 				setCurrentPage(resp.data.data.currentPno);
@@ -197,7 +165,6 @@ const EnquiryList = () => {
 					return { ...row, inputchecked: false };
 				});
 
-				console.log(resp.data.data);
 				setStartDate(null);
 				setEndDate(null);
 				setTotalRecords(resp.data.data.totalRecords);
@@ -210,7 +177,7 @@ const EnquiryList = () => {
 			});
 	};
 
-	const handleDate = (start, end) => {
+	const handleDateFilter = (start, end) => {
 		getEnquiries({
 			limit: rows,
 			pno: 1,
@@ -237,7 +204,6 @@ const EnquiryList = () => {
 	};
 
 	const handleDelete = (ids) => {
-		console.log(ids);
 		deleteEnquiry(ids)
 			.then((resp) => {
 				if (resp.status === 200) {
@@ -250,7 +216,6 @@ const EnquiryList = () => {
 								return { ...row, inputchecked: false };
 							});
 
-							console.log(resp.data.data);
 							setTotalRecords(resp.data.data.totalRecords);
 							setTableData(updatedRows);
 							setCurrentPage(resp.data.data.currentPno);
@@ -265,6 +230,37 @@ const EnquiryList = () => {
 			});
 		setBasicModal(false);
 	};
+
+	useEffect(() => {
+		if (startDate && endDate !== null) {
+			handleDateFilter(startDate, endDate);
+		}
+	}, [startDate, endDate]);
+
+	useEffect(() => {
+		const selectedRows = tableData.filter((data) => data.inputchecked);
+		const ids = selectedRows.map((data) => data.id);
+		setSelectedIds(ids);
+	}, [tableData]);
+
+	useEffect(() => {
+		getEnquiries({
+			limit: rows,
+			pno: pageno,
+		})
+			.then((resp) => {
+				const updatedRows = resp.data.data.rows.map((row) => {
+					return { ...row, inputchecked: false };
+				});
+
+				setTotalRecords(resp.data.data.totalRecords);
+				setTableData(updatedRows);
+				setCurrentPage(resp.data.data.currentPno);
+			})
+			.catch((error) => {
+				console.error("Error fetching enquiries:", error);
+			});
+	}, []);
 
 	return (
 		<>
@@ -387,11 +383,7 @@ const EnquiryList = () => {
 										>
 											<label>
 												Search :
-												<input
-													type="search"
-													placeholder=""
-													onChange={DataSearch}
-												/>
+												<input type="search" placeholder="" onChange={Search} />
 											</label>
 										</div>
 									</div>
@@ -408,7 +400,7 @@ const EnquiryList = () => {
 																	if (ind === 0) {
 																		// handleCheckedAll(unchecked);
 																	} else {
-																		SortingData(item.sortingVale);
+																		SortData(item.sortingValue);
 																		setIconDate((prevState) => ({
 																			complete: !prevState.complete,
 																			ind: ind,

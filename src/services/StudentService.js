@@ -7,3 +7,13 @@ export function postAdmissionForm(formData) {
 		},
 	});
 }
+
+export function getAdmissionList(params) {
+	return AxiosInstance.get("/school/student/get?admissionList", {
+		params: params,
+	});
+}
+
+export function getStudentList() {
+	return AxiosInstance.get("/school/student/get");
+}
