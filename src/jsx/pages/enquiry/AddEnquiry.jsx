@@ -270,7 +270,6 @@ const AddEnquiry = () => {
 										<div className="form-group">
 											<label className="form-label" htmlFor="lastName">
 												Last Name
-												<span className="text-danger">*</span>
 											</label>
 											<input
 												placeholder="Enter Last Name"
@@ -280,9 +279,6 @@ const AddEnquiry = () => {
 												value={formData.lastName}
 												onChange={handleChange}
 											/>
-											{errors.lastName && (
-												<p className="text-danger">{errors.lastName}</p>
-											)}
 										</div>
 									</div>
 

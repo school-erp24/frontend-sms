@@ -220,9 +220,6 @@ const UpdateEnquiry = () => {
 												value={formData.lastName}
 												onChange={handleChange}
 											/>
-											{errors.lastName && (
-												<p className="text-danger">{errors.lastName}</p>
-											)}
 										</div>
 									</div>
 

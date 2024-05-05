@@ -15,6 +15,7 @@ const theadData = [
 	{ heading: "Father's Name", sortingValue: "fatherName", sortable: true },
 	{ heading: "Contact no", sortingValue: "contactNo", sortable: true },
 	{ heading: "Fees Status", sortingValue: "feeStatus", sortable: true }, // this too
+	{ heading: "Actions", sortingValue: "", sortable: false },
 ];
 
 const AdmissionList = () => {
@@ -261,7 +262,7 @@ const AdmissionList = () => {
 					<div className="card">
 						<div className="card-header">
 							<h4 className="card-title">Admission List</h4>
-							{/* <span style={{ display: "flex", gap: ".5rem" }}>
+							<span style={{ display: "flex", gap: ".5rem" }}>
 								<Link to={"/add-admission"} className="btn btn-primary">
 									+ Admission
 								</Link>
@@ -290,19 +291,13 @@ const AdmissionList = () => {
 								>
 									<i className="fa-regular fa-trash-can"></i>
 								</Link>
-							</span> */}
+							</span>
 						</div>
 						<div className="card-body">
 							<div className="table-responsive">
 								<div id="holidayList" className="dataTables_wrapper no-footer">
 									<div className="justify-content-between d-sm-flex">
-										<div
-											style={{
-												display: "flex",
-												justifyContent: "center",
-												alignItems: "center",
-											}}
-										>
+										<div className="cus_flexc">
 											<Link to={""} className="btn btn-primary">
 												Print
 											</Link>
@@ -317,22 +312,8 @@ const AdmissionList = () => {
 											</Link>
 										</div>
 
-										<div
-											style={{
-												display: "flex",
-												justifyContent: "center",
-												alignItems: "center",
-												gap: ".5rem",
-											}}
-										>
-											<div
-												style={{
-													display: "flex",
-													justifyContent: "center",
-													alignItems: "center",
-													width: "150px",
-												}}
-											>
+										<div className="cus_flexcg8">
+											<div className="cus_rangedp">
 												<label htmlFor="sdt">From:</label>
 
 												<DatePicker
@@ -345,14 +326,7 @@ const AdmissionList = () => {
 												/>
 											</div>
 
-											<div
-												style={{
-													display: "flex",
-													justifyContent: "center",
-													alignItems: "center",
-													width: "150px",
-												}}
-											>
+											<div className="cus_rangedp">
 												<label htmlFor="edt">To:</label>
 												<DatePicker
 													selected={endDate}
@@ -365,14 +339,7 @@ const AdmissionList = () => {
 											</div>
 										</div>
 
-										<div
-											style={{
-												display: "flex",
-												justifyContent: "center",
-												alignItems: "center",
-												gap: ".5rem",
-											}}
-										>
+										<div className="cus_flexcg8">
 											<label>
 												Search :
 												<input type="search" placeholder="" onChange={Search} />
@@ -381,7 +348,7 @@ const AdmissionList = () => {
 									</div>
 
 									<div className="cus_ovrfx">
-										<table className="display dataTable no-footer w-100 ">
+										<table className="display dataTable no-footer w-100">
 											<thead>
 												<tr>
 													{theadData.map((item, ind) => (
@@ -423,7 +390,10 @@ const AdmissionList = () => {
 																	{item.sortable && ind !== iconData.ind && (
 																		<i
 																			className="fa fa-sort ms-2 fs-12"
-																			style={{ opacity: "0.3" }}
+																			style={{
+																				opacity: "0.3",
+																				cursor: "pointer",
+																			}}
 																		/>
 																	)}
 																	{item.sortable &&
@@ -431,12 +401,18 @@ const AdmissionList = () => {
 																		(iconData.complete ? (
 																			<i
 																				className="fa fa-arrow-down ms-2 fs-12"
-																				style={{ opacity: "0.7" }}
+																				style={{
+																					opacity: "0.7",
+																					cursor: "pointer",
+																				}}
 																			/>
 																		) : (
 																			<i
 																				className="fa fa-arrow-up ms-2 fs-12"
-																				style={{ opacity: "0.7" }}
+																				style={{
+																					opacity: "0.7",
+																					cursor: "pointer",
+																				}}
 																			/>
 																		))}
 																</span>
@@ -445,7 +421,7 @@ const AdmissionList = () => {
 													))}
 												</tr>
 											</thead>
-											<tbody>
+											<tbody className="cus_up">
 												{tableData.map((data, ind) => (
 													<tr key={ind}>
 														<td>
@@ -480,11 +456,7 @@ const AdmissionList = () => {
 														<td>
 															<span
 																className="btn btn-xs sharp btn-primary me-1"
-																onClick={() => {
-																	navigate(
-																		`/update-enquiry/${data.class}/${data.id}`
-																	);
-																}}
+																onClick={() => {}}
 															>
 																<i className="fa fa-pencil" />
 															</span>

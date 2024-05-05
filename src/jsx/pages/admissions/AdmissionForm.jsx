@@ -39,6 +39,7 @@ const AdmissionForm = () => {
 	const [selectedSection, setSelectedSection] = useState(null);
 
 	const [studentDetailsFields, setStudentDetailsFields] = useState([]);
+	console.log(studentDetailsFields);
 	const [DOB, setDOB] = useState(new Date());
 
 	const [familyDetailsFields, setFamilyDetailsFields] = useState([]);
@@ -159,7 +160,7 @@ const AdmissionForm = () => {
 											<div className="accordion-body">
 												<div className="row">
 													{/* Session */}
-													<div className="col-sm-6">
+													<div className="col-sm-4">
 														<div className="form-group">
 															<label className="form-label" htmlFor="session">
 																Session <span className="text-danger">*</span>
@@ -177,7 +178,7 @@ const AdmissionForm = () => {
 													</div>
 
 													{/* Admission Date */}
-													<div className="col-sm-6">
+													<div className="col-sm-4">
 														<div className="form-group">
 															<label
 																className="form-label"
@@ -197,7 +198,7 @@ const AdmissionForm = () => {
 													</div>
 
 													{/* Admission No */}
-													<div className="col-sm-6">
+													<div className="col-sm-4">
 														<div className="form-group">
 															<label
 																className="form-label"
@@ -218,24 +219,7 @@ const AdmissionForm = () => {
 														</div>
 													</div>
 
-													<div className="col-sm-6">
-														<div className="form-group">
-															<label className="form-label" htmlFor="rollNo">
-																Roll no. <span className="text-danger">*</span>
-															</label>
-															<input
-																placeholder=""
-																id="rollNo"
-																type="text"
-																className="form-control"
-																required
-																value={formData.rollNo}
-																onChange={handleChange}
-															/>
-														</div>
-													</div>
-
-													<div className="col-sm-6">
+													<div className="col-sm-4">
 														<div className="form-group">
 															<label className="form-label" htmlFor="firstName">
 																First Name
@@ -257,7 +241,7 @@ const AdmissionForm = () => {
 														(row) =>
 															row.field === "Last Name" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -277,7 +261,25 @@ const AdmissionForm = () => {
 														</div>
 													)}
 
-													<div className="col-sm-6">
+													<div className="col-sm-4">
+														<div className="form-group">
+															<label className="form-label" htmlFor="contactNo">
+																Contact No
+																<span className="text-danger">*</span>
+															</label>
+															<input
+																placeholder="Enter Last Name"
+																id="contactNo"
+																type="text"
+																className="form-control"
+																required
+																value={formData.contactNo}
+																onChange={handleChange}
+															/>
+														</div>
+													</div>
+
+													<div className="col-sm-4">
 														<div className="form-group">
 															<label className="form-label">
 																Class
@@ -303,7 +305,7 @@ const AdmissionForm = () => {
 														</div>
 													</div>
 
-													<div className="col-sm-6">
+													<div className="col-sm-4">
 														<div className="form-group">
 															<label className="form-label">
 																Section
@@ -328,7 +330,7 @@ const AdmissionForm = () => {
 														</div>
 													</div>
 
-													<div className="col-sm-6">
+													<div className="col-sm-4">
 														<div className="form-group">
 															<label
 																className="form-label"
@@ -349,247 +351,12 @@ const AdmissionForm = () => {
 														</div>
 													</div>
 
-													<div className="col-sm-6">
-														<div className="form-group">
-															<label className="form-label" htmlFor="contactNo">
-																Contact No{" "}
-																<span className="text-danger">*</span>
-															</label>
-															<input
-																placeholder="Enter Last Name"
-																id="contactNo"
-																type="text"
-																className="form-control"
-																required
-																value={formData.contactNo}
-																onChange={handleChange}
-															/>
-														</div>
-													</div>
-												</div>
-											</div>
-										</Accordion.Collapse>
-									</Accordion.Item>
-								</Accordion>
-
-								{/* STUDENT DETAILS ACCORDIAN */}
-								<Accordion className="accordion accordion-with-icon">
-									<Accordion.Item className="accordion-item" eventKey="0">
-										<Accordion.Header className="accordion-header rounded-lg">
-											<span className="accordion-header-icon"></span>
-											<span className="accordion-header-text">
-												Student Details
-											</span>
-											<span className="accordion-header-indicator indicator-bordered"></span>
-										</Accordion.Header>
-										<Accordion.Collapse eventKey="0">
-											<div className="accordion-body">
-												<div className="row">
-													{/* Gender */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Gender" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label className="form-label" htmlFor="gender">
-																	Gender
-																</label>
-																<div>
-																	<div className="form-check form-check-inline">
-																		<input
-																			className="form-check-input"
-																			type="radio"
-																			name="Male"
-																			id="inlineRadio1"
-																			value="Male"
-																			checked={formData.gender === "Male"}
-																			onChange={(e) =>
-																				handleRadioButton(e, "gender")
-																			}
-																		/>
-																		<label
-																			className="form-check-label"
-																			htmlFor="inlineRadio1"
-																		>
-																			Male
-																		</label>
-																	</div>
-																	<div className="form-check form-check-inline">
-																		<input
-																			className="form-check-input"
-																			type="radio"
-																			name="Female"
-																			id="inlineRadio1"
-																			value="Female"
-																			checked={formData.gender === "Female"}
-																			onChange={(e) =>
-																				handleRadioButton(e, "gender")
-																			}
-																		/>
-																		<label
-																			className="form-check-label"
-																			htmlFor="inlineRadio1"
-																		>
-																			Female
-																		</label>
-																	</div>
-																</div>
-															</div>
-														</div>
-													)}
-													{/* DOB */}
-													{studentDetailsFields.find(
-														(row) => row.field === "D.O.B" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="datepicker1"
-																>
-																	Date of Birth
-																</label>
-																<div>
-																	<DatePicker
-																		selected={DOB}
-																		onChange={(date) => setDOB(date)}
-																		className="form-control"
-																	/>
-																</div>
-															</div>
-														</div>
-													)}
-													{/* Blood Group */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Blood group" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="bloodGroup"
-																>
-																	Blood Group
-																</label>
-																<input
-																	placeholder=""
-																	id="bloodGroup"
-																	type="text"
-																	className="form-control"
-																	value={formData.bloodGroup}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-													{/* Height */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Height" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label className="form-label" htmlFor="height">
-																	Height
-																</label>
-																<input
-																	placeholder=""
-																	id="height"
-																	type="text"
-																	className="form-control"
-																	value={formData.height}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-													{/* Weight */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "weight" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label className="form-label" htmlFor="weight">
-																	Weight
-																</label>
-																<input
-																	placeholder=""
-																	id="weight"
-																	type="text"
-																	className="form-control"
-																	value={formData.weight}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-													{/* Aadhar No. */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Adhar no." && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="aadharCard"
-																>
-																	Aadhar No.
-																</label>
-																<input
-																	placeholder=""
-																	id="aadharCard"
-																	type="text"
-																	className="form-control"
-																	value={formData.aadharCard}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-													{/* Transport */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Transport" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label className="form-label">Transport</label>
-																<Select
-																	isSearchable={false}
-																	defaultValue={options1[0]}
-																	options={options1}
-																	className="custom-react-select"
-																/>
-															</div>
-														</div>
-													)}
-													{/* Religion */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Religion" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label className="form-label">Religion</label>
-																<Select
-																	isSearchable={false}
-																	defaultValue={options1[0]}
-																	options={options1}
-																	className="custom-react-select"
-																/>
-															</div>
-														</div>
-													)}
 													{/* Student Type */}
 													{studentDetailsFields.find(
 														(row) =>
 															row.field === "Student Type" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label className="form-label">
 																	Student Type
@@ -603,87 +370,41 @@ const AdmissionForm = () => {
 															</div>
 														</div>
 													)}
-													{/* Caste */}
-													{studentDetailsFields.find(
-														(row) => row.field === "Caste" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label className="form-label">Caste</label>
-																<Select
-																	isSearchable={false}
-																	defaultValue={options1[0]}
-																	options={options1}
-																	className="custom-react-select"
-																/>
-															</div>
+
+													<div className="col-sm-4">
+														<div className="form-group">
+															<label className="form-label" htmlFor="rollNo">
+																Roll no. <span className="text-danger">*</span>
+															</label>
+															<input
+																placeholder=""
+																id="rollNo"
+																type="text"
+																className="form-control"
+																required
+																value={formData.rollNo}
+																onChange={handleChange}
+															/>
 														</div>
-													)}
-													{/* Nationality */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Nationality" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label className="form-label">
-																	Nationality
-																</label>
-																<Select
-																	isSearchable={false}
-																	defaultValue={options1[0]}
-																	options={options1}
-																	className="custom-react-select"
-																/>
-															</div>
+													</div>
+
+													<div className="col-sm-4">
+														<div className="form-group">
+															<label className="form-label" htmlFor="rollNo">
+																Roll no. <span className="text-danger">*</span>
+															</label>
+															<input
+																placeholder=""
+																id="rollNo"
+																type="text"
+																className="form-control"
+																required
+																value={formData.rollNo}
+																onChange={handleChange}
+															/>
 														</div>
-													)}
-													{/* Registration No */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Registration No." &&
-															row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="registrationNo"
-																>
-																	Registration No
-																</label>
-																<input
-																	placeholder=""
-																	id="registrationNo"
-																	type="text"
-																	className="form-control"
-																	value={formData.registrationNo}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-													{/* CRN No */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "CRN No." && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label className="form-label" htmlFor="crnNo">
-																	CRN No.
-																</label>
-																<input
-																	placeholder=""
-																	id="crnNo"
-																	type="text"
-																	className="form-control"
-																	value={formData.crnNo}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
+													</div>
+
 													{/* RTE */}
 													{studentDetailsFields.find(
 														(row) => row.field === "RTE" && row.status === "1"
@@ -738,6 +459,7 @@ const AdmissionForm = () => {
 															</div>
 														</div>
 													)}
+
 													{/* RTE application no*/}
 													{studentDetailsFields.find(
 														(row) =>
@@ -763,12 +485,351 @@ const AdmissionForm = () => {
 															</div>
 														</div>
 													)}
+
+													{/* Transport */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Transport" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label className="form-label">Transport</label>
+																<Select
+																	isSearchable={false}
+																	defaultValue={options1[0]}
+																	options={options1}
+																	className="custom-react-select"
+																/>
+															</div>
+														</div>
+													)}
+
+													<div className="col-sm-4">
+														<div className="form-group">
+															<label
+																className="form-label"
+																htmlFor="class_field"
+															>
+																Section
+															</label>
+															<div className="input-group mb-3">
+																<div className="input-group-text">
+																	<input
+																		type="checkbox"
+																		// checked={section.status === 1}
+																	/>
+																</div>
+																<input
+																	type="text"
+																	className="form-control"
+																	readOnly
+
+																	// defaultValue={section.section}
+																/>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</Accordion.Collapse>
+									</Accordion.Item>
+								</Accordion>
+
+								{/* STUDENT DETAILS ACCORDIAN */}
+								<Accordion className="accordion accordion-with-icon">
+									<Accordion.Item className="accordion-item" eventKey="0">
+										<Accordion.Header className="accordion-header rounded-lg">
+											<span className="accordion-header-icon"></span>
+											<span className="accordion-header-text">
+												Student Details
+											</span>
+											<span className="accordion-header-indicator indicator-bordered"></span>
+										</Accordion.Header>
+										<Accordion.Collapse eventKey="0">
+											<div className="accordion-body">
+												<div className="row">
+													{/* Gender */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Gender" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label className="form-label" htmlFor="gender">
+																	Gender
+																</label>
+																<div>
+																	<div className="form-check form-check-inline">
+																		<input
+																			className="form-check-input"
+																			type="radio"
+																			name="Male"
+																			id="inlineRadio1"
+																			value="Male"
+																			checked={formData.gender === "Male"}
+																			onChange={(e) =>
+																				handleRadioButton(e, "gender")
+																			}
+																		/>
+																		<label
+																			className="form-check-label"
+																			htmlFor="inlineRadio1"
+																		>
+																			Male
+																		</label>
+																	</div>
+																	<div className="form-check form-check-inline">
+																		<input
+																			className="form-check-input"
+																			type="radio"
+																			name="Female"
+																			id="inlineRadio1"
+																			value="Female"
+																			checked={formData.gender === "Female"}
+																			onChange={(e) =>
+																				handleRadioButton(e, "gender")
+																			}
+																		/>
+																		<label
+																			className="form-check-label"
+																			htmlFor="inlineRadio1"
+																		>
+																			Female
+																		</label>
+																	</div>
+																</div>
+															</div>
+														</div>
+													)}
+
+													{/* DOB */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "D.O.B." && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="datepicker1"
+																>
+																	Date of Birth
+																</label>
+																<div>
+																	<DatePicker
+																		selected={DOB}
+																		onChange={(date) => setDOB(date)}
+																		className="form-control"
+																	/>
+																</div>
+															</div>
+														</div>
+													)}
+
+													{/* DOB */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "D.O.B." && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="datepicker1"
+																>
+																	Date of Birth
+																</label>
+																<div>
+																	<DatePicker
+																		selected={DOB}
+																		onChange={(date) => setDOB(date)}
+																		className="form-control"
+																	/>
+																</div>
+															</div>
+														</div>
+													)}
+
+													{/* Height */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Height" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label className="form-label" htmlFor="height">
+																	Height
+																</label>
+																<input
+																	placeholder=""
+																	id="height"
+																	type="text"
+																	className="form-control"
+																	value={formData.height}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+													{/* Weight */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "weight" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label className="form-label" htmlFor="weight">
+																	Weight
+																</label>
+																<input
+																	placeholder=""
+																	id="weight"
+																	type="text"
+																	className="form-control"
+																	value={formData.weight}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Blood Group */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Blood group" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="bloodGroup"
+																>
+																	Blood Group
+																</label>
+																<input
+																	placeholder=""
+																	id="bloodGroup"
+																	type="text"
+																	className="form-control"
+																	value={formData.bloodGroup}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Caste */}
+													{studentDetailsFields.find(
+														(row) => row.field === "Caste" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label className="form-label">Caste</label>
+																<Select
+																	isSearchable={false}
+																	defaultValue={options1[0]}
+																	options={options1}
+																	className="custom-react-select"
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Religion */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Religion" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label className="form-label">Religion</label>
+																<Select
+																	isSearchable={false}
+																	defaultValue={options1[0]}
+																	options={options1}
+																	className="custom-react-select"
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Nationality */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Nationality" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label className="form-label">
+																	Nationality
+																</label>
+																<Select
+																	isSearchable={false}
+																	defaultValue={options1[0]}
+																	options={options1}
+																	className="custom-react-select"
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Aadhar No. */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Adhar no." && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="aadharCard"
+																>
+																	Aadhar No.
+																</label>
+																<input
+																	placeholder=""
+																	id="aadharCard"
+																	type="text"
+																	className="form-control"
+																	value={formData.aadharCard}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Registration No */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Registration No." &&
+															row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="registrationNo"
+																>
+																	Registration No
+																</label>
+																<input
+																	placeholder=""
+																	id="registrationNo"
+																	type="text"
+																	className="form-control"
+																	value={formData.registrationNo}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
 													{/* UDISE No.*/}
 													{studentDetailsFields.find(
 														(row) =>
 															row.field === "UDISE No." && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label className="form-label" htmlFor="udiseNo">
 																	UDISE No.
@@ -789,7 +850,7 @@ const AdmissionForm = () => {
 														(row) =>
 															row.field === "Family ID" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -808,126 +869,28 @@ const AdmissionForm = () => {
 															</div>
 														</div>
 													)}
-													{/* Student Photo*/}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Student Photo" &&
-															row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group fallback w-100">
-																<label
-																	className="form-label"
-																	htmlFor="studentPhoto"
-																>
-																	Student Photo
-																</label>
-																<input
-																	type="file"
-																	className="form-control"
-																	id="studentPhoto"
-																	data-default-file=""
-																	onChange={handleFileChange}
-																/>
-															</div>
-														</div>
-													)}
-													{/* Caste Certificate */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Caste certificate" &&
-															row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group fallback w-100">
-																<label
-																	className="form-label"
-																	htmlFor="casteCertificate"
-																>
-																	Caste Certificate
-																</label>
-																<input
-																	type="file"
-																	className="form-control"
-																	data-default-file=""
-																	id="casteCertificate"
-																	onChange={handleFileChange}
-																/>
-															</div>
-														</div>
-													)}
-													{/* Aadhar Card */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Adhar card" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group fallback w-100">
-																<label
-																	className="form-label"
-																	htmlFor="aadharCard"
-																>
-																	Aadhar Card
-																</label>
-																<input
-																	type="file"
-																	className="form-control"
-																	data-default-file=""
-																	id="aadharCard"
-																	onChange={handleFileChange}
-																/>
-															</div>
-														</div>
-													)}
-													{/* Birth Certificate */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "birth certificate" &&
-															row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group fallback w-100">
-																<label
-																	className="form-label"
-																	htmlFor="birthCertificate"
-																>
-																	Birth Certificate
-																</label>
-																<input
-																	type="file"
-																	className="form-control"
-																	data-default-file=""
-																	id="birthCertificate"
-																	onChange={handleFileChange}
-																/>
-															</div>
-														</div>
-													)}
 
-													{/* Transfer Certificate */}
-													{studentDetailsFields.find(
+													{/* CRN No */}
+													{/* {studentDetailsFields.find(
 														(row) =>
-															row.field === "transfer certificate" &&
-															row.status === "1"
+															row.field === "CRN No." && row.status === "1"
 													) && (
 														<div className="col-sm-6">
-															<div className="form-group fallback w-100">
-																<label
-																	className="form-label"
-																	htmlFor="transferCertificate"
-																>
-																	Transfer Certificate
+															<div className="form-group">
+																<label className="form-label" htmlFor="crnNo">
+																	CRN No.
 																</label>
 																<input
-																	type="file"
+																	placeholder=""
+																	id="crnNo"
+																	type="text"
 																	className="form-control"
-																	data-default-file=""
-																	id="transferCertificate"
-																	onChange={handleFileChange}
+																	value={formData.crnNo}
+																	onChange={handleChange}
 																/>
 															</div>
 														</div>
-													)}
+													)} */}
 
 													<div className="col-sm-12">
 														<h4 style={{ textAlign: "center" }}>
@@ -935,13 +898,38 @@ const AdmissionForm = () => {
 														</h4>
 													</div>
 
+													{/*Previous School name */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "School name" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="schoolName"
+																>
+																	Previous School Name
+																</label>
+																<input
+																	placeholder=""
+																	id="schoolName"
+																	type="text"
+																	className="form-control"
+																	value={formData.schoolName}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
 													{/* Previous class */}
 													{studentDetailsFields.find(
 														(row) =>
 															row.field === "Previous class" &&
 															row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -966,7 +954,7 @@ const AdmissionForm = () => {
 														(row) =>
 															row.field === "Pass year" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -991,13 +979,13 @@ const AdmissionForm = () => {
 														(row) =>
 															row.field === "Obt. Marks" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
 																	htmlFor="obtMarks"
 																>
-																	Obtained Marks
+																	Marks Obtained
 																</label>
 																<input
 																	placeholder=""
@@ -1015,7 +1003,7 @@ const AdmissionForm = () => {
 													{studentDetailsFields.find(
 														(row) => row.field === "% age" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label className="form-label" htmlFor="age">
 																	Percentage
@@ -1032,39 +1020,14 @@ const AdmissionForm = () => {
 														</div>
 													)}
 
-													{/* School name */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "School name" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="schoolName"
-																>
-																	School Name
-																</label>
-																<input
-																	placeholder=""
-																	id="schoolName"
-																	type="text"
-																	className="form-control"
-																	value={formData.schoolName}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-
-													<div className="col-sm-12">
+													{/* <div className="col-sm-12">
 														<h4 style={{ textAlign: "center" }}>
 															Government Portal ID
 														</h4>
-													</div>
+													</div> */}
 
 													{/* Student Govt ID */}
-													{studentDetailsFields.find(
+													{/* {studentDetailsFields.find(
 														(row) =>
 															row.field === "Student ID" && row.status === "1"
 													) && (
@@ -1086,10 +1049,10 @@ const AdmissionForm = () => {
 																/>
 															</div>
 														</div>
-													)}
+													)} */}
 
 													{/* Family Govt ID */}
-													{studentDetailsFields.find(
+													{/* {studentDetailsFields.find(
 														(row) =>
 															row.field === "Family ID" && row.status === "1"
 													) && (
@@ -1111,135 +1074,7 @@ const AdmissionForm = () => {
 																/>
 															</div>
 														</div>
-													)}
-
-													<div className="col-sm-12">
-														<h4 style={{ textAlign: "center" }}>
-															Bank Account Details{" "}
-														</h4>
-													</div>
-
-													{/* Bank Name*/}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Bank Name" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="bankName"
-																>
-																	Bank Name
-																</label>
-																<input
-																	placeholder=""
-																	id="bankName"
-																	type="text"
-																	className="form-control"
-																	value={formData.bankName}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-
-													{/* Bank Branch*/}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Bank Branch" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="bankBranch"
-																>
-																	Bank Branch
-																</label>
-																<input
-																	placeholder=""
-																	id="bankBranch"
-																	type="text"
-																	className="form-control"
-																	value={formData.bankBranch}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-
-													{/* IFSC Code */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "IFSC Code" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="IFSCCode"
-																>
-																	IFSC Code
-																</label>
-																<input
-																	placeholder=""
-																	id="IFSCCode"
-																	type="text"
-																	className="form-control"
-																	value={formData.IFSCCode}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-
-													{/* Account No. */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Account No." && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="accountNo"
-																>
-																	Account No.
-																</label>
-																<input
-																	placeholder=""
-																	id="accountNo"
-																	type="text"
-																	className="form-control"
-																	value={formData.accountNo}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-
-													{/* PAN No. */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "PAN No." && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label className="form-label" htmlFor="panNo">
-																	PAN No.
-																</label>
-																<input
-																	placeholder=""
-																	id="panNo"
-																	type="text"
-																	className="form-control"
-																	value={formData.panNo}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
+													)} */}
 												</div>
 											</div>
 										</Accordion.Collapse>
@@ -1270,7 +1105,7 @@ const AdmissionForm = () => {
 														(row) =>
 															row.field === "Father name" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -1296,7 +1131,7 @@ const AdmissionForm = () => {
 															row.field === "Father Qualification" &&
 															row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -1322,7 +1157,7 @@ const AdmissionForm = () => {
 															row.field === "Father Occupation" &&
 															row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -1342,87 +1177,12 @@ const AdmissionForm = () => {
 														</div>
 													)}
 
-													{/* Father Income */}
-													{familyDetailsFields.find(
-														(row) =>
-															row.field === "Father Income" &&
-															row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="fatherIncome"
-																>
-																	Income
-																</label>
-																<input
-																	placeholder="Enter Last Name"
-																	id="fatherIncome"
-																	type="text"
-																	className="form-control"
-																	value={formData.fatherIncome}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-
-													{/* Father aadhar card*/}
-													{familyDetailsFields.find(
-														(row) =>
-															row.field === "Father adhar card" &&
-															row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="fatherAadharCard"
-																>
-																	Aadhar Card
-																</label>
-																<input
-																	type="file"
-																	className="form-control"
-																	data-default-file=""
-																	id="fatherAadharCard"
-																	onChange={handleFileChange}
-																/>
-															</div>
-														</div>
-													)}
-
-													{/* Father Photo*/}
-													{familyDetailsFields.find(
-														(row) =>
-															row.field === "Father Photo" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="fatherPhoto"
-																>
-																	Photo
-																</label>
-																<input
-																	type="file"
-																	className="form-control"
-																	data-default-file=""
-																	id="fatherPhoto"
-																	onChange={handleFileChange}
-																/>
-															</div>
-														</div>
-													)}
-
 													{/* Address */}
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Address" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label className="form-label" htmlFor="Address">
 																	Address
@@ -1445,7 +1205,7 @@ const AdmissionForm = () => {
 															row.field === "Father Mobile no" &&
 															row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -1470,7 +1230,7 @@ const AdmissionForm = () => {
 														(row) =>
 															row.field === "Father Email" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -1490,6 +1250,32 @@ const AdmissionForm = () => {
 														</div>
 													)}
 
+													{/* Father Income */}
+													{familyDetailsFields.find(
+														(row) =>
+															row.field === "Father Income" &&
+															row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="fatherIncome"
+																>
+																	Income
+																</label>
+																<input
+																	placeholder="Enter Last Name"
+																	id="fatherIncome"
+																	type="text"
+																	className="form-control"
+																	value={formData.fatherIncome}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
 													<div className="col-sm-12">
 														<h4 style={{ textAlign: "center" }}>
 															Mother's Details
@@ -1501,7 +1287,7 @@ const AdmissionForm = () => {
 														(row) =>
 															row.field === "Mother name" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -1527,7 +1313,7 @@ const AdmissionForm = () => {
 															row.field === "Mother Qualification" &&
 															row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -1553,7 +1339,7 @@ const AdmissionForm = () => {
 															row.field === "Mother Occupation" &&
 															row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -1573,87 +1359,12 @@ const AdmissionForm = () => {
 														</div>
 													)}
 
-													{/* Mother Income */}
-													{familyDetailsFields.find(
-														(row) =>
-															row.field === "Mother Income" &&
-															row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="motherIncome"
-																>
-																	Income
-																</label>
-																<input
-																	placeholder="Enter Last Name"
-																	id="motherIncome"
-																	type="text"
-																	className="form-control"
-																	value={formData.motherIncome}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-
-													{/* Mother Aadhar*/}
-													{familyDetailsFields.find(
-														(row) =>
-															row.field === "Mother adhard" &&
-															row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="MotherAadharCard"
-																>
-																	Aadhar Card
-																</label>
-																<input
-																	type="file"
-																	className="form-control"
-																	data-default-file=""
-																	id="MotherAadharCard"
-																	onChange={handleFileChange}
-																/>
-															</div>
-														</div>
-													)}
-
-													{/* Mother Photo*/}
-													{familyDetailsFields.find(
-														(row) =>
-															row.field === "Mother Photo" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="motherPhoto"
-																>
-																	Photo
-																</label>
-																<input
-																	type="file"
-																	className="form-control"
-																	data-default-file=""
-																	id="motherPhoto"
-																	onChange={handleFileChange}
-																/>
-															</div>
-														</div>
-													)}
-
 													{/* Address */}
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Address" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label className="form-label" htmlFor="Address">
 																	Address
@@ -1676,7 +1387,7 @@ const AdmissionForm = () => {
 															row.field === "Mother Mobile no" &&
 															row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -1701,7 +1412,7 @@ const AdmissionForm = () => {
 														(row) =>
 															row.field === "Mother Email" && row.status === "1"
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -1716,6 +1427,408 @@ const AdmissionForm = () => {
 																	className="form-control"
 																	value={formData.motherEmail}
 																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Mother Income */}
+													{familyDetailsFields.find(
+														(row) =>
+															row.field === "Mother Income" &&
+															row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="motherIncome"
+																>
+																	Income
+																</label>
+																<input
+																	placeholder="Enter Last Name"
+																	id="motherIncome"
+																	type="text"
+																	className="form-control"
+																	value={formData.motherIncome}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													<div className="col-sm-12">
+														<h4 style={{ textAlign: "center" }}>
+															Bank Account Details
+														</h4>
+													</div>
+
+													{/* Bank Name*/}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Bank Name" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="bankName"
+																>
+																	Bank Name
+																</label>
+																<input
+																	placeholder=""
+																	id="bankName"
+																	type="text"
+																	className="form-control"
+																	value={formData.bankName}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Bank Branch*/}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Bank Branch" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="bankBranch"
+																>
+																	Bank Branch
+																</label>
+																<input
+																	placeholder=""
+																	id="bankBranch"
+																	type="text"
+																	className="form-control"
+																	value={formData.bankBranch}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* IFSC Code */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "IFSC Code" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="IFSCCode"
+																>
+																	IFSC Code
+																</label>
+																<input
+																	placeholder=""
+																	id="IFSCCode"
+																	type="text"
+																	className="form-control"
+																	value={formData.IFSCCode}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Account No. */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Account No." && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="accountNo"
+																>
+																	Account No.
+																</label>
+																<input
+																	placeholder=""
+																	id="accountNo"
+																	type="text"
+																	className="form-control"
+																	value={formData.accountNo}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* PAN No. */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "PAN No." && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label className="form-label" htmlFor="panNo">
+																	PAN No.
+																</label>
+																<input
+																	placeholder=""
+																	id="panNo"
+																	type="text"
+																	className="form-control"
+																	value={formData.panNo}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+												</div>
+											</div>
+										</Accordion.Collapse>
+									</Accordion.Item>
+								</Accordion>
+
+								{/* DOCUMENTS DETAILS ACCORDIAN */}
+								<Accordion className="accordion accordion-with-icon">
+									<Accordion.Item className="accordion-item" eventKey="0">
+										<Accordion.Header className="accordion-header rounded-lg">
+											<span className="accordion-header-icon"></span>
+											<span className="accordion-header-text">
+												Upload Documents
+											</span>
+											<span className="accordion-header-indicator indicator-bordered"></span>
+										</Accordion.Header>
+										<Accordion.Collapse eventKey="0">
+											<div className="accordion-body">
+												<div className="row">
+													<div className="col-sm-12">
+														<h4 style={{ textAlign: "center" }}>
+															Student's Section
+														</h4>
+													</div>
+													{/* Student Photo*/}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Student Photo" &&
+															row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group fallback w-100">
+																<label
+																	className="form-label"
+																	htmlFor="studentPhoto"
+																>
+																	Student Photo
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	id="studentPhoto"
+																	data-default-file=""
+																	onChange={handleFileChange}
+																/>
+															</div>
+														</div>
+													)}
+													{/* Caste Certificate */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Caste certificate" &&
+															row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group fallback w-100">
+																<label
+																	className="form-label"
+																	htmlFor="casteCertificate"
+																>
+																	Caste Certificate
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	data-default-file=""
+																	id="casteCertificate"
+																	onChange={handleFileChange}
+																/>
+															</div>
+														</div>
+													)}
+													{/* Aadhar Card */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "Adhar card" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group fallback w-100">
+																<label
+																	className="form-label"
+																	htmlFor="aadharCard"
+																>
+																	Aadhar Card
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	data-default-file=""
+																	id="aadharCard"
+																	onChange={handleFileChange}
+																/>
+															</div>
+														</div>
+													)}
+													{/* Birth Certificate */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "birth certificate" &&
+															row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group fallback w-100">
+																<label
+																	className="form-label"
+																	htmlFor="birthCertificate"
+																>
+																	Birth Certificate
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	data-default-file=""
+																	id="birthCertificate"
+																	onChange={handleFileChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Transfer Certificate */}
+													{studentDetailsFields.find(
+														(row) =>
+															row.field === "transfer certificate" &&
+															row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group fallback w-100">
+																<label
+																	className="form-label"
+																	htmlFor="transferCertificate"
+																>
+																	Transfer Certificate
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	data-default-file=""
+																	id="transferCertificate"
+																	onChange={handleFileChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													<div className="col-sm-12">
+														<h4 style={{ textAlign: "center" }}>
+															Parent's Section
+														</h4>
+													</div>
+
+													{/* Father Photo*/}
+													{familyDetailsFields.find(
+														(row) =>
+															row.field === "Father Photo" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="fatherPhoto"
+																>
+																	Photo
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	data-default-file=""
+																	id="fatherPhoto"
+																	onChange={handleFileChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Father aadhar card*/}
+													{familyDetailsFields.find(
+														(row) =>
+															row.field === "Father adhar card" &&
+															row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="fatherAadharCard"
+																>
+																	Aadhar Card
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	data-default-file=""
+																	id="fatherAadharCard"
+																	onChange={handleFileChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Mother Photo*/}
+													{familyDetailsFields.find(
+														(row) =>
+															row.field === "Mother Photo" && row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="motherPhoto"
+																>
+																	Photo
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	data-default-file=""
+																	id="motherPhoto"
+																	onChange={handleFileChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Mother Aadhar*/}
+													{familyDetailsFields.find(
+														(row) =>
+															row.field === "Mother adhard" &&
+															row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="MotherAadharCard"
+																>
+																	Aadhar Card
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	data-default-file=""
+																	id="MotherAadharCard"
+																	onChange={handleFileChange}
 																/>
 															</div>
 														</div>

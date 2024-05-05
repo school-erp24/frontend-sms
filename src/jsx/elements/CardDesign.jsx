@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 const BgCard = (props) => {
 	return (
 		<div className="media">
@@ -18,8 +20,13 @@ const BgCard = (props) => {
 };
 
 const ProgressCard = (props) => {
+	const navigate = useNavigate();
 	return (
-		<div className="card-body">
+		<div
+			className="card-body"
+			onClick={() => navigate(props.to)}
+			style={{ cursor: "pointer" }}
+		>
 			<h4 className="card-title">{props.title}</h4>
 			<h3 className="fw-bold">{props.number}</h3>
 			<div className="progress mb-2">

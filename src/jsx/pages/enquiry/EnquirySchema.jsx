@@ -4,9 +4,7 @@ export const validationEnquirySchema = Yup.object({
 	name: Yup.string()
 		.required("Field is required.")
 		.max(15, "Max 15 characters."),
-	lastName: Yup.string()
-		.required("Field is required.")
-		.max(15, "Max 15 characters."),
+
 	parentName: Yup.string()
 		.required("Field is required.")
 		.max(20, "Max 20 characters."),
@@ -18,4 +16,7 @@ export const validationEnquirySchema = Yup.object({
 	class: Yup.string().required("Please select a class"),
 
 	// enquiryDate: Yup.date().required("Enquiry Date is required"), Commented as it is not required.
+	// lastName: Yup.string()
+	// 	.required("Field is required.")
+	// 	.max(15, "Max 15 characters."),
 });

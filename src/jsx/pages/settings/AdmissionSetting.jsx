@@ -103,91 +103,77 @@ const AdmissionSetting = () => {
 									{/* Admission Details */}
 									<h4 style={{ margin: "7px 0" }}>Admission Details</h4>
 									<div className="table-responsive">
-										<div id="job_data" className="dataTables_wrapper">
-											<table
-												className="display w-100 dataTable "
-												id="example5"
-												role="grid"
-												aria-describedby="example5_info"
-											>
-												<thead>
-													<tr role="row">
-														<th style={{ width: "177px" }}>Sno</th>
-														<th style={{ width: "177px" }}>Field</th>
-														<th style={{ width: "278px" }}>Enable</th>
-													</tr>
-												</thead>
+										<table className="table table-bordered">
+											<thead>
+												<tr role="row">
+													<th style={{ width: "177px" }}>Sno</th>
+													<th style={{ width: "177px" }}>Field</th>
+													<th style={{ width: "278px" }}>Enable</th>
+												</tr>
+											</thead>
 
-												<tbody>
-													{admissionRows.map((row, index) => (
-														<tr key={index}>
-															<td>{index + 1}</td>
-															<td>{row.field}</td>
-															<td>
-																<input
-																	type="checkbox"
-																	className="checkbox"
-																	checked={row.status === "1"}
-																	disabled={row.default === "true"}
-																	onChange={() =>
-																		handleCheckboxChange(
-																			index,
-																			admissionRows,
-																			setAdmissionRows
-																		)
-																	}
-																/>
-															</td>
-														</tr>
-													))}
-												</tbody>
-											</table>
-										</div>
+											<tbody>
+												{admissionRows.map((row, index) => (
+													<tr key={index}>
+														<td>{index + 1}</td>
+														<td>{row.field}</td>
+														<td>
+															<input
+																type="checkbox"
+																className="checkbox"
+																checked={row.status === "1"}
+																disabled={row.default === "true"}
+																onChange={() =>
+																	handleCheckboxChange(
+																		index,
+																		admissionRows,
+																		setAdmissionRows
+																	)
+																}
+															/>
+														</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
 									</div>
 
 									{/* Student Details */}
 									<h4 style={{ margin: "7px 0" }}>Student Details</h4>
 									<div className="table-responsive">
-										<div id="job_data" className="dataTables_wrapper">
-											<table
-												className="display w-100 dataTable "
-												id="example5"
-												role="grid"
-												aria-describedby="example5_info"
-											>
-												<thead>
-													<tr role="row">
-														<th style={{ width: "177px" }}>Sno</th>
-														<th style={{ width: "177px" }}>Field</th>
-														<th style={{ width: "278px" }}>Enable</th>
-													</tr>
-												</thead>
+										<table className="table table-bordered">
+											<thead>
+												<tr role="row">
+													<th style={{ width: "177px" }}>Sno</th>
+													<th style={{ width: "177px" }}>Field</th>
+													<th style={{ width: "278px" }}>Enable</th>
+												</tr>
+											</thead>
 
-												<tbody>
-													{studentDetails.map((row, index) => (
-														<tr key={index}>
-															<td>{index + 1}</td>
-															<td>{row.field}</td>
-															<td>
-																<input
-																	type="checkbox"
-																	className="checkbox"
-																	checked={row.status === "1"}
-																	disabled={row.default === "true"}
-																	onChange={() =>
-																		handleCheckboxChange(
-																			index,
-																			studentDetails,
-																			setStudentDetails
-																		)
-																	}
-																/>
-															</td>
-														</tr>
-													))}
-												</tbody>
-											</table>
-										</div>
+											<tbody>
+												{studentDetails.map((row, index) => (
+													<tr key={index}>
+														<td>{index + 1}</td>
+														<td>{row.field}</td>
+														<td>
+															<input
+																type="checkbox"
+																className="checkbox"
+																checked={row.status === "1"}
+																disabled={row.default === "true"}
+																onChange={() =>
+																	handleCheckboxChange(
+																		index,
+																		studentDetails,
+																		setStudentDetails
+																	)
+																}
+															/>
+														</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
 									</div>
 
 									{/* Previous Qualifications Details */}
@@ -195,181 +181,153 @@ const AdmissionSetting = () => {
 										Previous Qualifications Details
 									</h4>
 									<div className="table-responsive">
-										<div id="job_data" className="dataTables_wrapper">
-											<table
-												className="display w-100 dataTable "
-												id="example5"
-												role="grid"
-												aria-describedby="example5_info"
-											>
-												<thead>
-													<tr role="row">
-														<th style={{ width: "177px" }}>Sno</th>
-														<th style={{ width: "177px" }}>Field</th>
-														<th style={{ width: "278px" }}>Enable</th>
-													</tr>
-												</thead>
+										<table className="table table-bordered">
+											<thead>
+												<tr role="row">
+													<th style={{ width: "177px" }}>Sno</th>
+													<th style={{ width: "177px" }}>Field</th>
+													<th style={{ width: "278px" }}>Enable</th>
+												</tr>
+											</thead>
 
-												<tbody>
-													{previousDetails.map((row, index) => (
-														<tr key={index}>
-															<td>{index + 1}</td>
-															<td>{row.field}</td>
-															<td>
-																<input
-																	type="checkbox"
-																	className="checkbox"
-																	checked={row.status === "1"}
-																	disabled={row.default === "true"}
-																	onChange={() =>
-																		handleCheckboxChange(
-																			index,
-																			previousDetails,
-																			setPreviousDetails
-																		)
-																	}
-																/>
-															</td>
-														</tr>
-													))}
-												</tbody>
-											</table>
-										</div>
+											<tbody>
+												{previousDetails.map((row, index) => (
+													<tr key={index}>
+														<td>{index + 1}</td>
+														<td>{row.field}</td>
+														<td>
+															<input
+																type="checkbox"
+																className="checkbox"
+																checked={row.status === "1"}
+																disabled={row.default === "true"}
+																onChange={() =>
+																	handleCheckboxChange(
+																		index,
+																		previousDetails,
+																		setPreviousDetails
+																	)
+																}
+															/>
+														</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
 									</div>
 
 									{/* Government Portal ID */}
 									<h4 style={{ margin: "7px 0" }}>Government Portal ID</h4>
 									<div className="table-responsive">
-										<div id="job_data" className="dataTables_wrapper">
-											<table
-												className="display w-100 dataTable "
-												id="example5"
-												role="grid"
-												aria-describedby="example5_info"
-											>
-												<thead>
-													<tr role="row">
-														<th style={{ width: "177px" }}>Sno</th>
-														<th style={{ width: "177px" }}>Field</th>
-														<th style={{ width: "278px" }}>Enable</th>
-													</tr>
-												</thead>
+										<table className="table table-bordered">
+											<thead>
+												<tr role="row">
+													<th style={{ width: "177px" }}>Sno</th>
+													<th style={{ width: "177px" }}>Field</th>
+													<th style={{ width: "278px" }}>Enable</th>
+												</tr>
+											</thead>
 
-												<tbody>
-													{govtDetails.map((row, index) => (
-														<tr key={index}>
-															<td>{index + 1}</td>
-															<td>{row.field}</td>
-															<td>
-																<input
-																	type="checkbox"
-																	className="checkbox"
-																	checked={row.status === "1"}
-																	disabled={row.default === "true"}
-																	onChange={() =>
-																		handleCheckboxChange(
-																			index,
-																			govtDetails,
-																			setGovtDetails
-																		)
-																	}
-																/>
-															</td>
-														</tr>
-													))}
-												</tbody>
-											</table>
-										</div>
+											<tbody>
+												{govtDetails.map((row, index) => (
+													<tr key={index}>
+														<td>{index + 1}</td>
+														<td>{row.field}</td>
+														<td>
+															<input
+																type="checkbox"
+																className="checkbox"
+																checked={row.status === "1"}
+																disabled={row.default === "true"}
+																onChange={() =>
+																	handleCheckboxChange(
+																		index,
+																		govtDetails,
+																		setGovtDetails
+																	)
+																}
+															/>
+														</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
 									</div>
 
 									{/* Bank Account Details*/}
 									<h4 style={{ margin: "7px 0" }}>Bank Account Details</h4>
 									<div className="table-responsive">
-										<div id="job_data" className="dataTables_wrapper">
-											<table
-												className="display w-100 dataTable "
-												id="example5"
-												role="grid"
-												aria-describedby="example5_info"
-											>
-												<thead>
-													<tr role="row">
-														<th style={{ width: "177px" }}>Sno</th>
-														<th style={{ width: "177px" }}>Field</th>
-														<th style={{ width: "278px" }}>Enable</th>
-													</tr>
-												</thead>
+										<table className="table table-bordered">
+											<thead>
+												<tr role="row">
+													<th style={{ width: "177px" }}>Sno</th>
+													<th style={{ width: "177px" }}>Field</th>
+													<th style={{ width: "278px" }}>Enable</th>
+												</tr>
+											</thead>
 
-												<tbody>
-													{bankDetails.map((row, index) => (
-														<tr key={index}>
-															<td>{index + 1}</td>
-															<td>{row.field}</td>
-															<td>
-																<input
-																	type="checkbox"
-																	className="checkbox"
-																	checked={row.status === "1"}
-																	disabled={row.default === "true"}
-																	onChange={() =>
-																		handleCheckboxChange(
-																			index,
-																			bankDetails,
-																			setBankDetails
-																		)
-																	}
-																/>
-															</td>
-														</tr>
-													))}
-												</tbody>
-											</table>
-										</div>
+											<tbody>
+												{bankDetails.map((row, index) => (
+													<tr key={index}>
+														<td>{index + 1}</td>
+														<td>{row.field}</td>
+														<td>
+															<input
+																type="checkbox"
+																className="checkbox"
+																checked={row.status === "1"}
+																disabled={row.default === "true"}
+																onChange={() =>
+																	handleCheckboxChange(
+																		index,
+																		bankDetails,
+																		setBankDetails
+																	)
+																}
+															/>
+														</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
 									</div>
 
 									{/* Family Details*/}
 									<h4 style={{ margin: "7px 0" }}>Family Details</h4>
 									<div className="table-responsive">
-										<div id="job_data" className="dataTables_wrapper">
-											<table
-												className="display w-100 dataTable "
-												id="example5"
-												role="grid"
-												aria-describedby="example5_info"
-											>
-												<thead>
-													<tr role="row">
-														<th style={{ width: "177px" }}>Sno</th>
-														<th style={{ width: "177px" }}>Field</th>
-														<th style={{ width: "278px" }}>Enable</th>
-													</tr>
-												</thead>
+										<table className="table table-bordered">
+											<thead>
+												<tr role="row">
+													<th style={{ width: "177px" }}>Sno</th>
+													<th style={{ width: "177px" }}>Field</th>
+													<th style={{ width: "278px" }}>Enable</th>
+												</tr>
+											</thead>
 
-												<tbody>
-													{familyDetails.map((row, index) => (
-														<tr key={index}>
-															<td>{index + 1}</td>
-															<td>{row.field}</td>
-															<td>
-																<input
-																	type="checkbox"
-																	className="checkbox"
-																	checked={row.status === "1"}
-																	disabled={row.default === "true"}
-																	onChange={() =>
-																		handleCheckboxChange(
-																			index,
-																			familyDetails,
-																			setFamilyDetails
-																		)
-																	}
-																/>
-															</td>
-														</tr>
-													))}
-												</tbody>
-											</table>
-										</div>
+											<tbody>
+												{familyDetails.map((row, index) => (
+													<tr key={index}>
+														<td>{index + 1}</td>
+														<td>{row.field}</td>
+														<td>
+															<input
+																type="checkbox"
+																className="checkbox"
+																checked={row.status === "1"}
+																disabled={row.default === "true"}
+																onChange={() =>
+																	handleCheckboxChange(
+																		index,
+																		familyDetails,
+																		setFamilyDetails
+																	)
+																}
+															/>
+														</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
 									</div>
 									<button type="submit" className="btn btn-primary me-1">
 										Submit

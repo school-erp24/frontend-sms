@@ -11,6 +11,13 @@
 	transform: translateY(-50%);
 }
 
+.cus_rangedp {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 150px;
+}
+
 /* React Select Styles */
 
 .Select-menu-outer .Select-create-option-placeholder {
@@ -19,20 +26,39 @@
 
 /* Overridden Styles */
 
-@media only screen and (min-width: 768px) {
-	body > * {
-		scrollbar-width: 10px !important;
-		scrollbar-color: rgb(167, 166, 166) !important;
-	}
+/* div, span, ol, ul {
+  scrollbar-width: thin;
+	scrollbar-width: auto !important;
 
-	::-webkit-scrollbar {
-		width: 10px !important;
-		opacity: 0 !important ;
-	}
+ } */
 
-	::-webkit-scrollbar-thumb {
-		background: rgb(167, 166, 166) !important;
-	}
+.form-control:disabled,
+.form-control[readonly] {
+	background: #fff !important;
+}
+
+/* Hide scroll bar for sidebar */
+.dlabnav .dlabnav-scroll {
+	scrollbar-width: none !important;
+	scrollbar-color: transparent transparent !important;
+}
+
+.dlabnav .dlabnav-scroll::-webkit-scrollbar {
+	display: none !important;
+}
+
+body > * {
+	scrollbar-width: auto !important;
+	scrollbar-color: auto !important;
+}
+
+::-webkit-scrollbar {
+	width: 7px !important;
+	opacity: 0 !important ;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgb(163, 163, 163) !important;
 }
 
 .text-danger {
@@ -42,10 +68,17 @@
 /* Custom Styles */
 
 .cus_ovrfx {
-	overflow-x: scroll !important;
-	overflow-y: scroll !important;
-	scrollbar-width: auto !important;
-	scrollbar-color: rgb(167, 166, 166) !important;
+	/* overflow-x: scroll !important; */
+	overflow-x: hidden;
+	max-height: 380px !important;
+	margin-top: 0.5rem;
+}
+
+.cus_ovrfx > table > thead {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: #fff;
 }
 
 .cus_nolp {
@@ -57,4 +90,30 @@
 	cursor: pointer;
 	width: 16px;
 	height: 16px;
+}
+
+.cus_flexc {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.cus_flexcg8 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.cus_up {
+	text-transform: uppercase;
+}
+
+.form-group > input,
+textarea {
+	text-transform: uppercase;
+}
+
+.custom-react-select {
+	text-transform: uppercase;
 }

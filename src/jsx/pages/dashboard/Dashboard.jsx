@@ -186,13 +186,26 @@ const Dashboard2 = () => {
 	};
 
 	const [cardData, setCardData] = useState([
-		{ title: "New Students", number: "360", percent: "50%", color: "danger" },
-		{ title: "Total Course", number: "28", percent: "76%", color: "red" },
+		{
+			title: "New Students",
+			number: "360",
+			percent: "50%",
+			color: "danger",
+			to: "/enquiry-list",
+		},
+		{
+			title: "Total Course",
+			number: "28",
+			percent: "76%",
+			color: "red",
+			to: "/enquiry-list",
+		},
 		{
 			title: "Fees Collection",
 			number: "21290$",
 			percent: "35%",
 			color: "success",
+			to: "/enquiry-list",
 		},
 	]);
 
@@ -205,6 +218,7 @@ const Dashboard2 = () => {
 					number: response.count,
 					percent: response.date,
 					color: "primary",
+					to: "/enquiry-list",
 				};
 
 				setCardData((prevCardData) => [newData, ...prevCardData]);
@@ -227,6 +241,7 @@ const Dashboard2 = () => {
 										number={item.number}
 										percent={item.percent}
 										color={item.color}
+										to={item.to}
 									/>
 								</div>
 							</Col>

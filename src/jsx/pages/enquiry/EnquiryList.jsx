@@ -304,13 +304,7 @@ const EnquiryList = () => {
 							<div className="table-responsive">
 								<div id="holidayList" className="dataTables_wrapper no-footer">
 									<div className="justify-content-between d-sm-flex">
-										<div
-											style={{
-												display: "flex",
-												justifyContent: "center",
-												alignItems: "center",
-											}}
-										>
+										<div className="cus_flexc">
 											<Link to={""} className="btn btn-primary">
 												Print
 											</Link>
@@ -325,22 +319,8 @@ const EnquiryList = () => {
 											</Link>
 										</div>
 
-										<div
-											style={{
-												display: "flex",
-												justifyContent: "center",
-												alignItems: "center",
-												gap: ".5rem",
-											}}
-										>
-											<div
-												style={{
-													display: "flex",
-													justifyContent: "center",
-													alignItems: "center",
-													width: "150px",
-												}}
-											>
+										<div className="cus_flexcg8">
+											<div className="cus_rangedp">
 												<label htmlFor="sdt">From:</label>
 
 												<DatePicker
@@ -353,14 +333,7 @@ const EnquiryList = () => {
 												/>
 											</div>
 
-											<div
-												style={{
-													display: "flex",
-													justifyContent: "center",
-													alignItems: "center",
-													width: "150px",
-												}}
-											>
+											<div className="cus_rangedp">
 												<label htmlFor="edt">To:</label>
 												<DatePicker
 													selected={endDate}
@@ -373,14 +346,7 @@ const EnquiryList = () => {
 											</div>
 										</div>
 
-										<div
-											style={{
-												display: "flex",
-												justifyContent: "center",
-												alignItems: "center",
-												gap: ".5rem",
-											}}
-										>
+										<div className="cus_flexcg8">
 											<label>
 												Search :
 												<input type="search" placeholder="" onChange={Search} />
@@ -389,7 +355,7 @@ const EnquiryList = () => {
 									</div>
 
 									<div className="cus_ovrfx">
-										<table className="display dataTable no-footer w-100 ">
+										<table className="display dataTable no-footer w-100">
 											<thead>
 												<tr>
 													{theadData.map((item, ind) => (
@@ -431,7 +397,10 @@ const EnquiryList = () => {
 																	{item.sortable && ind !== iconData.ind && (
 																		<i
 																			className="fa fa-sort ms-2 fs-12"
-																			style={{ opacity: "0.3" }}
+																			style={{
+																				opacity: "0.3",
+																				cursor: "pointer",
+																			}}
 																		/>
 																	)}
 																	{item.sortable &&
@@ -439,12 +408,18 @@ const EnquiryList = () => {
 																		(iconData.complete ? (
 																			<i
 																				className="fa fa-arrow-down ms-2 fs-12"
-																				style={{ opacity: "0.7" }}
+																				style={{
+																					opacity: "0.7",
+																					cursor: "pointer",
+																				}}
 																			/>
 																		) : (
 																			<i
 																				className="fa fa-arrow-up ms-2 fs-12"
-																				style={{ opacity: "0.7" }}
+																				style={{
+																					opacity: "0.7",
+																					cursor: "pointer",
+																				}}
 																			/>
 																		))}
 																</span>
@@ -453,7 +428,7 @@ const EnquiryList = () => {
 													))}
 												</tr>
 											</thead>
-											<tbody>
+											<tbody className="cus_up">
 												{tableData.map((data, ind) => (
 													<tr key={ind}>
 														<td>

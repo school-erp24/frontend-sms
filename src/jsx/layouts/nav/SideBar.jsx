@@ -47,9 +47,9 @@ const SideBar = () => {
 
 	const CURRENT_USER_TYPE = USER_TYPES.STAFF;
 
-	const filteredMenuList = MenuList.filter((menuItem) =>
-		menuItem.accessRights.includes(CURRENT_USER_TYPE)
-	);
+	// const filteredMenuList = MenuList.filter((menuItem) =>
+	// 	menuItem.accessRights.includes(CURRENT_USER_TYPE)
+	// );
 
 	const handleMenuActive = (status) => {
 		setState({ active: status });
@@ -100,7 +100,7 @@ const SideBar = () => {
 		>
 			<div className="dlabnav-scroll">
 				<ul className="metismenu" id="menu">
-					{filteredMenuList.map((data, index) => {
+					{MenuList.map((data, index) => {
 						let menuClass = data.classsChange;
 						if (menuClass === "menu-title") {
 							return (
