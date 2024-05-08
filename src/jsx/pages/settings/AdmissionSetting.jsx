@@ -6,6 +6,7 @@ import {
 	postAdmissionSetting,
 } from "../../../services/SettingsService";
 import { toast } from "react-toastify";
+import { Accordion } from "react-bootstrap";
 
 const AdmissionSetting = () => {
 	const navigate = useNavigate();
@@ -101,234 +102,347 @@ const AdmissionSetting = () => {
 									onSubmit={handleSubmit}
 								>
 									{/* Admission Details */}
-									<h4 style={{ margin: "7px 0" }}>Admission Details</h4>
-									<div className="table-responsive">
-										<table className="table table-bordered">
-											<thead>
-												<tr role="row">
-													<th style={{ width: "177px" }}>Sno</th>
-													<th style={{ width: "177px" }}>Field</th>
-													<th style={{ width: "278px" }}>Enable</th>
-												</tr>
-											</thead>
-
-											<tbody>
-												{admissionRows.map((row, index) => (
-													<tr key={index}>
-														<td>{index + 1}</td>
-														<td>{row.field}</td>
-														<td>
-															<input
-																type="checkbox"
-																className="checkbox"
-																checked={row.status === "1"}
-																disabled={row.default === "true"}
-																onChange={() =>
-																	handleCheckboxChange(
-																		index,
-																		admissionRows,
-																		setAdmissionRows
-																	)
-																}
-															/>
-														</td>
-													</tr>
-												))}
-											</tbody>
-										</table>
-									</div>
+									<Accordion
+										className="accordion accordion-with-icon"
+										defaultActiveKey="0"
+										alwaysOpen
+									>
+										<Accordion.Item className="accordion-item" eventKey="0">
+											<Accordion.Header className="accordion-header rounded-lg">
+												<span className="accordion-header-icon"></span>
+												<span className="accordion-header-text">
+													Admission Details
+												</span>
+												<span className="accordion-header-indicator indicator-bordered"></span>
+											</Accordion.Header>
+											<Accordion.Collapse eventKey="0">
+												<div className="accordion-body">
+													<div className="row">
+														{admissionRows.map((row, index) => (
+															<div className="col-sm-4">
+																<div className="form-group">
+																	<label
+																		className="form-label"
+																		htmlFor="class_field"
+																	>
+																		{row.field}
+																	</label>
+																	<div className="input-group mb-3">
+																		<div className="input-group-text">
+																			<input
+																				type="checkbox"
+																				className="checkbox"
+																				checked={row.status === "1"}
+																				disabled={row.default === "true"}
+																				onChange={() =>
+																					handleCheckboxChange(
+																						index,
+																						admissionRows,
+																						setAdmissionRows
+																					)
+																				}
+																			/>
+																		</div>
+																		<input
+																			type="text"
+																			className="form-control"
+																			readOnly
+																		/>
+																	</div>
+																</div>
+															</div>
+														))}
+													</div>
+												</div>
+											</Accordion.Collapse>
+										</Accordion.Item>
+									</Accordion>
 
 									{/* Student Details */}
-									<h4 style={{ margin: "7px 0" }}>Student Details</h4>
-									<div className="table-responsive">
-										<table className="table table-bordered">
-											<thead>
-												<tr role="row">
-													<th style={{ width: "177px" }}>Sno</th>
-													<th style={{ width: "177px" }}>Field</th>
-													<th style={{ width: "278px" }}>Enable</th>
-												</tr>
-											</thead>
-
-											<tbody>
-												{studentDetails.map((row, index) => (
-													<tr key={index}>
-														<td>{index + 1}</td>
-														<td>{row.field}</td>
-														<td>
-															<input
-																type="checkbox"
-																className="checkbox"
-																checked={row.status === "1"}
-																disabled={row.default === "true"}
-																onChange={() =>
-																	handleCheckboxChange(
-																		index,
-																		studentDetails,
-																		setStudentDetails
-																	)
-																}
-															/>
-														</td>
-													</tr>
-												))}
-											</tbody>
-										</table>
-									</div>
+									<Accordion
+										className="accordion accordion-with-icon"
+										defaultActiveKey="0"
+										alwaysOpen
+									>
+										<Accordion.Item className="accordion-item" eventKey="0">
+											<Accordion.Header className="accordion-header rounded-lg">
+												<span className="accordion-header-icon"></span>
+												<span className="accordion-header-text">
+													Student Details
+												</span>
+												<span className="accordion-header-indicator indicator-bordered"></span>
+											</Accordion.Header>
+											<Accordion.Collapse eventKey="0">
+												<div className="accordion-body">
+													<div className="row">
+														{studentDetails.map((row, index) => (
+															<div className="col-sm-4">
+																<div className="form-group">
+																	<label
+																		className="form-label"
+																		htmlFor="class_field"
+																	>
+																		{row.field}
+																	</label>
+																	<div className="input-group mb-3">
+																		<div className="input-group-text">
+																			<input
+																				type="checkbox"
+																				className="checkbox"
+																				checked={row.status === "1"}
+																				disabled={row.default === "true"}
+																				onChange={() =>
+																					handleCheckboxChange(
+																						index,
+																						studentDetails,
+																						setStudentDetails
+																					)
+																				}
+																			/>
+																		</div>
+																		<input
+																			type="text"
+																			className="form-control"
+																			readOnly
+																		/>
+																	</div>
+																</div>
+															</div>
+														))}
+													</div>
+												</div>
+											</Accordion.Collapse>
+										</Accordion.Item>
+									</Accordion>
 
 									{/* Previous Qualifications Details */}
-									<h4 style={{ margin: "7px 0" }}>
-										Previous Qualifications Details
-									</h4>
-									<div className="table-responsive">
-										<table className="table table-bordered">
-											<thead>
-												<tr role="row">
-													<th style={{ width: "177px" }}>Sno</th>
-													<th style={{ width: "177px" }}>Field</th>
-													<th style={{ width: "278px" }}>Enable</th>
-												</tr>
-											</thead>
-
-											<tbody>
-												{previousDetails.map((row, index) => (
-													<tr key={index}>
-														<td>{index + 1}</td>
-														<td>{row.field}</td>
-														<td>
-															<input
-																type="checkbox"
-																className="checkbox"
-																checked={row.status === "1"}
-																disabled={row.default === "true"}
-																onChange={() =>
-																	handleCheckboxChange(
-																		index,
-																		previousDetails,
-																		setPreviousDetails
-																	)
-																}
-															/>
-														</td>
-													</tr>
-												))}
-											</tbody>
-										</table>
-									</div>
+									<Accordion
+										className="accordion accordion-with-icon"
+										defaultActiveKey="0"
+										alwaysOpen
+									>
+										<Accordion.Item className="accordion-item" eventKey="0">
+											<Accordion.Header className="accordion-header rounded-lg">
+												<span className="accordion-header-icon"></span>
+												<span className="accordion-header-text">
+													Previous Qualifications Details
+												</span>
+												<span className="accordion-header-indicator indicator-bordered"></span>
+											</Accordion.Header>
+											<Accordion.Collapse eventKey="0">
+												<div className="accordion-body">
+													<div className="row">
+														{previousDetails.map((row, index) => (
+															<div className="col-sm-4">
+																<div className="form-group">
+																	<label
+																		className="form-label"
+																		htmlFor="class_field"
+																	>
+																		{row.field}
+																	</label>
+																	<div className="input-group mb-3">
+																		<div className="input-group-text">
+																			<input
+																				type="checkbox"
+																				className="checkbox"
+																				checked={row.status === "1"}
+																				disabled={row.default === "true"}
+																				onChange={() =>
+																					handleCheckboxChange(
+																						index,
+																						previousDetails,
+																						setPreviousDetails
+																					)
+																				}
+																			/>
+																		</div>
+																		<input
+																			type="text"
+																			className="form-control"
+																			readOnly
+																		/>
+																	</div>
+																</div>
+															</div>
+														))}
+													</div>
+												</div>
+											</Accordion.Collapse>
+										</Accordion.Item>
+									</Accordion>
 
 									{/* Government Portal ID */}
-									<h4 style={{ margin: "7px 0" }}>Government Portal ID</h4>
-									<div className="table-responsive">
-										<table className="table table-bordered">
-											<thead>
-												<tr role="row">
-													<th style={{ width: "177px" }}>Sno</th>
-													<th style={{ width: "177px" }}>Field</th>
-													<th style={{ width: "278px" }}>Enable</th>
-												</tr>
-											</thead>
-
-											<tbody>
-												{govtDetails.map((row, index) => (
-													<tr key={index}>
-														<td>{index + 1}</td>
-														<td>{row.field}</td>
-														<td>
-															<input
-																type="checkbox"
-																className="checkbox"
-																checked={row.status === "1"}
-																disabled={row.default === "true"}
-																onChange={() =>
-																	handleCheckboxChange(
-																		index,
-																		govtDetails,
-																		setGovtDetails
-																	)
-																}
-															/>
-														</td>
-													</tr>
-												))}
-											</tbody>
-										</table>
-									</div>
+									<Accordion
+										className="accordion accordion-with-icon"
+										defaultActiveKey="0"
+										alwaysOpen
+									>
+										<Accordion.Item className="accordion-item" eventKey="0">
+											<Accordion.Header className="accordion-header rounded-lg">
+												<span className="accordion-header-icon"></span>
+												<span className="accordion-header-text">
+													Government Portal ID
+												</span>
+												<span className="accordion-header-indicator indicator-bordered"></span>
+											</Accordion.Header>
+											<Accordion.Collapse eventKey="0">
+												<div className="accordion-body">
+													<div className="row">
+														{govtDetails.map((row, index) => (
+															<div className="col-sm-4">
+																<div className="form-group">
+																	<label
+																		className="form-label"
+																		htmlFor="class_field"
+																	>
+																		{row.field}
+																	</label>
+																	<div className="input-group mb-3">
+																		<div className="input-group-text">
+																			<input
+																				type="checkbox"
+																				className="checkbox"
+																				checked={row.status === "1"}
+																				disabled={row.default === "true"}
+																				onChange={() =>
+																					handleCheckboxChange(
+																						index,
+																						govtDetails,
+																						setGovtDetails
+																					)
+																				}
+																			/>
+																		</div>
+																		<input
+																			type="text"
+																			className="form-control"
+																			readOnly
+																		/>
+																	</div>
+																</div>
+															</div>
+														))}
+													</div>
+												</div>
+											</Accordion.Collapse>
+										</Accordion.Item>
+									</Accordion>
 
 									{/* Bank Account Details*/}
-									<h4 style={{ margin: "7px 0" }}>Bank Account Details</h4>
-									<div className="table-responsive">
-										<table className="table table-bordered">
-											<thead>
-												<tr role="row">
-													<th style={{ width: "177px" }}>Sno</th>
-													<th style={{ width: "177px" }}>Field</th>
-													<th style={{ width: "278px" }}>Enable</th>
-												</tr>
-											</thead>
-
-											<tbody>
-												{bankDetails.map((row, index) => (
-													<tr key={index}>
-														<td>{index + 1}</td>
-														<td>{row.field}</td>
-														<td>
-															<input
-																type="checkbox"
-																className="checkbox"
-																checked={row.status === "1"}
-																disabled={row.default === "true"}
-																onChange={() =>
-																	handleCheckboxChange(
-																		index,
-																		bankDetails,
-																		setBankDetails
-																	)
-																}
-															/>
-														</td>
-													</tr>
-												))}
-											</tbody>
-										</table>
-									</div>
+									<Accordion
+										className="accordion accordion-with-icon"
+										defaultActiveKey="0"
+										alwaysOpen
+									>
+										<Accordion.Item className="accordion-item" eventKey="0">
+											<Accordion.Header className="accordion-header rounded-lg">
+												<span className="accordion-header-icon"></span>
+												<span className="accordion-header-text">
+													Bank Account Details
+												</span>
+												<span className="accordion-header-indicator indicator-bordered"></span>
+											</Accordion.Header>
+											<Accordion.Collapse eventKey="0">
+												<div className="accordion-body">
+													<div className="row">
+														{bankDetails.map((row, index) => (
+															<div className="col-sm-4">
+																<div className="form-group">
+																	<label
+																		className="form-label"
+																		htmlFor="class_field"
+																	>
+																		{row.field}
+																	</label>
+																	<div className="input-group mb-3">
+																		<div className="input-group-text">
+																			<input
+																				type="checkbox"
+																				className="checkbox"
+																				checked={row.status === "1"}
+																				disabled={row.default === "true"}
+																				onChange={() =>
+																					handleCheckboxChange(
+																						index,
+																						bankDetails,
+																						setBankDetails
+																					)
+																				}
+																			/>
+																		</div>
+																		<input
+																			type="text"
+																			className="form-control"
+																			readOnly
+																		/>
+																	</div>
+																</div>
+															</div>
+														))}
+													</div>
+												</div>
+											</Accordion.Collapse>
+										</Accordion.Item>
+									</Accordion>
 
 									{/* Family Details*/}
-									<h4 style={{ margin: "7px 0" }}>Family Details</h4>
-									<div className="table-responsive">
-										<table className="table table-bordered">
-											<thead>
-												<tr role="row">
-													<th style={{ width: "177px" }}>Sno</th>
-													<th style={{ width: "177px" }}>Field</th>
-													<th style={{ width: "278px" }}>Enable</th>
-												</tr>
-											</thead>
+									<Accordion
+										className="accordion accordion-with-icon"
+										defaultActiveKey="0"
+										alwaysOpen
+									>
+										<Accordion.Item className="accordion-item" eventKey="0">
+											<Accordion.Header className="accordion-header rounded-lg">
+												<span className="accordion-header-icon"></span>
+												<span className="accordion-header-text">
+													Family Details
+												</span>
+												<span className="accordion-header-indicator indicator-bordered"></span>
+											</Accordion.Header>
+											<Accordion.Collapse eventKey="0">
+												<div className="accordion-body">
+													<div className="row">
+														{familyDetails.map((row, index) => (
+															<div className="col-sm-4">
+																<div className="form-group">
+																	<label
+																		className="form-label"
+																		htmlFor="class_field"
+																	>
+																		{row.field}
+																	</label>
+																	<div className="input-group mb-3">
+																		<div className="input-group-text">
+																			<input
+																				type="checkbox"
+																				className="checkbox"
+																				checked={row.status === "1"}
+																				disabled={row.default === "true"}
+																				onChange={() =>
+																					handleCheckboxChange(
+																						index,
+																						familyDetails,
+																						setFamilyDetails
+																					)
+																				}
+																			/>
+																		</div>
+																		<input
+																			type="text"
+																			className="form-control"
+																			readOnly
+																		/>
+																	</div>
+																</div>
+															</div>
+														))}
+													</div>
+												</div>
+											</Accordion.Collapse>
+										</Accordion.Item>
+									</Accordion>
 
-											<tbody>
-												{familyDetails.map((row, index) => (
-													<tr key={index}>
-														<td>{index + 1}</td>
-														<td>{row.field}</td>
-														<td>
-															<input
-																type="checkbox"
-																className="checkbox"
-																checked={row.status === "1"}
-																disabled={row.default === "true"}
-																onChange={() =>
-																	handleCheckboxChange(
-																		index,
-																		familyDetails,
-																		setFamilyDetails
-																	)
-																}
-															/>
-														</td>
-													</tr>
-												))}
-											</tbody>
-										</table>
-									</div>
 									<button type="submit" className="btn btn-primary me-1">
 										Submit
 									</button>

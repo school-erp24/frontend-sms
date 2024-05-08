@@ -503,32 +503,6 @@ const AdmissionForm = () => {
 															</div>
 														</div>
 													)}
-
-													<div className="col-sm-4">
-														<div className="form-group">
-															<label
-																className="form-label"
-																htmlFor="class_field"
-															>
-																Section
-															</label>
-															<div className="input-group mb-3">
-																<div className="input-group-text">
-																	<input
-																		type="checkbox"
-																		// checked={section.status === 1}
-																	/>
-																</div>
-																<input
-																	type="text"
-																	className="form-control"
-																	readOnly
-
-																	// defaultValue={section.section}
-																/>
-															</div>
-														</div>
-													</div>
 												</div>
 											</div>
 										</Accordion.Collapse>

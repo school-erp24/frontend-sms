@@ -10,7 +10,6 @@
 
 // /// Layout
 // import Nav from "./../layouts/nav";
-// import Footer from "./../layouts/Footer";
 
 // import { ThemeContext } from "../../context/ThemeContext";
 // //Scroll To Top
@@ -62,108 +61,62 @@
 
 // 	const CURRENT_USER_TYPE = USER_TYPES.STAFF;
 
-// 	function PublicElement({ children }) {
-// 		return <>{children}</>;
-// 	}
+// 	const ALL_USERS = [
+// 		USER_TYPES.SCHOOL_ADMIN,
+// 		USER_TYPES.ACCOUNTANT_1,
+// 		USER_TYPES.ACCOUNTANT_2,
+// 		USER_TYPES.STAFF,
+// 	];
 
-// 	function UserElement({ children }) {
-// 		if (
-// 			CURRENT_USER_TYPE === USER_TYPES.SCHOOL_ADMIN ||
-// 			CURRENT_USER_TYPE === USER_TYPES.ACCOUNTANT_1 ||
-// 			CURRENT_USER_TYPE === USER_TYPES.ACCOUNTANT_2 ||
-// 			CURRENT_USER_TYPE === USER_TYPES.STAFF
-// 		) {
-// 			return <>{children}</>;
-// 		} else {
-// 			// return <Navigate to={"/page-error-404"} />;
-// 			return <div>You have no access to the page</div>;
-// 		}
-// 	}
+// 	const MAIN_USERS = [USER_TYPES.SCHOOL_ADMIN, USER_TYPES.ACCOUNTANT_1];
 
-// 	function Specific1({ children }) {
-// 		if (
-// 			CURRENT_USER_TYPE === USER_TYPES.SCHOOL_ADMIN ||
-// 			CURRENT_USER_TYPE === USER_TYPES.ACCOUNTANT_1
-// 		) {
-// 			return <>{children}</>;
-// 		} else {
-// 			return <div>You have no access to the page</div>;
-// 			// return <Navigate to={"/page-error-404"} />;
-// 		}
-// 	}
+// 	const isUserTypeAllowed = ALL_USERS.includes(CURRENT_USER_TYPE);
+// 	const isMainUserTypeAllowed = MAIN_USERS.includes(CURRENT_USER_TYPE);
+
+// 	const NoAccess = () => {
+// 		return <div>You have no access to the page</div>;
+// 	};
 
 // 	const allroutes = [
 // 		/// Dashboard
 // 		{
 // 			url: "",
-// 			component: (
-// 				<UserElement>
-// 					<Home />
-// 				</UserElement>
-// 			),
+// 			component: isUserTypeAllowed ? <Home /> : <NoAccess />,
 // 		},
 
 // 		{
 // 			url: "dashboard",
-// 			component: (
-// 				<UserElement>
-// 					<Home />
-// 				</UserElement>
-// 			),
+// 			component: isUserTypeAllowed ? <Home /> : <NoAccess />,
 // 		},
 
 // 		//Enquiry
 // 		{
 // 			url: "add-enquiry",
-// 			component: (
-// 				<UserElement>
-// 					<AddEnquiry />
-// 				</UserElement>
-// 			),
+// 			component: isUserTypeAllowed ? <AddEnquiry /> : <NoAccess />,
 // 		},
 // 		{
 // 			url: "update-enquiry/:classParam/:id",
-// 			component: (
-// 				<UserElement>
-// 					<UpdateEnquiry />
-// 				</UserElement>
-// 			),
+// 			component: isUserTypeAllowed ? <UpdateEnquiry /> : <NoAccess />,
 // 		},
 // 		{
 // 			url: "enquiry-list",
-// 			component: (
-// 				<UserElement>
-// 					<EnquiryList />
-// 				</UserElement>
-// 			),
+// 			component: isUserTypeAllowed ? <EnquiryList /> : <NoAccess />,
 // 		},
 
 // 		// admissions
 // 		{
 // 			url: "add-admission",
-// 			component: (
-// 				<UserElement>
-// 					<AdmissionForm />
-// 				</UserElement>
-// 			),
+// 			component: isUserTypeAllowed ? <AdmissionForm /> : <NoAccess />,
 // 		},
 // 		{
 // 			url: "admission-list",
-// 			component: (
-// 				<UserElement>
-// 					<AdmissionList />
-// 				</UserElement>
-// 			),
+// 			component: isUserTypeAllowed ? <AdmissionList /> : <NoAccess />,
 // 		},
 
 // 		// students
 // 		{
 // 			url: "student-list",
-// 			component: (
-// 				<Specific1>
-// 					<StudentList />
-// 				</Specific1>
-// 			),
+// 			component: isMainUserTypeAllowed ? <StudentList /> : <NoAccess />,
 // 		},
 
 // 		// settings
@@ -255,7 +208,6 @@
 // 						<Outlet />
 // 					</div>
 // 				</div>
-// 				<Footer />
 // 			</div>
 // 		</>
 // 	);

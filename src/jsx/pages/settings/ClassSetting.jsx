@@ -101,17 +101,31 @@ const ClassSetting = () => {
 		getClassData();
 	}, []);
 
-	const handleCheckboxChange = (sectionId) => {
-		setSelectedClass((prevState) => ({
-			...prevState,
-			sectionList: prevState.sectionList.map((section) => {
+	const handleCheckboxChange = (sectionId, sectionName) => {
+		setSelectedClass((prevState) => {
+			const updatedSectionList = prevState.sectionList.map((section) => {
 				if (section.id === sectionId) {
 					const updatedStatus = section.status === 1 ? 0 : 1;
 					return { ...section, status: updatedStatus };
 				}
 				return section;
-			}),
-		}));
+			});
+
+			return { ...prevState, sectionList: updatedSectionList };
+		});
+	};
+
+	const handleSectionNameChange = (sectionId, newSectionName) => {
+		setSelectedClass((prevState) => {
+			const updatedSectionList = prevState.sectionList.map((section) => {
+				if (section.id === sectionId) {
+					return { ...section, section: newSectionName };
+				}
+				return section;
+			});
+
+			return { ...prevState, sectionList: updatedSectionList };
+		});
 	};
 
 	const handleUpdateClass = () => {
@@ -306,7 +320,10 @@ const ClassSetting = () => {
 																			type="checkbox"
 																			checked={section.status === 1}
 																			onChange={() =>
-																				handleCheckboxChange(section.id)
+																				handleCheckboxChange(
+																					section.id,
+																					section.section
+																				)
 																			}
 																		/>
 																	</div>
@@ -314,6 +331,12 @@ const ClassSetting = () => {
 																		type="text"
 																		className="form-control"
 																		defaultValue={section.section}
+																		onChange={(e) =>
+																			handleSectionNameChange(
+																				section.id,
+																				e.target.value
+																			)
+																		}
 																	/>
 																</div>
 															</div>
