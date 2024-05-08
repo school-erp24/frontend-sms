@@ -10,7 +10,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { initialState } from "./initialState";
 import { getAdmissionSetting } from "../../../services/SettingsService";
 import { getClass, getSections } from "../../../services/CommonService";
-import { postAdmissionForm } from "../../../services/StudentService";
+import { getTransportList } from "../../../services/TransportService";
+import {
+	postAdmissionForm,
+	getStudentType,
+} from "../../../services/StudentService";
 
 const options1 = [
 	{ value: "1", label: "Department" },
@@ -35,14 +39,19 @@ const AdmissionForm = () => {
 	const [admissionDate, setAdmissionDate] = useState(new Date());
 	const [classOptions, setClassOptions] = useState([]);
 	const [sectionOptions, setSectionOptions] = useState([]);
+	const [transportOptions, setTransportOptions] = useState([]);
 	const [selectedClass, setSelectedClass] = useState(null);
 	const [selectedSection, setSelectedSection] = useState(null);
+	const [studentOptions, setStudentOptions] = useState([]);
+	const [selectedStudentType, setSelectedStudentType] = useState(null);
+	const [selectedTransport, setSelectedTransport] = useState(null);
 
 	const [studentDetailsFields, setStudentDetailsFields] = useState([]);
-	console.log(studentDetailsFields);
 	const [DOB, setDOB] = useState(new Date());
 
 	const [familyDetailsFields, setFamilyDetailsFields] = useState([]);
+
+	const [uploadDocuments, setUploadDocuments] = useState([]);
 
 	const handleChange = (e) => {
 		setFormData({
@@ -101,18 +110,14 @@ const AdmissionForm = () => {
 	useEffect(() => {
 		getAdmissionSetting()
 			.then((resp) => {
+				// console.log(resp.data.data.rows);
+
 				setAdmissionDetailsFields(resp.data.data.rows[0].list);
+				setStudentDetailsFields(resp.data.data.rows[1].list);
+				setFamilyDetailsFields(resp.data.data.rows[2].list);
+				console.log(resp.data.data.rows[2].list);
 
-				const mergedStudentDetails = [
-					...resp.data.data.rows[1].list,
-					...resp.data.data.rows[2].list,
-					...resp.data.data.rows[3].list,
-					...resp.data.data.rows[4].list,
-				];
-
-				setStudentDetailsFields(mergedStudentDetails);
-				setFamilyDetailsFields(resp.data.data.rows[5].list);
-				console.log(resp.data.data.rows[5].list);
+				setUploadDocuments(resp.data.data.rows[3].list);
 			})
 			.catch((error) => {
 				console.error("Error fetching enquiries:", error);
@@ -127,6 +132,28 @@ const AdmissionForm = () => {
 				id: option.id,
 			}));
 			setClassOptions(options);
+		});
+	}, []);
+
+	useEffect(() => {
+		getTransportList().then((resp) => {
+			const options = resp.data.data.rows.map((option) => ({
+				value: option.pickUp,
+				label: option.pickUp,
+				id: option.id,
+			}));
+			setTransportOptions(options);
+		});
+	}, []);
+
+	useEffect(() => {
+		getStudentType().then((resp) => {
+			const options = resp.data.data.rows.map((option) => ({
+				value: option.studentType,
+				label: option.studentType,
+				id: option.id,
+			}));
+			setStudentOptions(options);
 		});
 	}, []);
 
@@ -239,7 +266,7 @@ const AdmissionForm = () => {
 
 													{admissionDetailsFields.find(
 														(row) =>
-															row.field === "Last Name" && row.status === "1"
+															row.field === "Last Name" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -352,64 +379,49 @@ const AdmissionForm = () => {
 													</div>
 
 													{/* Student Type */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Student Type" && row.status === "1"
-													) && (
-														<div className="col-sm-4">
-															<div className="form-group">
-																<label className="form-label">
-																	Student Type
-																</label>
-																<Select
-																	isSearchable={false}
-																	defaultValue={options1[0]}
-																	options={options1}
-																	className="custom-react-select"
-																/>
-															</div>
-														</div>
-													)}
-
 													<div className="col-sm-4">
 														<div className="form-group">
-															<label className="form-label" htmlFor="rollNo">
-																Roll no. <span className="text-danger">*</span>
-															</label>
-															<input
-																placeholder=""
-																id="rollNo"
-																type="text"
-																className="form-control"
-																required
-																value={formData.rollNo}
-																onChange={handleChange}
+															<label className="form-label">Student Type</label>
+															<Select
+																isSearchable={false}
+																options={studentOptions}
+																className="custom-react-select"
+																value={{
+																	label: selectedStudentType,
+																	value: selectedStudentType,
+																}}
+																onChange={(selectedOption) => {
+																	setSelectedStudentType(selectedOption.value);
+																	setFormData({
+																		...formData,
+																		studentType: selectedOption.id,
+																	});
+																}}
 															/>
 														</div>
 													</div>
 
 													<div className="col-sm-4">
 														<div className="form-group">
-															<label className="form-label" htmlFor="rollNo">
-																Roll no. <span className="text-danger">*</span>
+															<label className="form-label" htmlFor="staffNo">
+																Staff No.
 															</label>
 															<input
 																placeholder=""
-																id="rollNo"
+																id="staffNo"
 																type="text"
 																className="form-control"
-																required
-																value={formData.rollNo}
+																value={formData.staffNo}
 																onChange={handleChange}
 															/>
 														</div>
 													</div>
 
 													{/* RTE */}
-													{studentDetailsFields.find(
-														(row) => row.field === "RTE" && row.status === "1"
+													{admissionDetailsFields.find(
+														(row) => row.field === "RTE" && row.status === 1
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label className="form-label" htmlFor="rte">
 																	RTE
@@ -419,8 +431,8 @@ const AdmissionForm = () => {
 																		<input
 																			className="form-check-input"
 																			type="radio"
-																			name="inlineRadioOptions"
-																			id="inlineRadio1"
+																			name="rteOptions"
+																			id="rte1"
 																			value="Yes"
 																			checked={formData.rte === "Yes"}
 																			onChange={(e) =>
@@ -439,8 +451,8 @@ const AdmissionForm = () => {
 																		<input
 																			className="form-check-input"
 																			type="radio"
-																			name="inlineRadioOptions"
-																			id="inlineRadio2"
+																			name="rteOptions"
+																			id="rte2"
 																			value="No"
 																			checked={formData.rte === "No"}
 																			onChange={(e) =>
@@ -461,12 +473,12 @@ const AdmissionForm = () => {
 													)}
 
 													{/* RTE application no*/}
-													{studentDetailsFields.find(
+													{admissionDetailsFields.find(
 														(row) =>
 															row.field === "RTE application no." &&
-															row.status === "1"
+															row.status === 1
 													) && (
-														<div className="col-sm-6">
+														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -481,24 +493,105 @@ const AdmissionForm = () => {
 																	className="form-control"
 																	value={formData.rteApplicationNo}
 																	onChange={handleChange}
+																	readOnly={formData.rte !== "Yes"}
 																/>
 															</div>
 														</div>
 													)}
 
-													{/* Transport */}
-													{studentDetailsFields.find(
+													{/* Availing Transport */}
+													{admissionDetailsFields.find(
 														(row) =>
-															row.field === "Transport" && row.status === "1"
+															row.field === "Availing Transport" &&
+															row.status === 1
 													) && (
-														<div className="col-sm-4">
+														<div className="col-sm-2">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="availingTransport"
+																>
+																	Transport access
+																</label>
+																<div>
+																	<div className="form-check form-check-inline">
+																		<input
+																			className="form-check-input"
+																			type="radio"
+																			name="transportOptions"
+																			id="ta1"
+																			value="Yes"
+																			checked={
+																				formData.availingTransport === "Yes"
+																			}
+																			onChange={(e) =>
+																				handleRadioButton(
+																					e,
+																					"availingTransport"
+																				)
+																			}
+																		/>
+
+																		<label
+																			className="form-check-label"
+																			htmlFor="inlineRadio1"
+																		>
+																			Yes
+																		</label>
+																	</div>
+																	<div className="form-check form-check-inline">
+																		<input
+																			className="form-check-input"
+																			type="radio"
+																			name="transportOptions"
+																			id="ta2"
+																			value="No"
+																			checked={
+																				formData.availingTransport === "No"
+																			}
+																			onChange={(e) =>
+																				handleRadioButton(
+																					e,
+																					"availingTransport"
+																				)
+																			}
+																		/>
+
+																		<label
+																			className="form-check-label"
+																			htmlFor="inlineRadio2"
+																		>
+																			No
+																		</label>
+																	</div>
+																</div>
+															</div>
+														</div>
+													)}
+
+													{/* Transport */}
+													{admissionDetailsFields.find(
+														(row) =>
+															row.field === "Transport" && row.status === 1
+													) && (
+														<div className="col-sm-6">
 															<div className="form-group">
 																<label className="form-label">Transport</label>
 																<Select
 																	isSearchable={false}
-																	defaultValue={options1[0]}
-																	options={options1}
+																	options={transportOptions}
 																	className="custom-react-select"
+																	value={{
+																		label: selectedTransport,
+																		value: selectedTransport,
+																	}}
+																	onChange={(selectedOption) => {
+																		setSelectedTransport(selectedOption.value);
+																		setFormData({
+																			...formData,
+																			transport: selectedOption.id,
+																		});
+																	}}
 																/>
 															</div>
 														</div>
@@ -524,8 +617,7 @@ const AdmissionForm = () => {
 												<div className="row">
 													{/* Gender */}
 													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Gender" && row.status === "1"
+														(row) => row.field === "Gender" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -537,8 +629,8 @@ const AdmissionForm = () => {
 																		<input
 																			className="form-check-input"
 																			type="radio"
-																			name="Male"
-																			id="inlineRadio1"
+																			name="genderOptions1"
+																			id="g1"
 																			value="Male"
 																			checked={formData.gender === "Male"}
 																			onChange={(e) =>
@@ -556,8 +648,8 @@ const AdmissionForm = () => {
 																		<input
 																			className="form-check-input"
 																			type="radio"
-																			name="Female"
-																			id="inlineRadio1"
+																			name="genderOptions2"
+																			id="g2"
 																			value="Female"
 																			checked={formData.gender === "Female"}
 																			onChange={(e) =>
@@ -578,8 +670,7 @@ const AdmissionForm = () => {
 
 													{/* DOB */}
 													{studentDetailsFields.find(
-														(row) =>
-															row.field === "D.O.B." && row.status === "1"
+														(row) => row.field === "D.O.B." && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -600,34 +691,30 @@ const AdmissionForm = () => {
 														</div>
 													)}
 
-													{/* DOB */}
+													{/* Age */}
 													{studentDetailsFields.find(
-														(row) =>
-															row.field === "D.O.B." && row.status === "1"
+														(row) => row.field === "Age" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="datepicker1"
-																>
-																	Date of Birth
+																<label className="form-label" htmlFor="age">
+																	Age
 																</label>
-																<div>
-																	<DatePicker
-																		selected={DOB}
-																		onChange={(date) => setDOB(date)}
-																		className="form-control"
-																	/>
-																</div>
+																<input
+																	placeholder=""
+																	id="age"
+																	type="text"
+																	className="form-control"
+																	value={formData.age}
+																	onChange={handleChange}
+																/>
 															</div>
 														</div>
 													)}
 
 													{/* Height */}
 													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Height" && row.status === "1"
+														(row) => row.field === "Height" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -647,8 +734,7 @@ const AdmissionForm = () => {
 													)}
 													{/* Weight */}
 													{studentDetailsFields.find(
-														(row) =>
-															row.field === "weight" && row.status === "1"
+														(row) => row.field === "weight" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -670,7 +756,7 @@ const AdmissionForm = () => {
 													{/* Blood Group */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Blood group" && row.status === "1"
+															row.field === "Blood group" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -694,7 +780,7 @@ const AdmissionForm = () => {
 
 													{/* Caste */}
 													{studentDetailsFields.find(
-														(row) => row.field === "Caste" && row.status === "1"
+														(row) => row.field === "Caste" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -712,7 +798,7 @@ const AdmissionForm = () => {
 													{/* Religion */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Religion" && row.status === "1"
+															row.field === "Religion" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -730,7 +816,7 @@ const AdmissionForm = () => {
 													{/* Nationality */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Nationality" && row.status === "1"
+															row.field === "Nationality" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -750,22 +836,22 @@ const AdmissionForm = () => {
 													{/* Aadhar No. */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Adhar no." && row.status === "1"
+															row.field === "Adhar no." && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
-																	htmlFor="aadharCard"
+																	htmlFor="aadharNo"
 																>
 																	Aadhar No.
 																</label>
 																<input
 																	placeholder=""
-																	id="aadharCard"
+																	id="aadharNo"
 																	type="text"
 																	className="form-control"
-																	value={formData.aadharCard}
+																	value={formData.aadharNo}
 																	onChange={handleChange}
 																/>
 															</div>
@@ -776,7 +862,7 @@ const AdmissionForm = () => {
 													{studentDetailsFields.find(
 														(row) =>
 															row.field === "Registration No." &&
-															row.status === "1"
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -801,7 +887,7 @@ const AdmissionForm = () => {
 													{/* UDISE No.*/}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "UDISE No." && row.status === "1"
+															row.field === "UDISE No." && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -822,7 +908,7 @@ const AdmissionForm = () => {
 													{/* Family ID */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Family ID" && row.status === "1"
+															row.field === "Family ID" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -844,28 +930,6 @@ const AdmissionForm = () => {
 														</div>
 													)}
 
-													{/* CRN No */}
-													{/* {studentDetailsFields.find(
-														(row) =>
-															row.field === "CRN No." && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label className="form-label" htmlFor="crnNo">
-																	CRN No.
-																</label>
-																<input
-																	placeholder=""
-																	id="crnNo"
-																	type="text"
-																	className="form-control"
-																	value={formData.crnNo}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)} */}
-
 													<div className="col-sm-12">
 														<h4 style={{ textAlign: "center" }}>
 															Previous Qualifications Details
@@ -875,7 +939,8 @@ const AdmissionForm = () => {
 													{/*Previous School name */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "School name" && row.status === "1"
+															row.field === "previous School name" &&
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -900,8 +965,7 @@ const AdmissionForm = () => {
 													{/* Previous class */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Previous class" &&
-															row.status === "1"
+															row.field === "Previous class" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -926,7 +990,7 @@ const AdmissionForm = () => {
 													{/* Pass year */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Pass year" && row.status === "1"
+															row.field === "Pass year" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -951,7 +1015,7 @@ const AdmissionForm = () => {
 													{/* Obt. Marks*/}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Obt. Marks" && row.status === "1"
+															row.field === "Obt. Marks" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -975,80 +1039,28 @@ const AdmissionForm = () => {
 
 													{/* Percentage*/}
 													{studentDetailsFields.find(
-														(row) => row.field === "% age" && row.status === "1"
+														(row) =>
+															row.field === "percentage" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
-																<label className="form-label" htmlFor="age">
+																<label
+																	className="form-label"
+																	htmlFor="percentage"
+																>
 																	Percentage
 																</label>
 																<input
 																	placeholder=""
-																	id="age"
+																	id="percentage"
 																	type="text"
 																	className="form-control"
-																	value={formData.age}
+																	value={formData.percentage}
 																	onChange={handleChange}
 																/>
 															</div>
 														</div>
 													)}
-
-													{/* <div className="col-sm-12">
-														<h4 style={{ textAlign: "center" }}>
-															Government Portal ID
-														</h4>
-													</div> */}
-
-													{/* Student Govt ID */}
-													{/* {studentDetailsFields.find(
-														(row) =>
-															row.field === "Student ID" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="studentId"
-																>
-																	Student Govt ID
-																</label>
-																<input
-																	placeholder=""
-																	id="studentId"
-																	type="text"
-																	className="form-control"
-																	value={formData.studentId}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)} */}
-
-													{/* Family Govt ID */}
-													{/* {studentDetailsFields.find(
-														(row) =>
-															row.field === "Family ID" && row.status === "1"
-													) && (
-														<div className="col-sm-6">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="familyId"
-																>
-																	Family Govt ID
-																</label>
-																<input
-																	placeholder=""
-																	id="familyId"
-																	type="text"
-																	className="form-control"
-																	value={formData.familyId}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)} */}
 												</div>
 											</div>
 										</Accordion.Collapse>
@@ -1077,7 +1089,7 @@ const AdmissionForm = () => {
 													{/* Father name */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Father name" && row.status === "1"
+															row.field === "Father name" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1103,7 +1115,7 @@ const AdmissionForm = () => {
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Father Qualification" &&
-															row.status === "1"
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1129,7 +1141,7 @@ const AdmissionForm = () => {
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Father Occupation" &&
-															row.status === "1"
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1153,8 +1165,7 @@ const AdmissionForm = () => {
 
 													{/* Address */}
 													{familyDetailsFields.find(
-														(row) =>
-															row.field === "Address" && row.status === "1"
+														(row) => row.field === "Address" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1177,7 +1188,7 @@ const AdmissionForm = () => {
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Father Mobile no" &&
-															row.status === "1"
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1202,7 +1213,7 @@ const AdmissionForm = () => {
 													{/* Father Email */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Father Email" && row.status === "1"
+															row.field === "Father Email" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1227,8 +1238,7 @@ const AdmissionForm = () => {
 													{/* Father Income */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Father Income" &&
-															row.status === "1"
+															row.field === "Father Income" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1259,7 +1269,7 @@ const AdmissionForm = () => {
 													{/* Mother name*/}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Mother name" && row.status === "1"
+															row.field === "Mother name" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1285,7 +1295,7 @@ const AdmissionForm = () => {
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Mother Qualification" &&
-															row.status === "1"
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1311,7 +1321,7 @@ const AdmissionForm = () => {
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Mother Occupation" &&
-															row.status === "1"
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1333,33 +1343,11 @@ const AdmissionForm = () => {
 														</div>
 													)}
 
-													{/* Address */}
-													{familyDetailsFields.find(
-														(row) =>
-															row.field === "Address" && row.status === "1"
-													) && (
-														<div className="col-sm-4">
-															<div className="form-group">
-																<label className="form-label" htmlFor="Address">
-																	Address
-																</label>
-																<input
-																	placeholder="Enter Last Name"
-																	id="Address"
-																	type="text"
-																	className="form-control"
-																	value={formData.Address}
-																	onChange={handleChange}
-																/>
-															</div>
-														</div>
-													)}
-
 													{/* Mother Mobile */}
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Mother Mobile no" &&
-															row.status === "1"
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1384,7 +1372,7 @@ const AdmissionForm = () => {
 													{/* Mother Email */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Mother Email" && row.status === "1"
+															row.field === "Mother Email" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1409,8 +1397,7 @@ const AdmissionForm = () => {
 													{/* Mother Income */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Mother Income" &&
-															row.status === "1"
+															row.field === "Mother Income" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1439,9 +1426,9 @@ const AdmissionForm = () => {
 													</div>
 
 													{/* Bank Name*/}
-													{studentDetailsFields.find(
+													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Bank Name" && row.status === "1"
+															row.field === "Bank Name" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1464,9 +1451,9 @@ const AdmissionForm = () => {
 													)}
 
 													{/* Bank Branch*/}
-													{studentDetailsFields.find(
+													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Bank Branch" && row.status === "1"
+															row.field === "Bank Branch" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1489,9 +1476,9 @@ const AdmissionForm = () => {
 													)}
 
 													{/* IFSC Code */}
-													{studentDetailsFields.find(
+													{familyDetailsFields.find(
 														(row) =>
-															row.field === "IFSC Code" && row.status === "1"
+															row.field === "IFSC Code" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1514,9 +1501,9 @@ const AdmissionForm = () => {
 													)}
 
 													{/* Account No. */}
-													{studentDetailsFields.find(
+													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Account No." && row.status === "1"
+															row.field === "Account No." && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1539,9 +1526,8 @@ const AdmissionForm = () => {
 													)}
 
 													{/* PAN No. */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "PAN No." && row.status === "1"
+													{familyDetailsFields.find(
+														(row) => row.field === "PAN No." && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1555,6 +1541,31 @@ const AdmissionForm = () => {
 																	className="form-control"
 																	value={formData.panNo}
 																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* PAN Photo*/}
+													{familyDetailsFields.find(
+														(row) =>
+															row.field === "Upload PAN Card" &&
+															row.status === 1
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group fallback w-100">
+																<label
+																	className="form-label"
+																	htmlFor="uploadPanCard"
+																>
+																	Upload Pan Card
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	id="uploadPanCard"
+																	data-default-file=""
+																	onChange={handleFileChange}
 																/>
 															</div>
 														</div>
@@ -1584,10 +1595,9 @@ const AdmissionForm = () => {
 														</h4>
 													</div>
 													{/* Student Photo*/}
-													{studentDetailsFields.find(
+													{uploadDocuments.find(
 														(row) =>
-															row.field === "Student Photo" &&
-															row.status === "1"
+															row.field === "Student Photo" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group fallback w-100">
@@ -1607,34 +1617,11 @@ const AdmissionForm = () => {
 															</div>
 														</div>
 													)}
-													{/* Caste Certificate */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "Caste certificate" &&
-															row.status === "1"
-													) && (
-														<div className="col-sm-4">
-															<div className="form-group fallback w-100">
-																<label
-																	className="form-label"
-																	htmlFor="casteCertificate"
-																>
-																	Caste Certificate
-																</label>
-																<input
-																	type="file"
-																	className="form-control"
-																	data-default-file=""
-																	id="casteCertificate"
-																	onChange={handleFileChange}
-																/>
-															</div>
-														</div>
-													)}
+
 													{/* Aadhar Card */}
-													{studentDetailsFields.find(
+													{uploadDocuments.find(
 														(row) =>
-															row.field === "Adhar card" && row.status === "1"
+															row.field === "Aadhar card" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group fallback w-100">
@@ -1654,11 +1641,12 @@ const AdmissionForm = () => {
 															</div>
 														</div>
 													)}
+
 													{/* Birth Certificate */}
-													{studentDetailsFields.find(
+													{uploadDocuments.find(
 														(row) =>
-															row.field === "birth certificate" &&
-															row.status === "1"
+															row.field === "Birth Certificate" &&
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group fallback w-100">
@@ -1680,10 +1668,10 @@ const AdmissionForm = () => {
 													)}
 
 													{/* Transfer Certificate */}
-													{studentDetailsFields.find(
+													{uploadDocuments.find(
 														(row) =>
-															row.field === "transfer certificate" &&
-															row.status === "1"
+															row.field === "Transfer Certificate" &&
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group fallback w-100">
@@ -1704,6 +1692,56 @@ const AdmissionForm = () => {
 														</div>
 													)}
 
+													{/* Caste Certificate */}
+													{uploadDocuments.find(
+														(row) =>
+															row.field === "Caste Certificate" &&
+															row.status === 1
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group fallback w-100">
+																<label
+																	className="form-label"
+																	htmlFor="casteCertificate"
+																>
+																	Caste Certificate
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	data-default-file=""
+																	id="casteCertificate"
+																	onChange={handleFileChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Character Certificate */}
+													{uploadDocuments.find(
+														(row) =>
+															row.field === "Character Certificate" &&
+															row.status === 1
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group fallback w-100">
+																<label
+																	className="form-label"
+																	htmlFor="characterCertificate"
+																>
+																	Character Certificate
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	data-default-file=""
+																	id="characterCertificate"
+																	onChange={handleFileChange}
+																/>
+															</div>
+														</div>
+													)}
+
 													<div className="col-sm-12">
 														<h4 style={{ textAlign: "center" }}>
 															Parent's Section
@@ -1711,9 +1749,9 @@ const AdmissionForm = () => {
 													</div>
 
 													{/* Father Photo*/}
-													{familyDetailsFields.find(
+													{uploadDocuments.find(
 														(row) =>
-															row.field === "Father Photo" && row.status === "1"
+															row.field === "Father Photo" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1721,7 +1759,7 @@ const AdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="fatherPhoto"
 																>
-																	Photo
+																	Father Photo
 																</label>
 																<input
 																	type="file"
@@ -1735,10 +1773,10 @@ const AdmissionForm = () => {
 													)}
 
 													{/* Father aadhar card*/}
-													{familyDetailsFields.find(
+													{uploadDocuments.find(
 														(row) =>
-															row.field === "Father adhar card" &&
-															row.status === "1"
+															row.field === "Father Aadhar Card" &&
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1746,7 +1784,7 @@ const AdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="fatherAadharCard"
 																>
-																	Aadhar Card
+																	Father Aadhar Card
 																</label>
 																<input
 																	type="file"
@@ -1760,9 +1798,9 @@ const AdmissionForm = () => {
 													)}
 
 													{/* Mother Photo*/}
-													{familyDetailsFields.find(
+													{uploadDocuments.find(
 														(row) =>
-															row.field === "Mother Photo" && row.status === "1"
+															row.field === "Mother Photo" && row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1770,7 +1808,7 @@ const AdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="motherPhoto"
 																>
-																	Photo
+																	Mother Photo
 																</label>
 																<input
 																	type="file"
@@ -1784,10 +1822,10 @@ const AdmissionForm = () => {
 													)}
 
 													{/* Mother Aadhar*/}
-													{familyDetailsFields.find(
+													{uploadDocuments.find(
 														(row) =>
-															row.field === "Mother adhard" &&
-															row.status === "1"
+															row.field === "Mother Aadhar Card" &&
+															row.status === 1
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1795,7 +1833,7 @@ const AdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="MotherAadharCard"
 																>
-																	Aadhar Card
+																	Mother Aadhar Card
 																</label>
 																<input
 																	type="file"

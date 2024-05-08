@@ -14,6 +14,10 @@ export function getAdmissionList(params) {
 	});
 }
 
+export function getStudentType() {
+	return AxiosInstance.get("/school/student-type/get");
+}
+
 export function getStudentList() {
 	return AxiosInstance.get("/school/student/get");
 }
