@@ -319,6 +319,7 @@ const AddEnquiry = () => {
 												}}
 												value={className}
 												id="class"
+												placeholder=""
 											/>
 											{errors.class && (
 												<p className="text-danger">{errors.class}</p>
@@ -337,7 +338,6 @@ const AddEnquiry = () => {
 												type="text"
 												className="form-control"
 												maxLength="10"
-												pattern="[0-9]{10}"
 												value={formData.contactNo}
 												onChange={handleChange}
 											/>
@@ -354,6 +354,7 @@ const AddEnquiry = () => {
 											<CreatableSelect
 												id="villageOrCity"
 												isClearable
+												placeholder=""
 												options={creatableOptionsForVillage}
 												className="custom-react-select"
 												onChange={(selectedOption) => {
@@ -387,6 +388,7 @@ const AddEnquiry = () => {
 											<CreatableSelect
 												id="district"
 												isClearable
+												placeholder=""
 												options={creatableOptionsForDistrict}
 												className="custom-react-select"
 												onChange={(selectedOption) => {

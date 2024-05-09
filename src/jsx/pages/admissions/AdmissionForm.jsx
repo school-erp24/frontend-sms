@@ -1,42 +1,35 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
-
+import moment from "moment";
 import { Accordion } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 import PageTitle from "../../layouts/PageTitle";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { initialState } from "./initialState";
 import { getAdmissionSetting } from "../../../services/SettingsService";
-import { getClass, getSections } from "../../../services/CommonService";
+import {
+	getClass,
+	getSections,
+	getCaste,
+	getReligion,
+} from "../../../services/CommonService";
 import { getTransportList } from "../../../services/TransportService";
 import {
 	postAdmissionForm,
 	getStudentType,
 } from "../../../services/StudentService";
-
-const options1 = [
-	{ value: "1", label: "Department" },
-	{ value: "2", label: "HTML" },
-	{ value: "3", label: "CSS" },
-	{ value: "4", label: "JavaScript" },
-	{ value: "4", label: "Angular" },
-	{ value: "4", label: "React" },
-	{ value: "4", label: "VueJs" },
-	{ value: "4", label: "Ruby" },
-	{ value: "4", label: "PHP" },
-	{ value: "4", label: "ASP.NET" },
-	{ value: "4", label: "Python" },
-	{ value: "4", label: "MySQL" },
-];
+import { validationAdmissionSchema } from "./AdmissionSchema";
 
 const AdmissionForm = () => {
 	const navigate = useNavigate();
+	const today = moment();
 	const [formData, setFormData] = useState(initialState);
 
 	const [admissionDetailsFields, setAdmissionDetailsFields] = useState([]);
-	const [admissionDate, setAdmissionDate] = useState(new Date());
+	const [admissionDate, setAdmissionDate] = useState(moment(today).toDate());
 	const [classOptions, setClassOptions] = useState([]);
 	const [sectionOptions, setSectionOptions] = useState([]);
 	const [transportOptions, setTransportOptions] = useState([]);
@@ -47,11 +40,17 @@ const AdmissionForm = () => {
 	const [selectedTransport, setSelectedTransport] = useState(null);
 
 	const [studentDetailsFields, setStudentDetailsFields] = useState([]);
-	const [DOB, setDOB] = useState(new Date());
+	const [DOB, setDOB] = useState(moment(today).toDate());
+	const [selectedCaste, setSelectedCaste] = useState(null);
+	const [selectedReligion, setSelectedReligion] = useState(null);
+	const [religionOptions, setReligionOptions] = useState([]);
+	const [casteOptions, setCasteOptions] = useState([]);
 
 	const [familyDetailsFields, setFamilyDetailsFields] = useState([]);
 
 	const [uploadDocuments, setUploadDocuments] = useState([]);
+
+	const [errors, setErrors] = useState({});
 
 	const handleChange = (e) => {
 		setFormData({
@@ -87,24 +86,43 @@ const AdmissionForm = () => {
 		});
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		postAdmissionForm({
-			...formData,
-			admissionDate: admissionDate.toISOString().split("T")[0],
-			DOB: DOB.toISOString().split("T")[0],
-		})
-			.then((resp) => {
-				if (resp.status === 200) {
-					setFormData(initialState);
-					setSelectedClass(null);
-					setSelectedSection(null);
-					alert("done");
-				}
-			})
-			.catch((error) => {
-				console.error("Error submitting form:", error);
+		try {
+			const updatedFormData = {
+				...formData,
+				admissionDate: moment
+					.utc(admissionDate)
+					.local()
+					.format("YYYY-MM-DD HH:mm:ss"),
+				DOB: moment.utc(DOB).local().format("YYYY-MM-DD HH:mm:ss"),
+			};
+			await validationAdmissionSchema.validate(updatedFormData, {
+				abortEarly: false,
 			});
+
+			postAdmissionForm(updatedFormData)
+				.then((resp) => {
+					if (resp.status === 200) {
+						setFormData(initialState);
+						setSelectedClass(null);
+						setSelectedSection(null);
+						toast.success("Admission created");
+						navigate("/admission-list");
+					}
+				})
+				.catch((error) => {
+					console.error("Error submitting form:", error);
+				});
+		} catch (error) {
+			const newErrors = {};
+
+			error.inner.forEach((err) => {
+				newErrors[err.path] = err.message;
+			});
+
+			setErrors(newErrors);
+		}
 	};
 
 	useEffect(() => {
@@ -115,8 +133,6 @@ const AdmissionForm = () => {
 				setAdmissionDetailsFields(resp.data.data.rows[0].list);
 				setStudentDetailsFields(resp.data.data.rows[1].list);
 				setFamilyDetailsFields(resp.data.data.rows[2].list);
-				console.log(resp.data.data.rows[2].list);
-
 				setUploadDocuments(resp.data.data.rows[3].list);
 			})
 			.catch((error) => {
@@ -158,6 +174,29 @@ const AdmissionForm = () => {
 	}, []);
 
 	useEffect(() => {
+		getReligion().then((resp) => {
+			const options = resp.data.data.rows.map((option) => ({
+				value: option.religion,
+				label: option.religion,
+				id: option.id,
+			}));
+			setReligionOptions(options);
+		});
+	}, []);
+
+	useEffect(() => {
+		getCaste().then((resp) => {
+			console.log(resp);
+			const options = resp.data.data.map((option) => ({
+				value: option.caste,
+				label: option.caste,
+				id: option.id,
+			}));
+			setCasteOptions(options);
+		});
+	}, []);
+
+	useEffect(() => {
 		console.log(formData);
 	}, [formData]);
 
@@ -193,14 +232,16 @@ const AdmissionForm = () => {
 																Session <span className="text-danger">*</span>
 															</label>
 															<input
-																placeholder=""
+																placeholder="Enter session"
 																id="session"
 																type="text"
 																className="form-control"
-																required
 																value={formData.session}
 																onChange={handleChange}
 															/>
+															{errors.session && (
+																<p className="text-danger">{errors.session}</p>
+															)}
 														</div>
 													</div>
 
@@ -217,8 +258,18 @@ const AdmissionForm = () => {
 															<div>
 																<DatePicker
 																	selected={admissionDate}
-																	onChange={(date) => setAdmissionDate(date)}
+																	onChange={(date) => {
+																		setAdmissionDate(date);
+																		setFormData((prevState) => ({
+																			...prevState,
+																			admissionDate: moment
+																				.utc(admissionDate)
+																				.local()
+																				.format("YYYY-MM-DD HH:mm:ss"),
+																		}));
+																	}}
 																	className="form-control"
+																	dateFormat="dd/MM/yy"
 																/>
 															</div>
 														</div>
@@ -235,14 +286,18 @@ const AdmissionForm = () => {
 																<span className="text-danger">*</span>
 															</label>
 															<input
-																placeholder=""
+																placeholder="Enter Admission no"
 																id="admissionNo"
 																type="text"
 																className="form-control"
-																required
 																value={formData.admissionNo}
 																onChange={handleChange}
 															/>
+															{errors.admissionNo && (
+																<p className="text-danger">
+																	{errors.admissionNo}
+																</p>
+															)}
 														</div>
 													</div>
 
@@ -257,10 +312,14 @@ const AdmissionForm = () => {
 																id="firstName"
 																type="text"
 																className="form-control"
-																required
 																value={formData.firstName}
 																onChange={handleChange}
 															/>
+															{errors.firstName && (
+																<p className="text-danger">
+																	{errors.firstName}
+																</p>
+															)}
 														</div>
 													</div>
 
@@ -295,14 +354,19 @@ const AdmissionForm = () => {
 																<span className="text-danger">*</span>
 															</label>
 															<input
-																placeholder="Enter Last Name"
+																placeholder="Enter Contact No"
 																id="contactNo"
 																type="text"
 																className="form-control"
-																required
 																value={formData.contactNo}
 																onChange={handleChange}
+																maxLength="10"
 															/>
+															{errors.contactNo && (
+																<p className="text-danger">
+																	{errors.contactNo}
+																</p>
+															)}
 														</div>
 													</div>
 
@@ -316,6 +380,7 @@ const AdmissionForm = () => {
 																isSearchable={false}
 																options={classOptions}
 																className="custom-react-select"
+																placeholder="Select class"
 																value={{
 																	label: selectedClass,
 																	value: selectedClass,
@@ -329,6 +394,9 @@ const AdmissionForm = () => {
 																	});
 																}}
 															/>
+															{errors.classId && (
+																<p className="text-danger">{errors.classId}</p>
+															)}
 														</div>
 													</div>
 
@@ -340,6 +408,7 @@ const AdmissionForm = () => {
 															</label>
 															<Select
 																isSearchable={false}
+																placeholder="Select section"
 																options={sectionOptions}
 																className="custom-react-select"
 																value={{
@@ -354,6 +423,11 @@ const AdmissionForm = () => {
 																	});
 																}}
 															/>
+															{errors.sectionId && (
+																<p className="text-danger">
+																	{errors.sectionId}
+																</p>
+															)}
 														</div>
 													</div>
 
@@ -367,14 +441,18 @@ const AdmissionForm = () => {
 																<span className="text-danger">*</span>
 															</label>
 															<input
-																placeholder="Enter Last Name"
+																placeholder="Enter Father Name"
 																id="fatherName"
 																type="text"
 																className="form-control"
-																required
 																value={formData.fatherName}
 																onChange={handleChange}
 															/>
+															{errors.fatherName && (
+																<p className="text-danger">
+																	{errors.fatherName}
+																</p>
+															)}
 														</div>
 													</div>
 
@@ -385,6 +463,7 @@ const AdmissionForm = () => {
 															<Select
 																isSearchable={false}
 																options={studentOptions}
+																placeholder="Select student type"
 																className="custom-react-select"
 																value={{
 																	label: selectedStudentType,
@@ -398,6 +477,11 @@ const AdmissionForm = () => {
 																	});
 																}}
 															/>
+															{errors.studentType && (
+																<p className="text-danger">
+																	{errors.studentType}
+																</p>
+															)}
 														</div>
 													</div>
 
@@ -407,13 +491,17 @@ const AdmissionForm = () => {
 																Staff No.
 															</label>
 															<input
-																placeholder=""
+																placeholder="Enter Staff no"
 																id="staffNo"
 																type="text"
 																className="form-control"
 																value={formData.staffNo}
 																onChange={handleChange}
+																maxLength="10"
 															/>
+															{errors.staffNo && (
+																<p className="text-danger">{errors.staffNo}</p>
+															)}
 														</div>
 													</div>
 
@@ -487,7 +575,7 @@ const AdmissionForm = () => {
 																	RTE application No.
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter RTE application no"
 																	id="rteApplicationNo"
 																	type="text"
 																	className="form-control"
@@ -579,6 +667,7 @@ const AdmissionForm = () => {
 																<label className="form-label">Transport</label>
 																<Select
 																	isSearchable={false}
+																	placeholder={"Select Transport"}
 																	options={transportOptions}
 																	className="custom-react-select"
 																	value={{
@@ -683,8 +772,18 @@ const AdmissionForm = () => {
 																<div>
 																	<DatePicker
 																		selected={DOB}
-																		onChange={(date) => setDOB(date)}
+																		onChange={(date) => {
+																			setDOB(date);
+																			setFormData((prevState) => ({
+																				...prevState,
+																				DOB: moment
+																					.utc(DOB)
+																					.local()
+																					.format("YYYY-MM-DD HH:mm:ss"),
+																			}));
+																		}}
 																		className="form-control"
+																		dateFormat="dd/MM/yy"
 																	/>
 																</div>
 															</div>
@@ -701,7 +800,7 @@ const AdmissionForm = () => {
 																	Age
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter age"
 																	id="age"
 																	type="text"
 																	className="form-control"
@@ -722,7 +821,7 @@ const AdmissionForm = () => {
 																	Height
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter height"
 																	id="height"
 																	type="text"
 																	className="form-control"
@@ -742,7 +841,7 @@ const AdmissionForm = () => {
 																	Weight
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter weight"
 																	id="weight"
 																	type="text"
 																	className="form-control"
@@ -767,7 +866,7 @@ const AdmissionForm = () => {
 																	Blood Group
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter Blood group"
 																	id="bloodGroup"
 																	type="text"
 																	className="form-control"
@@ -787,9 +886,19 @@ const AdmissionForm = () => {
 																<label className="form-label">Caste</label>
 																<Select
 																	isSearchable={false}
-																	defaultValue={options1[0]}
-																	options={options1}
+																	options={casteOptions}
 																	className="custom-react-select"
+																	value={{
+																		label: selectedCaste,
+																		value: selectedCaste,
+																	}}
+																	onChange={(selectedOption) => {
+																		setSelectedCaste(selectedOption.value);
+																		setFormData({
+																			...formData,
+																			caste: selectedOption.id,
+																		});
+																	}}
 																/>
 															</div>
 														</div>
@@ -805,9 +914,19 @@ const AdmissionForm = () => {
 																<label className="form-label">Religion</label>
 																<Select
 																	isSearchable={false}
-																	defaultValue={options1[0]}
-																	options={options1}
+																	options={religionOptions}
 																	className="custom-react-select"
+																	value={{
+																		label: selectedReligion,
+																		value: selectedReligion,
+																	}}
+																	onChange={(selectedOption) => {
+																		setSelectedReligion(selectedOption.value);
+																		setFormData({
+																			...formData,
+																			religion: selectedOption.id,
+																		});
+																	}}
 																/>
 															</div>
 														</div>
@@ -820,14 +939,19 @@ const AdmissionForm = () => {
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
-																<label className="form-label">
+																<label
+																	className="form-label"
+																	htmlFor="nationality"
+																>
 																	Nationality
 																</label>
-																<Select
-																	isSearchable={false}
-																	defaultValue={options1[0]}
-																	options={options1}
-																	className="custom-react-select"
+																<input
+																	placeholder="Enter Nationality"
+																	id="nationality"
+																	type="text"
+																	className="form-control"
+																	value={formData.nationality}
+																	onChange={handleChange}
 																/>
 															</div>
 														</div>
@@ -847,13 +971,19 @@ const AdmissionForm = () => {
 																	Aadhar No.
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter Aadhar no"
 																	id="aadharNo"
 																	type="text"
 																	className="form-control"
 																	value={formData.aadharNo}
 																	onChange={handleChange}
+																	maxLength="12"
 																/>
+																{errors.aadharNo && (
+																	<p className="text-danger">
+																		{errors.aadharNo}
+																	</p>
+																)}
 															</div>
 														</div>
 													)}
@@ -873,7 +1003,7 @@ const AdmissionForm = () => {
 																	Registration No
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter Registration no."
 																	id="registrationNo"
 																	type="text"
 																	className="form-control"
@@ -895,7 +1025,7 @@ const AdmissionForm = () => {
 																	UDISE No.
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter UDISE no"
 																	id="udiseNo"
 																	type="text"
 																	className="form-control"
@@ -919,7 +1049,7 @@ const AdmissionForm = () => {
 																	Family ID
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter Family id"
 																	id="familyId"
 																	type="text"
 																	className="form-control"
@@ -951,7 +1081,7 @@ const AdmissionForm = () => {
 																	Previous School Name
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Previous school"
 																	id="schoolName"
 																	type="text"
 																	className="form-control"
@@ -976,7 +1106,7 @@ const AdmissionForm = () => {
 																	Previous class
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Previous class"
 																	id="previousClass"
 																	type="text"
 																	className="form-control"
@@ -1001,7 +1131,7 @@ const AdmissionForm = () => {
 																	Pass year
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter Pass year"
 																	id="passYear"
 																	type="text"
 																	className="form-control"
@@ -1026,7 +1156,7 @@ const AdmissionForm = () => {
 																	Marks Obtained
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter marks"
 																	id="obtMarks"
 																	type="text"
 																	className="form-control"
@@ -1051,7 +1181,7 @@ const AdmissionForm = () => {
 																	Percentage
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter percentage"
 																	id="percentage"
 																	type="text"
 																	className="form-control"
@@ -1100,7 +1230,7 @@ const AdmissionForm = () => {
 																	Father's Name
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter Father Name"
 																	id="fatherName"
 																	type="text"
 																	className="form-control"
@@ -1126,7 +1256,7 @@ const AdmissionForm = () => {
 																	Qualification
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter qualification"
 																	id="fatherQualification"
 																	type="text"
 																	className="form-control"
@@ -1152,7 +1282,7 @@ const AdmissionForm = () => {
 																	Occupation
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter Occupation"
 																	id="fatherOccupation"
 																	type="text"
 																	className="form-control"
@@ -1173,7 +1303,7 @@ const AdmissionForm = () => {
 																	Address
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter Address"
 																	id="Address"
 																	type="text"
 																	className="form-control"
@@ -1199,13 +1329,18 @@ const AdmissionForm = () => {
 																	Mobile No
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter Mobile no"
 																	id="fatherMobileNo"
 																	type="text"
 																	className="form-control"
 																	value={formData.fatherMobileNo}
 																	onChange={handleChange}
 																/>
+																{errors.fatherMobileNo && (
+																	<p className="text-danger">
+																		{errors.fatherMobileNo}
+																	</p>
+																)}
 															</div>
 														</div>
 													)}
@@ -1224,13 +1359,18 @@ const AdmissionForm = () => {
 																	Email
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter Email"
 																	id="fatherEmail"
 																	type="text"
 																	className="form-control"
 																	value={formData.fatherEmail}
 																	onChange={handleChange}
 																/>
+																{errors.fatherEmail && (
+																	<p className="text-danger">
+																		{errors.fatherEmail}
+																	</p>
+																)}
 															</div>
 														</div>
 													)}
@@ -1249,7 +1389,7 @@ const AdmissionForm = () => {
 																	Income
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter Income"
 																	id="fatherIncome"
 																	type="text"
 																	className="form-control"
@@ -1280,7 +1420,7 @@ const AdmissionForm = () => {
 																	Mother's Name
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter Mother Name"
 																	id="motherEmail"
 																	type="text"
 																	className="form-control"
@@ -1306,7 +1446,7 @@ const AdmissionForm = () => {
 																	Qualification
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter qualification"
 																	id="motherQualification"
 																	type="text"
 																	className="form-control"
@@ -1332,7 +1472,7 @@ const AdmissionForm = () => {
 																	Occupation
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter Occupation"
 																	id="motherOccupation"
 																	type="text"
 																	className="form-control"
@@ -1358,13 +1498,18 @@ const AdmissionForm = () => {
 																	Mobile No
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter Mobile no"
 																	id="motherMobileNo"
 																	type="text"
 																	className="form-control"
 																	value={formData.motherMobileNo}
 																	onChange={handleChange}
 																/>
+																{errors.motherMobileNo && (
+																	<p className="text-danger">
+																		{errors.motherMobileNo}
+																	</p>
+																)}
 															</div>
 														</div>
 													)}
@@ -1383,13 +1528,18 @@ const AdmissionForm = () => {
 																	Email
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter email"
 																	id="motherEmail"
 																	type="text"
 																	className="form-control"
 																	value={formData.motherEmail}
 																	onChange={handleChange}
 																/>
+																{errors.motherEmail && (
+																	<p className="text-danger">
+																		{errors.motherEmail}
+																	</p>
+																)}
 															</div>
 														</div>
 													)}
@@ -1408,7 +1558,7 @@ const AdmissionForm = () => {
 																	Income
 																</label>
 																<input
-																	placeholder="Enter Last Name"
+																	placeholder="Enter income"
 																	id="motherIncome"
 																	type="text"
 																	className="form-control"
@@ -1439,7 +1589,7 @@ const AdmissionForm = () => {
 																	Bank Name
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter Bank name"
 																	id="bankName"
 																	type="text"
 																	className="form-control"
@@ -1464,7 +1614,7 @@ const AdmissionForm = () => {
 																	Bank Branch
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter branch"
 																	id="bankBranch"
 																	type="text"
 																	className="form-control"
@@ -1489,13 +1639,18 @@ const AdmissionForm = () => {
 																	IFSC Code
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter IFSC code"
 																	id="IFSCCode"
 																	type="text"
 																	className="form-control"
 																	value={formData.IFSCCode}
 																	onChange={handleChange}
 																/>
+																{errors.IFSCCode && (
+																	<p className="text-danger">
+																		{errors.IFSCCode}
+																	</p>
+																)}
 															</div>
 														</div>
 													)}
@@ -1514,7 +1669,7 @@ const AdmissionForm = () => {
 																	Account No.
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter account no"
 																	id="accountNo"
 																	type="text"
 																	className="form-control"
@@ -1535,7 +1690,7 @@ const AdmissionForm = () => {
 																	PAN No.
 																</label>
 																<input
-																	placeholder=""
+																	placeholder="Enter PAN no."
 																	id="panNo"
 																	type="text"
 																	className="form-control"
@@ -1547,29 +1702,34 @@ const AdmissionForm = () => {
 													)}
 
 													{/* PAN Photo*/}
-													{familyDetailsFields.find(
+													{/* {familyDetailsFields.find(
 														(row) =>
 															row.field === "Upload PAN Card" &&
 															row.status === 1
-													) && (
-														<div className="col-sm-4">
-															<div className="form-group fallback w-100">
-																<label
-																	className="form-label"
-																	htmlFor="uploadPanCard"
-																>
-																	Upload Pan Card
-																</label>
-																<input
-																	type="file"
-																	className="form-control"
-																	id="uploadPanCard"
-																	data-default-file=""
-																	onChange={handleFileChange}
-																/>
-															</div>
+													) && ( */}
+													<div className="col-sm-4">
+														<div className="form-group fallback w-100">
+															<label
+																className="form-label"
+																htmlFor="uploadPanCard"
+															>
+																Upload Pan Card
+															</label>
+															<input
+																type="file"
+																className="form-control"
+																id="uploadPanCard"
+																data-default-file=""
+																onChange={handleFileChange}
+															/>
+															{errors.uploadPanCard && (
+																<p className="text-danger">
+																	{errors.uploadPanCard}
+																</p>
+															)}
 														</div>
-													)}
+													</div>
+													{/* )} */}
 												</div>
 											</div>
 										</Accordion.Collapse>
@@ -1831,7 +1991,7 @@ const AdmissionForm = () => {
 															<div className="form-group">
 																<label
 																	className="form-label"
-																	htmlFor="MotherAadharCard"
+																	htmlFor="motherAadharCard"
 																>
 																	Mother Aadhar Card
 																</label>
@@ -1839,7 +1999,7 @@ const AdmissionForm = () => {
 																	type="file"
 																	className="form-control"
 																	data-default-file=""
-																	id="MotherAadharCard"
+																	id="motherAadharCard"
 																	onChange={handleFileChange}
 																/>
 															</div>

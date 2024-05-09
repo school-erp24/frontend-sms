@@ -9,3 +9,11 @@ export function getSections(params) {
 		params: params,
 	});
 }
+
+export function getReligion() {
+	return AxiosInstance.get("/school/religion/get");
+}
+
+export function getCaste() {
+	return AxiosInstance.get("/school/caste/get");
+}

@@ -26,7 +26,7 @@ export const initialState = {
 	bloodGroup: "",
 	caste: "",
 	religion: "",
-	nationality: "",
+	nationality: "Indian",
 	aadharNo: "",
 	registrationNo: "",
 	crnNo: "",

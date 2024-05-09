@@ -8,6 +8,7 @@ import Pagination from "../../components/Pagination";
 import { getAdmissionList } from "../../../services/StudentService";
 
 const theadData = [
+	{ heading: "Sr.no", sortingValue: "sno", sortable: true },
 	{ heading: "Admission Date", sortingValue: "admissionDate", sortable: true },
 	{ heading: "Student Name", sortingValue: "firstName", sortable: true },
 	{ heading: "Class", sortingValue: "class", sortable: true }, // get this sorted out
@@ -247,6 +248,7 @@ const AdmissionList = () => {
 				});
 
 				setTotalRecords(resp.data.data.totalRecords);
+				console.log(updatedRows);
 				setTableData(updatedRows);
 				setCurrentPage(resp.data.data.currentPno);
 			})
@@ -267,30 +269,14 @@ const AdmissionList = () => {
 									+ Admission
 								</Link>
 
-								<Link to={"/add-enquiry"} className="btn btn-primary">
-									+ Add New
-								</Link>
-
-								<Link
-									to={""}
-									className="btn btn-primary"
-									style={{
-										backgroundColor: "white",
-										color: "#25D366",
-										borderColor: "#25D366",
-									}}
-								>
-									<i className="fa-brands fa-whatsapp"></i>
-								</Link>
-
-								<Link
+								{/* <Link
 									to={"#"}
 									className="btn btn-danger"
 									style={{ backgroundColor: "white", color: "#ff1616" }}
 									onClick={() => setBasicModal(true)}
 								>
 									<i className="fa-regular fa-trash-can"></i>
-								</Link>
+								</Link> */}
 							</span>
 						</div>
 						<div className="card-body">
@@ -447,11 +433,11 @@ const AdmissionList = () => {
 															{moment(data.admissionDate).format("DD/MM/YY")}
 														</td>
 														<td>{data.firstName || "N/A"}</td>
-														<td>{data.class || "N/A"}</td>
-														<td>{data.section || "N/A"}</td>
+														<td>{data.className || "N/A"}</td>
+														<td>{data.sectionName || "N/A"}</td>
 														<td>{data.fatherName}</td>
 														<td>{data.contactNo}</td>
-														<td>{"feeStatus"}</td>
+														<td>"FEE STATUS"</td>
 
 														<td>
 															<span

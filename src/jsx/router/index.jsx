@@ -26,6 +26,7 @@ import EnquiryList from "../pages/enquiry/EnquiryList";
 
 // Admissions
 import AdmissionForm from "../pages/admissions/AdmissionForm";
+import UpdateAdmissionForm from "../pages/admissions/UpdateAdmissionForm";
 import AdmissionList from "../pages/admissions/AdmissionList";
 
 // Student Management
@@ -59,7 +60,7 @@ const Markup = () => {
 		STAFF: "Staff",
 	};
 
-	const CURRENT_USER_TYPE = USER_TYPES.STAFF;
+	const CURRENT_USER_TYPE = USER_TYPES.SCHOOL_ADMIN;
 
 	const ALL_USERS = [
 		USER_TYPES.SCHOOL_ADMIN,
@@ -107,6 +108,10 @@ const Markup = () => {
 		{
 			url: "add-admission",
 			component: isUserTypeAllowed ? <AdmissionForm /> : <NoAccess />,
+		},
+		{
+			url: "update-admission/:familyId/:id",
+			component: isUserTypeAllowed ? <UpdateAdmissionForm /> : <NoAccess />,
 		},
 		{
 			url: "admission-list",

@@ -249,6 +249,7 @@ const UpdateEnquiry = () => {
 											</label>
 											<Select
 												isSearchable={false}
+												placeholder=""
 												defaultValue={{
 													value: classParam,
 													label: classParam,
@@ -276,7 +277,6 @@ const UpdateEnquiry = () => {
 												type="text"
 												className="form-control"
 												maxLength="10"
-												pattern="[0-9]{10}"
 												value={formData.contactNo}
 												onChange={handleChange}
 											/>
@@ -293,6 +293,7 @@ const UpdateEnquiry = () => {
 											<CreatableSelect
 												id="villageOrCity"
 												isClearable
+												placeholder=""
 												options={creatableOptionsForVillage}
 												className="custom-react-select"
 												onChange={(selectedOption) => {
@@ -326,6 +327,7 @@ const UpdateEnquiry = () => {
 											<CreatableSelect
 												id="district"
 												isClearable
+												placeholder=""
 												options={creatableOptionsForDistrict}
 												className="custom-react-select"
 												onChange={(selectedOption) => {
