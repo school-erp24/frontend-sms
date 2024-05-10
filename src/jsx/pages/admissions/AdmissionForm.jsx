@@ -325,7 +325,7 @@ const AdmissionForm = () => {
 
 													{admissionDetailsFields.find(
 														(row) =>
-															row.field === "Last Name" && row.status === 1
+															row.field === "Last Name" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -507,7 +507,7 @@ const AdmissionForm = () => {
 
 													{/* RTE */}
 													{admissionDetailsFields.find(
-														(row) => row.field === "RTE" && row.status === 1
+														(row) => row.field === "RTE" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -564,7 +564,7 @@ const AdmissionForm = () => {
 													{admissionDetailsFields.find(
 														(row) =>
 															row.field === "RTE application no." &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -591,7 +591,7 @@ const AdmissionForm = () => {
 													{admissionDetailsFields.find(
 														(row) =>
 															row.field === "Availing Transport" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-2">
 															<div className="form-group">
@@ -660,7 +660,7 @@ const AdmissionForm = () => {
 													{/* Transport */}
 													{admissionDetailsFields.find(
 														(row) =>
-															row.field === "Transport" && row.status === 1
+															row.field === "Transport" && row.status === "1"
 													) && (
 														<div className="col-sm-6">
 															<div className="form-group">
@@ -678,7 +678,7 @@ const AdmissionForm = () => {
 																		setSelectedTransport(selectedOption.value);
 																		setFormData({
 																			...formData,
-																			transport: selectedOption.id,
+																			transportId: selectedOption.id,
 																		});
 																	}}
 																/>
@@ -706,7 +706,8 @@ const AdmissionForm = () => {
 												<div className="row">
 													{/* Gender */}
 													{studentDetailsFields.find(
-														(row) => row.field === "Gender" && row.status === 1
+														(row) =>
+															row.field === "Gender" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -759,7 +760,8 @@ const AdmissionForm = () => {
 
 													{/* DOB */}
 													{studentDetailsFields.find(
-														(row) => row.field === "D.O.B." && row.status === 1
+														(row) =>
+															row.field === "D.O.B." && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -792,7 +794,7 @@ const AdmissionForm = () => {
 
 													{/* Age */}
 													{studentDetailsFields.find(
-														(row) => row.field === "Age" && row.status === 1
+														(row) => row.field === "Age" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -813,7 +815,8 @@ const AdmissionForm = () => {
 
 													{/* Height */}
 													{studentDetailsFields.find(
-														(row) => row.field === "Height" && row.status === 1
+														(row) =>
+															row.field === "Height" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -833,7 +836,8 @@ const AdmissionForm = () => {
 													)}
 													{/* Weight */}
 													{studentDetailsFields.find(
-														(row) => row.field === "weight" && row.status === 1
+														(row) =>
+															row.field === "weight" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -855,7 +859,7 @@ const AdmissionForm = () => {
 													{/* Blood Group */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Blood group" && row.status === 1
+															row.field === "Blood group" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -879,7 +883,7 @@ const AdmissionForm = () => {
 
 													{/* Caste */}
 													{studentDetailsFields.find(
-														(row) => row.field === "Caste" && row.status === 1
+														(row) => row.field === "Caste" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -896,7 +900,7 @@ const AdmissionForm = () => {
 																		setSelectedCaste(selectedOption.value);
 																		setFormData({
 																			...formData,
-																			caste: selectedOption.id,
+																			caste: selectedOption.value,
 																		});
 																	}}
 																/>
@@ -907,7 +911,7 @@ const AdmissionForm = () => {
 													{/* Religion */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Religion" && row.status === 1
+															row.field === "Religion" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -924,7 +928,7 @@ const AdmissionForm = () => {
 																		setSelectedReligion(selectedOption.value);
 																		setFormData({
 																			...formData,
-																			religion: selectedOption.id,
+																			religion: selectedOption.value,
 																		});
 																	}}
 																/>
@@ -935,7 +939,7 @@ const AdmissionForm = () => {
 													{/* Nationality */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Nationality" && row.status === 1
+															row.field === "Nationality" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -960,7 +964,7 @@ const AdmissionForm = () => {
 													{/* Aadhar No. */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Adhar no." && row.status === 1
+															row.field === "Adhar no." && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -992,7 +996,7 @@ const AdmissionForm = () => {
 													{studentDetailsFields.find(
 														(row) =>
 															row.field === "Registration No." &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1017,7 +1021,7 @@ const AdmissionForm = () => {
 													{/* UDISE No.*/}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "UDISE No." && row.status === 1
+															row.field === "UDISE No." && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1038,7 +1042,7 @@ const AdmissionForm = () => {
 													{/* Family ID */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Family ID" && row.status === 1
+															row.field === "Family ID" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1070,7 +1074,7 @@ const AdmissionForm = () => {
 													{studentDetailsFields.find(
 														(row) =>
 															row.field === "previous School name" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1095,7 +1099,8 @@ const AdmissionForm = () => {
 													{/* Previous class */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Previous class" && row.status === 1
+															row.field === "Previous class" &&
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1120,7 +1125,7 @@ const AdmissionForm = () => {
 													{/* Pass year */}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Pass year" && row.status === 1
+															row.field === "Pass year" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1145,7 +1150,7 @@ const AdmissionForm = () => {
 													{/* Obt. Marks*/}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "Obt. Marks" && row.status === 1
+															row.field === "Obt. Marks" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1170,7 +1175,7 @@ const AdmissionForm = () => {
 													{/* Percentage*/}
 													{studentDetailsFields.find(
 														(row) =>
-															row.field === "percentage" && row.status === 1
+															row.field === "percentage" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1219,7 +1224,7 @@ const AdmissionForm = () => {
 													{/* Father name */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Father name" && row.status === 1
+															row.field === "Father name" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1245,7 +1250,7 @@ const AdmissionForm = () => {
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Father Qualification" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1271,7 +1276,7 @@ const AdmissionForm = () => {
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Father Occupation" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1295,7 +1300,8 @@ const AdmissionForm = () => {
 
 													{/* Address */}
 													{familyDetailsFields.find(
-														(row) => row.field === "Address" && row.status === 1
+														(row) =>
+															row.field === "Address" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1318,7 +1324,7 @@ const AdmissionForm = () => {
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Father Mobile no" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1348,7 +1354,7 @@ const AdmissionForm = () => {
 													{/* Father Email */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Father Email" && row.status === 1
+															row.field === "Father Email" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1378,7 +1384,8 @@ const AdmissionForm = () => {
 													{/* Father Income */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Father Income" && row.status === 1
+															row.field === "Father Income" &&
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1409,22 +1416,22 @@ const AdmissionForm = () => {
 													{/* Mother name*/}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Mother name" && row.status === 1
+															row.field === "Mother name" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
 																<label
 																	className="form-label"
-																	htmlFor="motherEmail"
+																	htmlFor="motherName"
 																>
 																	Mother's Name
 																</label>
 																<input
 																	placeholder="Enter Mother Name"
-																	id="motherEmail"
+																	id="motherName"
 																	type="text"
 																	className="form-control"
-																	value={formData.motherEmail}
+																	value={formData.motherName}
 																	onChange={handleChange}
 																/>
 															</div>
@@ -1435,7 +1442,7 @@ const AdmissionForm = () => {
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Mother Qualification" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1461,7 +1468,7 @@ const AdmissionForm = () => {
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Mother Occupation" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1487,7 +1494,7 @@ const AdmissionForm = () => {
 													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Mother Mobile no" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1517,7 +1524,7 @@ const AdmissionForm = () => {
 													{/* Mother Email */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Mother Email" && row.status === 1
+															row.field === "Mother Email" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1547,7 +1554,8 @@ const AdmissionForm = () => {
 													{/* Mother Income */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Mother Income" && row.status === 1
+															row.field === "Mother Income" &&
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1578,7 +1586,7 @@ const AdmissionForm = () => {
 													{/* Bank Name*/}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Bank Name" && row.status === 1
+															row.field === "Bank Name" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1603,7 +1611,7 @@ const AdmissionForm = () => {
 													{/* Bank Branch*/}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Bank Branch" && row.status === 1
+															row.field === "Bank Branch" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1628,7 +1636,7 @@ const AdmissionForm = () => {
 													{/* IFSC Code */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "IFSC Code" && row.status === 1
+															row.field === "IFSC Code" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1658,7 +1666,7 @@ const AdmissionForm = () => {
 													{/* Account No. */}
 													{familyDetailsFields.find(
 														(row) =>
-															row.field === "Account No." && row.status === 1
+															row.field === "Account No." && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1682,7 +1690,8 @@ const AdmissionForm = () => {
 
 													{/* PAN No. */}
 													{familyDetailsFields.find(
-														(row) => row.field === "PAN No." && row.status === 1
+														(row) =>
+															row.field === "PAN No." && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1705,7 +1714,7 @@ const AdmissionForm = () => {
 													{/* {familyDetailsFields.find(
 														(row) =>
 															row.field === "Upload PAN Card" &&
-															row.status === 1
+															row.status === "1"
 													) && ( */}
 													<div className="col-sm-4">
 														<div className="form-group fallback w-100">
@@ -1757,7 +1766,8 @@ const AdmissionForm = () => {
 													{/* Student Photo*/}
 													{uploadDocuments.find(
 														(row) =>
-															row.field === "Student Photo" && row.status === 1
+															row.field === "Student Photo" &&
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group fallback w-100">
@@ -1781,7 +1791,7 @@ const AdmissionForm = () => {
 													{/* Aadhar Card */}
 													{uploadDocuments.find(
 														(row) =>
-															row.field === "Aadhar card" && row.status === 1
+															row.field === "Aadhar card" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group fallback w-100">
@@ -1806,7 +1816,7 @@ const AdmissionForm = () => {
 													{uploadDocuments.find(
 														(row) =>
 															row.field === "Birth Certificate" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group fallback w-100">
@@ -1831,7 +1841,7 @@ const AdmissionForm = () => {
 													{uploadDocuments.find(
 														(row) =>
 															row.field === "Transfer Certificate" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group fallback w-100">
@@ -1856,7 +1866,7 @@ const AdmissionForm = () => {
 													{uploadDocuments.find(
 														(row) =>
 															row.field === "Caste Certificate" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group fallback w-100">
@@ -1881,7 +1891,7 @@ const AdmissionForm = () => {
 													{uploadDocuments.find(
 														(row) =>
 															row.field === "Character Certificate" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group fallback w-100">
@@ -1911,7 +1921,7 @@ const AdmissionForm = () => {
 													{/* Father Photo*/}
 													{uploadDocuments.find(
 														(row) =>
-															row.field === "Father Photo" && row.status === 1
+															row.field === "Father Photo" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1936,7 +1946,7 @@ const AdmissionForm = () => {
 													{uploadDocuments.find(
 														(row) =>
 															row.field === "Father Aadhar Card" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1960,7 +1970,7 @@ const AdmissionForm = () => {
 													{/* Mother Photo*/}
 													{uploadDocuments.find(
 														(row) =>
-															row.field === "Mother Photo" && row.status === 1
+															row.field === "Mother Photo" && row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">
@@ -1985,7 +1995,7 @@ const AdmissionForm = () => {
 													{uploadDocuments.find(
 														(row) =>
 															row.field === "Mother Aadhar Card" &&
-															row.status === 1
+															row.status === "1"
 													) && (
 														<div className="col-sm-4">
 															<div className="form-group">

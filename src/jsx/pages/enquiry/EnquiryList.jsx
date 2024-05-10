@@ -319,7 +319,7 @@ const EnquiryList = () => {
 											</Link>
 										</div>
 
-										<div className="cus_flexcg8">
+										<div className="cus_flexcg8" style={{ zIndex: "2" }}>
 											<div className="cus_rangedp">
 												<label htmlFor="sdt">From:</label>
 

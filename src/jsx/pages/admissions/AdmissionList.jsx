@@ -285,7 +285,7 @@ const AdmissionList = () => {
 									<div className="justify-content-between d-sm-flex">
 										<div className="cus_flexc">
 											<Link to={""} className="btn btn-primary">
-												Print
+												Browse
 											</Link>
 
 											<Link
@@ -298,7 +298,7 @@ const AdmissionList = () => {
 											</Link>
 										</div>
 
-										<div className="cus_flexcg8">
+										<div className="cus_flexcg8" style={{ zIndex: "2" }}>
 											<div className="cus_rangedp">
 												<label htmlFor="sdt">From:</label>
 
@@ -442,7 +442,12 @@ const AdmissionList = () => {
 														<td>
 															<span
 																className="btn btn-xs sharp btn-primary me-1"
-																onClick={() => {}}
+																onClick={() => {
+																	navigate(
+																		`/update-admission/${data.id}`
+																		// `/update-admission/${data.familyId}/${data.id}`
+																	);
+																}}
 															>
 																<i className="fa fa-pencil" />
 															</span>

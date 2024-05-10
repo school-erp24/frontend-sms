@@ -1,6 +1,6 @@
 import PageTitle from "../../layouts/PageTitle";
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
 	getAdmissionSetting,
 	postAdmissionSetting,
@@ -11,52 +11,60 @@ import { Accordion } from "react-bootstrap";
 const AdmissionSetting = () => {
 	const navigate = useNavigate();
 
-	const [admissionDetailsFields, setAdmissionDetailsFields] = useState([]);
-	const [familyDetailsFields, setFamilyDetailsFields] = useState([]);
-	const [studentDetailsFields, setStudentDetailsFields] = useState([]);
-	const [uploadDocuments, setUploadDocuments] = useState([]);
+	const [admissionDetailsFields, setAdmissionDetailsFields] = useState({
+		list: [],
+	});
+	const [familyDetailsFields, setFamilyDetailsFields] = useState({
+		list: [],
+	});
+	const [studentDetailsFields, setStudentDetailsFields] = useState({
+		list: [],
+	});
+	const [uploadDocuments, setUploadDocuments] = useState({
+		list: [],
+	});
 
 	useEffect(() => {
 		getAdmissionSetting()
 			.then((resp) => {
 				console.log(resp.data.data.rows);
 
-				setAdmissionDetailsFields(resp.data.data.rows[0].list);
-				setStudentDetailsFields(resp.data.data.rows[1].list);
-				setFamilyDetailsFields(resp.data.data.rows[2].list);
-				setUploadDocuments(resp.data.data.rows[3].list);
+				setAdmissionDetailsFields(resp.data.data.rows[0]);
+				setStudentDetailsFields(resp.data.data.rows[1]);
+				setFamilyDetailsFields(resp.data.data.rows[2]);
+				setUploadDocuments(resp.data.data.rows[3]);
 			})
 			.catch((error) => {
 				console.error("Error fetching enquiries:", error);
 			});
 	}, []);
 
-	const handleCheckboxChange = (index, rows, setRows) => {
-		const updatedRows = [...rows];
-		updatedRows[index].status = updatedRows[index].status === 1 ? 0 : 1;
-		setRows(updatedRows);
+	// const handleCheckboxChange = (index, rows, setRows) => {
+	// 	const updatedRows = [...rows];
+	// 	updatedRows[index].status = updatedRows[index].status === 1 ? 0 : 1;
+	// 	setRows(updatedRows);
+	// };
+
+	const handleCheckboxChange = (index, object, setObject) => {
+		const updatedObject = { ...object };
+		const updatedList = [...updatedObject.list];
+		updatedList[index] = {
+			...updatedList[index],
+			status: updatedList[index].status === "1" ? "0" : "1",
+		};
+		updatedObject.list = updatedList;
+		setObject(updatedObject);
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		postAdmissionSetting({
-			// list: [
-			// 	{
-			// 		id: 3,
-			// 		tableName: "Admission",
-			// 		list: admissionRows,
-			// 	},
-			// 	{
-			// 		id: 4,
-			// 		tableName: "Student Details",
-			// 		list: studentDetails,
-			// 	},
-			// 	{
-			// 		id: 5,
-			// 		tableName: "Previous Qualifications Details:",
-			// 		list: previousDetails,
-			// 	},
-			// ],
+			list: [
+				admissionDetailsFields,
+				studentDetailsFields,
+				familyDetailsFields,
+				uploadDocuments,
+			],
 		})
 			.then((resp) => {
 				if (resp.status === 200) {
@@ -68,6 +76,22 @@ const AdmissionSetting = () => {
 				toast.error("Update failed");
 			});
 	};
+
+	useEffect(() => {
+		console.log({
+			list: [
+				admissionDetailsFields,
+				studentDetailsFields,
+				familyDetailsFields,
+				uploadDocuments,
+			],
+		});
+	}, [
+		admissionDetailsFields,
+		studentDetailsFields,
+		familyDetailsFields,
+		uploadDocuments,
+	]);
 
 	return (
 		<>
@@ -100,8 +124,8 @@ const AdmissionSetting = () => {
 											<Accordion.Collapse eventKey="0">
 												<div className="accordion-body">
 													<div className="row">
-														{admissionDetailsFields.map((row, index) => (
-															<div className="col-sm-4">
+														{admissionDetailsFields?.list.map((row, index) => (
+															<div className="col-sm-4" key={index}>
 																<div className="form-group">
 																	<label
 																		className="form-label"
@@ -114,7 +138,7 @@ const AdmissionSetting = () => {
 																			<input
 																				type="checkbox"
 																				className="checkbox"
-																				checked={row.status === 1}
+																				checked={row.status === "1"}
 																				disabled={row.default === "true"}
 																				onChange={() =>
 																					handleCheckboxChange(
@@ -153,8 +177,8 @@ const AdmissionSetting = () => {
 											<Accordion.Collapse eventKey="0">
 												<div className="accordion-body">
 													<div className="row">
-														{studentDetailsFields.map((row, index) => (
-															<div className="col-sm-4">
+														{studentDetailsFields?.list.map((row, index) => (
+															<div className="col-sm-4" key={index}>
 																<div className="form-group">
 																	<label
 																		className="form-label"
@@ -167,7 +191,7 @@ const AdmissionSetting = () => {
 																			<input
 																				type="checkbox"
 																				className="checkbox"
-																				checked={row.status === 1}
+																				checked={row.status === "1"}
 																				disabled={row.default === "true"}
 																				onChange={() =>
 																					handleCheckboxChange(
@@ -206,8 +230,8 @@ const AdmissionSetting = () => {
 											<Accordion.Collapse eventKey="0">
 												<div className="accordion-body">
 													<div className="row">
-														{familyDetailsFields.map((row, index) => (
-															<div className="col-sm-4">
+														{familyDetailsFields?.list.map((row, index) => (
+															<div className="col-sm-4" key={index}>
 																<div className="form-group">
 																	<label
 																		className="form-label"
@@ -220,7 +244,7 @@ const AdmissionSetting = () => {
 																			<input
 																				type="checkbox"
 																				className="checkbox"
-																				checked={row.status === 1}
+																				checked={row.status === "1"}
 																				disabled={row.default === "true"}
 																				onChange={() =>
 																					handleCheckboxChange(
@@ -259,8 +283,8 @@ const AdmissionSetting = () => {
 											<Accordion.Collapse eventKey="0">
 												<div className="accordion-body">
 													<div className="row">
-														{uploadDocuments.map((row, index) => (
-															<div className="col-sm-4">
+														{uploadDocuments?.list.map((row, index) => (
+															<div className="col-sm-4" key={index}>
 																<div className="form-group">
 																	<label
 																		className="form-label"
@@ -273,7 +297,7 @@ const AdmissionSetting = () => {
 																			<input
 																				type="checkbox"
 																				className="checkbox"
-																				checked={row.status === 1}
+																				checked={row.status === "1"}
 																				disabled={row.default === "true"}
 																				onChange={() =>
 																					handleCheckboxChange(

@@ -14,7 +14,7 @@ export const initialState = {
 	rte: "",
 	rteApplicationNo: "",
 	availingTransport: "",
-	transport: "",
+	transportId: "",
 
 	// STUDENT DETAILS
 

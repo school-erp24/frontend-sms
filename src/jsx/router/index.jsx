@@ -110,7 +110,7 @@ const Markup = () => {
 			component: isUserTypeAllowed ? <AdmissionForm /> : <NoAccess />,
 		},
 		{
-			url: "update-admission/:familyId/:id",
+			url: "update-admission/:id",
 			component: isUserTypeAllowed ? <UpdateAdmissionForm /> : <NoAccess />,
 		},
 		{
