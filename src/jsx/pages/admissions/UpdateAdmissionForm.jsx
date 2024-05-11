@@ -111,7 +111,7 @@ const UpdateAdmissionForm = () => {
 						setSelectedClass(null);
 						setSelectedSection(null);
 						toast.success("Admission updated");
-						navigate("/admission-list");
+						// navigate("/admission-list");
 					}
 				})
 				.catch((error) => {
@@ -212,8 +212,8 @@ const UpdateAdmissionForm = () => {
 			setSelectedTransport(resp.data.data.rows[0].transport);
 			setSelectedCaste(resp.data.data.rows[0].caste);
 			setSelectedReligion(resp.data.data.rows[0].religion);
+			delete mainObject.Family;
 			console.log(mainObject);
-			// delete mainObject.Family;
 
 			setFormData(mainObject);
 		});
@@ -1446,6 +1446,32 @@ const UpdateAdmissionForm = () => {
 														</div>
 													)}
 
+													{/* Father Aadhar no. */}
+													{familyDetailsFields.find(
+														(row) =>
+															row.field === "Father Aadhar Card No" &&
+															row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="fatherAadharNo"
+																>
+																	Father Aadhar no.
+																</label>
+																<input
+																	placeholder="Enter Aadhar no"
+																	id="fatherAadharNo"
+																	type="text"
+																	className="form-control"
+																	value={formData.fatherAadharNo}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
 													<div className="col-sm-12">
 														<h4 style={{ textAlign: "center" }}>
 															Mother's Details
@@ -1610,6 +1636,32 @@ const UpdateAdmissionForm = () => {
 																	type="text"
 																	className="form-control"
 																	value={formData.motherIncome}
+																	onChange={handleChange}
+																/>
+															</div>
+														</div>
+													)}
+
+													{/* Mother Aadhar no. */}
+													{familyDetailsFields.find(
+														(row) =>
+															row.field === "Mother Aadhar Card No" &&
+															row.status === "1"
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group">
+																<label
+																	className="form-label"
+																	htmlFor="motherAadharNo"
+																>
+																	Mother Aadhar no.
+																</label>
+																<input
+																	placeholder="Enter Aadhar no"
+																	id="motherAadharNo"
+																	type="text"
+																	className="form-control"
+																	value={formData.motherAadharNo}
 																	onChange={handleChange}
 																/>
 															</div>
