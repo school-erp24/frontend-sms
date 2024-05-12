@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
 import moment from "moment";
+import { toast } from "react-toastify";
 
 import {
 	getEnquiries,
@@ -16,7 +17,7 @@ import { validationEnquirySchema } from "./EnquirySchema";
 import PageTitle from "../../layouts/PageTitle";
 
 const UpdateEnquiry = () => {
-	const { classParam, id } = useParams();
+	const { id } = useParams();
 	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState({
@@ -35,6 +36,8 @@ const UpdateEnquiry = () => {
 
 	const [enquiryDate, setEnquiryDate] = useState(null);
 	const [followUpDate, setFollowUpDate] = useState(null);
+
+	const [classFlag, setClassFlag] = useState("");
 
 	const [creatableOptionsForVillage, setCreatableOptionsForVillage] = useState(
 		[]
@@ -125,18 +128,25 @@ const UpdateEnquiry = () => {
 	useEffect(() => {
 		getEnquiries({ id: id })
 			.then((resp) => {
-				setFormData(resp.data.data.rows[0]);
-
-				setEnquiryDate(new Date(resp.data.data.rows[0].enquiryDate));
-				setFollowUpDate(new Date(resp.data.data.rows[0].followUpDate));
-				setVillage({
-					value: resp.data.data.rows[0].villageOrCity,
-					label: resp.data.data.rows[0].villageOrCity,
-				});
-				setDistrict({
-					value: resp.data.data.rows[0].district,
-					label: resp.data.data.rows[0].district,
-				});
+				const rowData = resp.data?.data?.rows[0];
+				if (rowData) {
+					setFormData(rowData);
+					setEnquiryDate(new Date(rowData.enquiryDate));
+					setFollowUpDate(new Date(rowData.followUpDate));
+					setClassFlag(rowData.class);
+					console.log(rowData.class);
+					setVillage({
+						value: rowData.villageOrCity,
+						label: rowData.villageOrCity,
+					});
+					setDistrict({
+						value: rowData.district,
+						label: rowData.district,
+					});
+				} else {
+					toast.error("No data found");
+					navigate("/enquiry-list");
+				}
 			})
 			.catch((error) => {
 				console.error("Error fetching enquiries:", error);
@@ -250,9 +260,9 @@ const UpdateEnquiry = () => {
 											<Select
 												isSearchable={false}
 												placeholder=""
-												defaultValue={{
-													value: classParam,
-													label: classParam,
+												value={{
+													value: classFlag,
+													label: classFlag,
 												}}
 												options={options}
 												className="custom-react-select"
@@ -261,6 +271,7 @@ const UpdateEnquiry = () => {
 														...formData,
 														class: selectedOption.value,
 													});
+													setClassFlag(selectedOption.value);
 												}}
 											/>
 										</div>

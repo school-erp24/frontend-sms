@@ -40,7 +40,6 @@ export const initialState = {
 
 	// FAMILY DETAILS
 
-	// fatherName: "",
 	fatherQualification: "",
 	fatherOccupation: "",
 	fatherMobileNo: "",

@@ -54,6 +54,7 @@ const UpdateAdmissionForm = () => {
 	const [uploadDocuments, setUploadDocuments] = useState([]);
 
 	const [errors, setErrors] = useState({});
+	const [submitting, setSubmitting] = useState(false);
 
 	const handleChange = (e) => {
 		setFormData({
@@ -91,6 +92,7 @@ const UpdateAdmissionForm = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setSubmitting(true);
 		try {
 			const updatedFormData = {
 				...formData,
@@ -111,11 +113,14 @@ const UpdateAdmissionForm = () => {
 						setSelectedClass(null);
 						setSelectedSection(null);
 						toast.success("Admission updated");
-						// navigate("/admission-list");
+						setSubmitting(false);
+						navigate("/admission-list");
 					}
 				})
 				.catch((error) => {
 					console.error("Error submitting form:", error);
+					setSubmitting(false);
+					toast.error("Update Failed");
 				});
 		} catch (error) {
 			const newErrors = {};
@@ -197,26 +202,37 @@ const UpdateAdmissionForm = () => {
 	}, []);
 
 	useEffect(() => {
-		getStudentList({ id }).then((resp) => {
-			const mainObject = {
-				...resp.data.data.rows[0],
-				...resp.data.data.rows[0].Family,
-			};
+		getStudentList({ id })
+			.then((resp) => {
+				const rowData = resp.data?.data?.rows[0];
 
-			setAdmissionDate(new Date(resp.data.data.rows[0].admissionDate));
-			setDOB(new Date(resp.data.data.rows[0].DOB));
-			setSelectedClass(resp.data.data.rows[0].className);
-			setSelectedSection(resp.data.data.rows[0].sectionName);
-			setSelectedStudentType(resp.data.data.rows[0].studentType);
-			setClassFlag(resp.data.data.rows[0].classId);
-			setSelectedTransport(resp.data.data.rows[0].transport);
-			setSelectedCaste(resp.data.data.rows[0].caste);
-			setSelectedReligion(resp.data.data.rows[0].religion);
-			delete mainObject.Family;
-			console.log(mainObject);
+				if (rowData) {
+					const mainObject = {
+						...rowData,
+						...rowData.Family,
+					};
 
-			setFormData(mainObject);
-		});
+					setAdmissionDate(new Date(rowData.admissionDate));
+					setDOB(new Date(rowData.DOB));
+					setSelectedClass(rowData.className);
+					setSelectedSection(rowData.sectionName);
+					setSelectedStudentType(rowData.studentType);
+					setClassFlag(rowData.classId);
+					setSelectedTransport(rowData.transport);
+					setSelectedCaste(rowData.caste);
+					setSelectedReligion(rowData.religion);
+
+					delete mainObject.Family;
+
+					setFormData(mainObject);
+				} else {
+					toast.error("No data found");
+					navigate("/admission-list");
+				}
+			})
+			.catch((error) => {
+				console.error("Error fetching enquiries:", error);
+			});
 	}, []);
 
 	useEffect(() => {
@@ -2113,8 +2129,19 @@ const UpdateAdmissionForm = () => {
 								</Accordion>
 
 								<div className="col-lg-12 col-md-12 col-sm-12">
-									<button type="submit" className="btn btn-primary me-1">
-										Submit
+									<button
+										type="submit"
+										className="btn btn-primary me-1"
+										disabled={submitting}
+									>
+										{!submitting ? (
+											<>Submit</>
+										) : (
+											<>
+												Submit &nbsp;
+												<i className="fas fa-spinner fa-spin"></i>
+											</>
+										)}
 									</button>
 									<button
 										className="btn btn-danger light"

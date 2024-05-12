@@ -162,6 +162,10 @@ export const MenuList = [
 				title: "Admission Setting",
 				to: "admission-setting",
 			},
+			// {
+			// 	title: "Test Setting",
+			// 	to: "test-setting",
+			// },
 		],
 	},
 ];

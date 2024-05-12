@@ -475,9 +475,7 @@ const EnquiryList = () => {
 															<span
 																className="btn btn-xs sharp btn-primary me-1"
 																onClick={() => {
-																	navigate(
-																		`/update-enquiry/${data.class}/${data.id}`
-																	);
+																	navigate(`/update-enquiry/${data.id}`);
 																}}
 															>
 																<i className="fa fa-pencil" />

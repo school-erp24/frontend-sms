@@ -51,6 +51,7 @@ const AdmissionForm = () => {
 	const [uploadDocuments, setUploadDocuments] = useState([]);
 
 	const [errors, setErrors] = useState({});
+	const [submitting, setSubmitting] = useState(false);
 
 	const handleChange = (e) => {
 		setFormData({
@@ -88,6 +89,7 @@ const AdmissionForm = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setSubmitting(true);
 		try {
 			const updatedFormData = {
 				...formData,
@@ -108,11 +110,13 @@ const AdmissionForm = () => {
 						setSelectedClass(null);
 						setSelectedSection(null);
 						toast.success("Admission created");
+						setSubmitting(false);
 						navigate("/admission-list");
 					}
 				})
 				.catch((error) => {
 					console.error("Error submitting form:", error);
+					setSubmitting(false);
 				});
 		} catch (error) {
 			const newErrors = {};
@@ -2072,8 +2076,19 @@ const AdmissionForm = () => {
 								</Accordion>
 
 								<div className="col-lg-12 col-md-12 col-sm-12">
-									<button type="submit" className="btn btn-primary me-1">
-										Submit
+									<button
+										type="submit"
+										className="btn btn-primary me-1"
+										disabled={submitting}
+									>
+										{!submitting ? (
+											<>Submit</>
+										) : (
+											<>
+												Submit &nbsp;
+												<i className="fas fa-spinner fa-spin"></i>
+											</>
+										)}
 									</button>
 									<button
 										className="btn btn-danger light"
