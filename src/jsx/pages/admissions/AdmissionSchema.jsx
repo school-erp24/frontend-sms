@@ -50,10 +50,20 @@ export const validationAdmissionSchema = Yup.object({
 		excludeEmptyString: true,
 	}),
 
+	fatherAadharNo: Yup.string().matches(/^\d{12}$/, {
+		message: "Aadhar Number must be 12 digits.",
+		excludeEmptyString: true,
+	}),
+
 	fatherEmail: Yup.string().email("Invalid email address"),
 
 	motherMobileNo: Yup.string().matches(/^\d{10}$/, {
 		message: "Mobile Number must be 10 digits",
+		excludeEmptyString: true,
+	}),
+
+	motherAadharNo: Yup.string().matches(/^\d{12}$/, {
+		message: "Aadhar Number must be 12 digits.",
 		excludeEmptyString: true,
 	}),
 

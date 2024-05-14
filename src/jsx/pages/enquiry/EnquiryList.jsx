@@ -49,7 +49,7 @@ const EnquiryList = () => {
 
 	const [tableData, setTableData] = useState([]);
 
-	const [iconData, setIconDate] = useState({ complete: false, ind: Number });
+	const [iconData, setIconData] = useState({ complete: false, ind: Number });
 
 	const SortData = (name) => {
 		const sortedPeople = [...tableData];
@@ -367,7 +367,7 @@ const EnquiryList = () => {
 																		// handleCheckedAll(unchecked);
 																	} else {
 																		SortData(item.sortingValue);
-																		setIconDate((prevState) => ({
+																		setIconData((prevState) => ({
 																			complete: !prevState.complete,
 																			ind: ind,
 																		}));

@@ -162,10 +162,14 @@ export const MenuList = [
 				title: "Admission Setting",
 				to: "admission-setting",
 			},
-			// {
-			// 	title: "Test Setting",
-			// 	to: "test-setting",
-			// },
+			{
+				title: "Student Setting",
+				to: "student-setting",
+			},
+			{
+				title: "Transport Setting",
+				to: "transport-setting",
+			},
 		],
 	},
 ];

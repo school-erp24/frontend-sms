@@ -105,6 +105,13 @@ body > * {
 	gap: 0.5rem;
 }
 
+.cus_stickythead {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: #fff;
+}
+
 .cus_up {
 	text-transform: uppercase;
 }

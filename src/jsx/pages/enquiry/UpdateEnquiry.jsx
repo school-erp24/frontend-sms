@@ -55,7 +55,7 @@ const UpdateEnquiry = () => {
 		});
 	};
 
-	const handleChange1 = (field, value) => {
+	const handleDropdown = (field, value) => {
 		setFormData({
 			...formData,
 			[field]: value ? value.value : "",
@@ -308,7 +308,7 @@ const UpdateEnquiry = () => {
 												options={creatableOptionsForVillage}
 												className="custom-react-select"
 												onChange={(selectedOption) => {
-													handleChange1("villageOrCity", selectedOption);
+													handleDropdown("villageOrCity", selectedOption);
 													setVillage(selectedOption);
 												}}
 												onCreateOption={(inputValue) => {
@@ -320,7 +320,7 @@ const UpdateEnquiry = () => {
 														...creatableOptionsForVillage,
 														newValue,
 													]);
-													handleChange1("villageOrCity", newValue);
+													handleDropdown("villageOrCity", newValue);
 													setVillage(newValue);
 												}}
 												value={village}
@@ -342,7 +342,7 @@ const UpdateEnquiry = () => {
 												options={creatableOptionsForDistrict}
 												className="custom-react-select"
 												onChange={(selectedOption) => {
-													handleChange1("district", selectedOption);
+													handleDropdown("district", selectedOption);
 													setDistrict(selectedOption);
 												}}
 												onCreateOption={(inputValue) => {
@@ -354,7 +354,7 @@ const UpdateEnquiry = () => {
 														...creatableOptionsForDistrict,
 														newValue,
 													]);
-													handleChange1("district", newValue);
+													handleDropdown("district", newValue);
 													setDistrict(newValue);
 												}}
 												value={district}

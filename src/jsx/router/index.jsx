@@ -35,7 +35,8 @@ import StudentList from "../pages/students/StudentList";
 // Settings
 import ClassSetting from "../pages/settings/ClassSetting";
 import AdmissionSetting from "../pages/settings/AdmissionSetting";
-import TestSetting from "../pages/settings/TestSetting";
+import StudentSetting from "../pages/settings/StudentSetting";
+import TransportSetting from "../pages/settings/TransportSetting";
 
 /// App
 import AppProfile from "./../pages/apps/AppProfile";
@@ -128,7 +129,8 @@ const Markup = () => {
 		// settings
 		{ url: "class-setting", component: <ClassSetting /> },
 		{ url: "admission-setting", component: <AdmissionSetting /> },
-		// { url: "test-setting", component: <TestSetting /> },
+		{ url: "student-setting", component: <StudentSetting /> },
+		{ url: "transport-setting", component: <TransportSetting /> },
 
 		/// Apps
 		{ url: "app-profile", component: <AppProfile /> },
@@ -210,7 +212,7 @@ function MainLayout() {
 				<div className="content-body">
 					<div
 						className="container-fluid"
-						style={{ minHeight: window.screen.height - 45 }}
+						// style={{ minHeight: window.screen.height - 200 }} // initially it was 45
 					>
 						<Outlet />
 					</div>

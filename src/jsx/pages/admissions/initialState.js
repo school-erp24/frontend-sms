@@ -2,7 +2,7 @@ export const initialState = {
 	// ADMISSION DETAILS
 	session: "",
 	admissionDate: "",
-	admissionNo: "",
+	// admissionNo: "",
 	firstName: "",
 	lastName: "",
 	contactNo: "",
@@ -29,7 +29,6 @@ export const initialState = {
 	nationality: "Indian",
 	aadharNo: "",
 	registrationNo: "",
-	crnNo: "",
 	udiseNo: "",
 	familyId: "",
 	schoolName: "",

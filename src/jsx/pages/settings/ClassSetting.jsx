@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Form from "react-bootstrap/Form";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import { Modal, Button } from "react-bootstrap";
 
@@ -28,25 +27,26 @@ const ClassSetting = () => {
 	const handleAddSection = (e) => {
 		e.preventDefault();
 
-		// Add a new section with default values to the classSettings array
-		const newSection = {
-			tid: idCounter,
-			class: cls,
-			sectionList: value.map((option) => ({ section: option.value })),
-			sections: value.map((option) => option.value),
-		};
-		const updatedClassSettings = [...classSettings, newSection];
-		setClassSettings(updatedClassSettings);
-		setIdCounter(idCounter + 1);
+		if (cls && value) {
+			const newSection = {
+				tid: idCounter,
+				class: cls,
+				sectionList: value.map((option) => ({ section: option.value })),
+				sections: value.map((option) => option.value),
+			};
+			const updatedClassSettings = [...classSettings, newSection];
+			setClassSettings(updatedClassSettings);
+			setIdCounter(idCounter + 1);
 
-		createClasses({ data: updatedClassSettings }).then((res) => {
-			console.log(res);
-			getClassData();
-		});
+			createClasses({ data: updatedClassSettings }).then((res) => {
+				console.log(res);
+				getClassData();
+			});
 
-		setInputValue("");
-		setValue([]);
-		setCls("");
+			setInputValue("");
+			setValue([]);
+			setCls("");
+		}
 	};
 
 	const handleKeyDown = (event) => {
@@ -65,14 +65,6 @@ const ClassSetting = () => {
 		value: label,
 	});
 
-	useEffect(() => {
-		console.log(classSettings);
-	}, [classSettings]);
-
-	useEffect(() => {
-		console.log(selectedClass);
-	}, [selectedClass]);
-
 	const getClassData = () => {
 		getClass()
 			.then((resp) => {
@@ -81,8 +73,16 @@ const ClassSetting = () => {
 						(section) => section.section
 					);
 
+					const activeSections = sectionsArray.filter((sectionName) => {
+						const correspondingSection = classObj.sectionList.find(
+							(section) => section.section === sectionName
+						);
+						return correspondingSection.status === 1;
+					});
+
 					return {
 						...classObj,
+						activeSections,
 						sections: sectionsArray,
 						tid: index + 1,
 					};
@@ -101,7 +101,7 @@ const ClassSetting = () => {
 		getClassData();
 	}, []);
 
-	const handleCheckboxChange = (sectionId, sectionName) => {
+	const handleCheckboxChange = (sectionId) => {
 		setSelectedClass((prevState) => {
 			const updatedSectionList = prevState.sectionList.map((section) => {
 				if (section.id === sectionId) {
@@ -131,7 +131,6 @@ const ClassSetting = () => {
 	const handleUpdateClass = () => {
 		updateClasses(selectedClass)
 			.then((resp) => {
-				console.log(resp.status);
 				setSelectedClass({});
 				setUpdateModal(false);
 				getClassData();
@@ -139,7 +138,6 @@ const ClassSetting = () => {
 			.catch((error) => {
 				console.error("Error fetching classes:", error);
 				setUpdateModal(false);
-				// alert(error.message);
 			});
 	};
 
@@ -151,22 +149,9 @@ const ClassSetting = () => {
 					<div className="card">
 						<div className="card-body">
 							<div className="row">
-								<Link
-									onClick={handleAddSection}
-									className="btn btn-primary"
-									style={{
-										width: "max-content",
-										height: "max-content",
-										marginLeft: "15px",
-										marginBottom: "1rem",
-										border: "transparent",
-									}}
-								>
-									+ Add
-								</Link>
 								<form action="#" method="post" id="addStaffForm">
 									<div className="row">
-										<div className="col-sm-4">
+										<div className="col-sm-3">
 											<div className="form-group">
 												<label className="form-label" htmlFor="class_field">
 													Class
@@ -182,7 +167,7 @@ const ClassSetting = () => {
 												/>
 											</div>
 										</div>
-										<div className="col-sm-8">
+										<div className="col-sm-7">
 											<div className="form-group">
 												<label className="form-label" htmlFor="section_field">
 													Sections
@@ -209,21 +194,42 @@ const ClassSetting = () => {
 									</div>
 								</form>
 
+								<Link
+									onClick={handleAddSection}
+									className="btn btn-primary"
+									style={{
+										width: "max-content",
+										height: "max-content",
+										marginLeft: "15px",
+										marginBottom: "1rem",
+										border: "transparent",
+									}}
+								>
+									Add
+								</Link>
+
 								<div className="row" style={{ margin: "0" }}>
-									<div className="col-md-8 offset-md-2">
-										<table className="table table-bordered">
-											<thead>
+									<div
+										// className="col-md-8 offset-md-2"
+										className="d-flex justify-content-center flex-nowrap"
+										style={{
+											maxHeight: "300px",
+											overflowY: "auto",
+										}}
+									>
+										<table className="display dataTable no-footer w-100">
+											<thead className="cus_stickythead">
 												<tr>
 													<th>Class</th>
 													<th>Sections</th>
 													<th>Actions</th>
 												</tr>
 											</thead>
-											<tbody>
+											<tbody className="cus_up">
 												{classSettings.map((section, index) => (
 													<tr key={section.id}>
 														<td>{section.class}</td>
-														<td>{section.sections.join(", ")}</td>
+														<td>{section.activeSections.join(", ")}</td>
 
 														<td>
 															<span
@@ -247,17 +253,6 @@ const ClassSetting = () => {
 										</table>
 									</div>
 								</div>
-
-								{/* <button type="submit" className="btn btn-primary me-1">
-										Submit
-									</button>
-									<button
-										type="submit"
-										className="btn"
-										style={{ border: "1px solid #888888" }}
-									>
-										Cancel
-									</button> */}
 
 								<Modal
 									className="fade"
@@ -306,7 +301,7 @@ const ClassSetting = () => {
 												{selectedClass &&
 													selectedClass.sectionList &&
 													selectedClass.sectionList.map((section) => (
-														<div className="col-sm-3" key={section.id}>
+														<div className="col-sm-4" key={section.id}>
 															<div className="form-group">
 																<label
 																	className="form-label"
@@ -320,16 +315,13 @@ const ClassSetting = () => {
 																			type="checkbox"
 																			checked={section.status === 1}
 																			onChange={() =>
-																				handleCheckboxChange(
-																					section.id,
-																					section.section
-																				)
+																				handleCheckboxChange(section.id)
 																			}
 																		/>
 																	</div>
 																	<input
 																		type="text"
-																		className="form-control"
+																		className="form-control cus_up"
 																		defaultValue={section.section}
 																		onChange={(e) =>
 																			handleSectionNameChange(

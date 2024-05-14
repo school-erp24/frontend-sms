@@ -6,6 +6,8 @@ import { Accordion } from "react-bootstrap";
 import { toast } from "react-toastify";
 import PageTitle from "../../layouts/PageTitle";
 import { useNavigate, useParams } from "react-router-dom";
+import CreatableSelect from "react-select/creatable";
+import Compressor from "compressorjs";
 
 import { initialState } from "./initialState";
 import { getAdmissionSetting } from "../../../services/SettingsService";
@@ -73,9 +75,21 @@ const UpdateAdmissionForm = () => {
 
 	const handleFileChange = (e) => {
 		const file = e.target.files[0];
+		new Compressor(file, {
+			quality: 0.8, // 0.6 can also be used
+			success: (compressedFile) => {
+				setFormData({
+					...formData,
+					[e.target.id]: compressedFile,
+				});
+			},
+		});
+	};
+
+	const handleDropdown = (field, value) => {
 		setFormData({
 			...formData,
-			[e.target.id]: file,
+			[field]: value ? value.value : "",
 		});
 	};
 
@@ -130,6 +144,7 @@ const UpdateAdmissionForm = () => {
 			});
 
 			setErrors(newErrors);
+			setSubmitting(false);
 		}
 	};
 
@@ -160,8 +175,8 @@ const UpdateAdmissionForm = () => {
 	useEffect(() => {
 		getTransportList().then((resp) => {
 			const options = resp.data.data.rows.map((option) => ({
-				value: option.pickUp,
-				label: option.pickUp,
+				value: option.transport,
+				label: option.transport,
 				id: option.id,
 			}));
 			setTransportOptions(options);
@@ -213,14 +228,20 @@ const UpdateAdmissionForm = () => {
 					};
 
 					setAdmissionDate(new Date(rowData.admissionDate));
-					setDOB(new Date(rowData.DOB));
+					setDOB(rowData.DOB);
 					setSelectedClass(rowData.className);
 					setSelectedSection(rowData.sectionName);
 					setSelectedStudentType(rowData.studentType);
 					setClassFlag(rowData.classId);
 					setSelectedTransport(rowData.transport);
-					setSelectedCaste(rowData.caste);
-					setSelectedReligion(rowData.religion);
+					setSelectedCaste({
+						value: rowData.caste,
+						label: rowData.caste,
+					});
+					setSelectedReligion({
+						value: rowData.religion,
+						label: rowData.religion,
+					});
 
 					delete mainObject.Family;
 
@@ -251,6 +272,10 @@ const UpdateAdmissionForm = () => {
 	useEffect(() => {
 		console.log(formData);
 	}, [formData]);
+
+	useEffect(() => {
+		console.log(DOB);
+	}, [DOB]);
 
 	return (
 		<>
@@ -346,7 +371,8 @@ const UpdateAdmissionForm = () => {
 																type="text"
 																className="form-control"
 																value={formData.admissionNo}
-																onChange={handleChange}
+																readOnly
+																// onChange={handleChange}
 															/>
 															{errors.admissionNo && (
 																<p className="text-danger">
@@ -514,7 +540,10 @@ const UpdateAdmissionForm = () => {
 													{/* Student Type */}
 													<div className="col-sm-4">
 														<div className="form-group">
-															<label className="form-label">Student Type</label>
+															<label className="form-label">
+																Student Type
+																<span className="text-danger">*</span>
+															</label>
 															<Select
 																isSearchable={false}
 																options={studentOptions}
@@ -943,7 +972,7 @@ const UpdateAdmissionForm = () => {
 														<div className="col-sm-4">
 															<div className="form-group">
 																<label className="form-label">Caste</label>
-																<Select
+																{/* <Select
 																	isSearchable={false}
 																	options={casteOptions}
 																	className="custom-react-select"
@@ -958,6 +987,33 @@ const UpdateAdmissionForm = () => {
 																			caste: selectedOption.value,
 																		});
 																	}}
+																/> */}
+
+																<CreatableSelect
+																	isClearable
+																	placeholder=""
+																	options={casteOptions}
+																	className="custom-react-select"
+																	onChange={(selectedOption) => {
+																		handleDropdown("caste", selectedOption);
+																		setSelectedCaste(selectedOption);
+																	}}
+																	onCreateOption={(inputValue) => {
+																		const newValue = {
+																			value: inputValue,
+																			label: inputValue,
+																		};
+																		setCasteOptions([
+																			...casteOptions,
+																			newValue,
+																		]);
+																		handleDropdown("caste", newValue);
+																		setSelectedCaste(newValue);
+																	}}
+																	value={selectedCaste}
+																	noOptionsMessage={() => null}
+																	formatCreateLabel={() => undefined}
+																	promptTextCreator={() => false}
 																/>
 															</div>
 														</div>
@@ -971,7 +1027,7 @@ const UpdateAdmissionForm = () => {
 														<div className="col-sm-4">
 															<div className="form-group">
 																<label className="form-label">Religion</label>
-																<Select
+																{/* <Select
 																	isSearchable={false}
 																	options={religionOptions}
 																	className="custom-react-select"
@@ -986,6 +1042,33 @@ const UpdateAdmissionForm = () => {
 																			religion: selectedOption.value,
 																		});
 																	}}
+																/> */}
+
+																<CreatableSelect
+																	isClearable
+																	placeholder=""
+																	options={religionOptions}
+																	className="custom-react-select"
+																	onChange={(selectedOption) => {
+																		handleDropdown("religion", selectedOption);
+																		setSelectedReligion(selectedOption);
+																	}}
+																	onCreateOption={(inputValue) => {
+																		const newValue = {
+																			value: inputValue,
+																			label: inputValue,
+																		};
+																		setReligionOptions([
+																			...religionOptions,
+																			newValue,
+																		]);
+																		handleDropdown("religion", newValue);
+																		setSelectedReligion(newValue);
+																	}}
+																	value={selectedReligion}
+																	noOptionsMessage={() => null}
+																	formatCreateLabel={() => undefined}
+																	promptTextCreator={() => false}
 																/>
 															</div>
 														</div>
@@ -1118,12 +1201,6 @@ const UpdateAdmissionForm = () => {
 															</div>
 														</div>
 													)}
-
-													<div className="col-sm-12">
-														<h4 style={{ textAlign: "center" }}>
-															Previous Qualifications Details
-														</h4>
-													</div>
 
 													{/*Previous School name */}
 													{studentDetailsFields.find(
@@ -1270,12 +1347,6 @@ const UpdateAdmissionForm = () => {
 										<Accordion.Collapse eventKey="0">
 											<div className="accordion-body">
 												<div className="row">
-													<div className="col-sm-12">
-														<h4 style={{ textAlign: "center" }}>
-															Father's Details
-														</h4>
-													</div>
-
 													{/* Father name */}
 													{familyDetailsFields.find(
 														(row) =>
@@ -1313,7 +1384,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="fatherQualification"
 																>
-																	Qualification
+																	Father Qualification
 																</label>
 																<input
 																	placeholder="Enter qualification"
@@ -1339,7 +1410,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="fatherOccupation"
 																>
-																	Occupation
+																	Father Occupation
 																</label>
 																<input
 																	placeholder="Enter Occupation"
@@ -1387,7 +1458,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="fatherMobileNo"
 																>
-																	Mobile No
+																	Father Mobile No
 																</label>
 																<input
 																	placeholder="Enter Mobile no"
@@ -1417,7 +1488,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="fatherEmail"
 																>
-																	Email
+																	Father Email
 																</label>
 																<input
 																	placeholder="Enter Email"
@@ -1448,7 +1519,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="fatherIncome"
 																>
-																	Income
+																	Father Income
 																</label>
 																<input
 																	placeholder="Enter Income"
@@ -1484,15 +1555,14 @@ const UpdateAdmissionForm = () => {
 																	value={formData.fatherAadharNo}
 																	onChange={handleChange}
 																/>
+																{errors.fatherAadharNo && (
+																	<p className="text-danger">
+																		{errors.fatherAadharNo}
+																	</p>
+																)}
 															</div>
 														</div>
 													)}
-
-													<div className="col-sm-12">
-														<h4 style={{ textAlign: "center" }}>
-															Mother's Details
-														</h4>
-													</div>
 
 													{/* Mother name*/}
 													{familyDetailsFields.find(
@@ -1531,7 +1601,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="motherQualification"
 																>
-																	Qualification
+																	Mother Qualification
 																</label>
 																<input
 																	placeholder="Enter qualification"
@@ -1557,7 +1627,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="motherOccupation"
 																>
-																	Occupation
+																	Mother Occupation
 																</label>
 																<input
 																	placeholder="Enter Occupation"
@@ -1583,7 +1653,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="motherMobileNo"
 																>
-																	Mobile No
+																	Mother Mobile No
 																</label>
 																<input
 																	placeholder="Enter Mobile no"
@@ -1613,7 +1683,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="motherEmail"
 																>
-																	Email
+																	Mother Email
 																</label>
 																<input
 																	placeholder="Enter email"
@@ -1644,7 +1714,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-label"
 																	htmlFor="motherIncome"
 																>
-																	Income
+																	Mother Income
 																</label>
 																<input
 																	placeholder="Enter income"
@@ -1680,15 +1750,14 @@ const UpdateAdmissionForm = () => {
 																	value={formData.motherAadharNo}
 																	onChange={handleChange}
 																/>
+																{errors.motherAadharNo && (
+																	<p className="text-danger">
+																		{errors.motherAadharNo}
+																	</p>
+																)}
 															</div>
 														</div>
 													)}
-
-													<div className="col-sm-12">
-														<h4 style={{ textAlign: "center" }}>
-															Bank Account Details
-														</h4>
-													</div>
 
 													{/* Bank Name*/}
 													{familyDetailsFields.find(
@@ -1865,11 +1934,6 @@ const UpdateAdmissionForm = () => {
 										<Accordion.Collapse eventKey="0">
 											<div className="accordion-body">
 												<div className="row">
-													<div className="col-sm-12">
-														<h4 style={{ textAlign: "center" }}>
-															Student's Section
-														</h4>
-													</div>
 													{/* Student Photo*/}
 													{uploadDocuments.find(
 														(row) =>
@@ -2018,12 +2082,6 @@ const UpdateAdmissionForm = () => {
 															</div>
 														</div>
 													)}
-
-													<div className="col-sm-12">
-														<h4 style={{ textAlign: "center" }}>
-															Parent's Section
-														</h4>
-													</div>
 
 													{/* Father Photo*/}
 													{uploadDocuments.find(
