@@ -23,6 +23,7 @@ import {
 	getStudentType,
 	getStudentList,
 } from "../../../services/StudentService";
+import { ViewImage } from "./ViewImage";
 import { validationAdmissionSchema } from "./AdmissionSchema";
 
 const UpdateAdmissionForm = () => {
@@ -57,6 +58,14 @@ const UpdateAdmissionForm = () => {
 
 	const [errors, setErrors] = useState({});
 	const [submitting, setSubmitting] = useState(false);
+
+	const [documentModal, setDocumentModal] = useState(false);
+
+	const [modalContent, setModalContent] = useState({ imgSrc: "", name: "" });
+
+	const openModal = () => {
+		setDocumentModal(true);
+	};
 
 	const handleChange = (e) => {
 		setFormData({
@@ -1879,34 +1888,49 @@ const UpdateAdmissionForm = () => {
 													)}
 
 													{/* PAN Photo*/}
-													{/* {familyDetailsFields.find(
+													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Upload PAN Card" &&
 															row.status === "1"
-													) && ( */}
-													<div className="col-sm-4">
-														<div className="form-group fallback w-100">
-															<label
-																className="form-label"
-																htmlFor="uploadPanCard"
-															>
-																Upload Pan Card
-															</label>
-															<input
-																type="file"
-																className="form-control"
-																id="uploadPanCard"
-																data-default-file=""
-																onChange={handleFileChange}
-															/>
-															{errors.uploadPanCard && (
-																<p className="text-danger">
-																	{errors.uploadPanCard}
-																</p>
-															)}
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group fallback w-100">
+																<label
+																	className="form-label"
+																	htmlFor="uploadPanCard"
+																>
+																	Upload Pan Card
+																</label>
+																<i
+																	className="fa fa-eye"
+																	style={{
+																		fontSize: "14px",
+																		marginLeft: "0.5rem",
+																		cursor: "pointer",
+																	}}
+																	onClick={() => {
+																		openModal();
+																		setModalContent({
+																			src: formData.uploadPanCard,
+																			name: "Pan Card",
+																		});
+																	}}
+																/>
+																<input
+																	type="file"
+																	className="form-control"
+																	id="uploadPanCard"
+																	data-default-file=""
+																	onChange={handleFileChange}
+																/>
+																{errors.uploadPanCard && (
+																	<p className="text-danger">
+																		{errors.uploadPanCard}
+																	</p>
+																)}
+															</div>
 														</div>
-													</div>
-													{/* )} */}
+													)}
 												</div>
 											</div>
 										</Accordion.Collapse>
@@ -1940,6 +1964,21 @@ const UpdateAdmissionForm = () => {
 																>
 																	Student Photo
 																</label>
+																<i
+																	className="fa fa-eye"
+																	style={{
+																		fontSize: "14px",
+																		marginLeft: "0.5rem",
+																		cursor: "pointer",
+																	}}
+																	onClick={() => {
+																		openModal();
+																		setModalContent({
+																			src: formData.studentPhoto,
+																			name: "Student Photo",
+																		});
+																	}}
+																/>
 																<input
 																	type="file"
 																	className="form-control"
@@ -1964,6 +2003,21 @@ const UpdateAdmissionForm = () => {
 																>
 																	Aadhar Card
 																</label>
+																<i
+																	className="fa fa-eye"
+																	style={{
+																		fontSize: "14px",
+																		marginLeft: "0.5rem",
+																		cursor: "pointer",
+																	}}
+																	onClick={() => {
+																		openModal();
+																		setModalContent({
+																			src: formData.aadharCard,
+																			name: "Aadhar Card",
+																		});
+																	}}
+																/>
 																<input
 																	type="file"
 																	className="form-control"
@@ -1989,6 +2043,21 @@ const UpdateAdmissionForm = () => {
 																>
 																	Birth Certificate
 																</label>
+																<i
+																	className="fa fa-eye"
+																	style={{
+																		fontSize: "14px",
+																		marginLeft: "0.5rem",
+																		cursor: "pointer",
+																	}}
+																	onClick={() => {
+																		openModal();
+																		setModalContent({
+																			src: formData.birthCertificate,
+																			name: "Birth Certificate",
+																		});
+																	}}
+																/>
 																<input
 																	type="file"
 																	className="form-control"
@@ -2014,6 +2083,21 @@ const UpdateAdmissionForm = () => {
 																>
 																	Transfer Certificate
 																</label>
+																<i
+																	className="fa fa-eye"
+																	style={{
+																		fontSize: "14px",
+																		marginLeft: "0.5rem",
+																		cursor: "pointer",
+																	}}
+																	onClick={() => {
+																		openModal();
+																		setModalContent({
+																			src: formData.transferCertificate,
+																			name: "Transfer Certificate",
+																		});
+																	}}
+																/>
 																<input
 																	type="file"
 																	className="form-control"
@@ -2039,6 +2123,21 @@ const UpdateAdmissionForm = () => {
 																>
 																	Caste Certificate
 																</label>
+																<i
+																	className="fa fa-eye"
+																	style={{
+																		fontSize: "14px",
+																		marginLeft: "0.5rem",
+																		cursor: "pointer",
+																	}}
+																	onClick={() => {
+																		openModal();
+																		setModalContent({
+																			src: formData.casteCertificate,
+																			name: "Caste Certificate",
+																		});
+																	}}
+																/>
 																<input
 																	type="file"
 																	className="form-control"
@@ -2064,6 +2163,21 @@ const UpdateAdmissionForm = () => {
 																>
 																	Character Certificate
 																</label>
+																<i
+																	className="fa fa-eye"
+																	style={{
+																		fontSize: "14px",
+																		marginLeft: "0.5rem",
+																		cursor: "pointer",
+																	}}
+																	onClick={() => {
+																		openModal();
+																		setModalContent({
+																			src: formData.characterCertificate,
+																			name: "Character Certificate",
+																		});
+																	}}
+																/>
 																<input
 																	type="file"
 																	className="form-control"
@@ -2088,6 +2202,21 @@ const UpdateAdmissionForm = () => {
 																>
 																	Father Photo
 																</label>
+																<i
+																	className="fa fa-eye"
+																	style={{
+																		fontSize: "14px",
+																		marginLeft: "0.5rem",
+																		cursor: "pointer",
+																	}}
+																	onClick={() => {
+																		openModal();
+																		setModalContent({
+																			src: formData.fatherPhoto,
+																			name: "Father Photo",
+																		});
+																	}}
+																/>
 																<input
 																	type="file"
 																	className="form-control"
@@ -2113,6 +2242,21 @@ const UpdateAdmissionForm = () => {
 																>
 																	Father Aadhar Card
 																</label>
+																<i
+																	className="fa fa-eye"
+																	style={{
+																		fontSize: "14px",
+																		marginLeft: "0.5rem",
+																		cursor: "pointer",
+																	}}
+																	onClick={() => {
+																		openModal();
+																		setModalContent({
+																			src: formData.fatherAadharCard,
+																			name: "Father Aadhar Card",
+																		});
+																	}}
+																/>
 																<input
 																	type="file"
 																	className="form-control"
@@ -2137,6 +2281,21 @@ const UpdateAdmissionForm = () => {
 																>
 																	Mother Photo
 																</label>
+																<i
+																	className="fa fa-eye"
+																	style={{
+																		fontSize: "14px",
+																		marginLeft: "0.5rem",
+																		cursor: "pointer",
+																	}}
+																	onClick={() => {
+																		openModal();
+																		setModalContent({
+																			src: formData.motherPhoto,
+																			name: "Mother Photo",
+																		});
+																	}}
+																/>
 																<input
 																	type="file"
 																	className="form-control"
@@ -2162,6 +2321,21 @@ const UpdateAdmissionForm = () => {
 																>
 																	Mother Aadhar Card
 																</label>
+																<i
+																	className="fa fa-eye"
+																	style={{
+																		fontSize: "14px",
+																		marginLeft: "0.5rem",
+																		cursor: "pointer",
+																	}}
+																	onClick={() => {
+																		openModal();
+																		setModalContent({
+																			src: formData.motherAadharCard,
+																			name: "Mother Aadhar Card",
+																		});
+																	}}
+																/>
 																<input
 																	type="file"
 																	className="form-control"
@@ -2200,6 +2374,12 @@ const UpdateAdmissionForm = () => {
 										Cancel
 									</button>
 								</div>
+
+								<ViewImage
+									documentModal={documentModal}
+									setDocumentModal={setDocumentModal}
+									data={modalContent}
+								/>
 							</form>
 						</div>
 					</div>

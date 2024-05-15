@@ -1819,34 +1819,34 @@ const AdmissionForm = () => {
 													)}
 
 													{/* PAN Photo*/}
-													{/* {familyDetailsFields.find(
+													{familyDetailsFields.find(
 														(row) =>
 															row.field === "Upload PAN Card" &&
 															row.status === "1"
-													) && ( */}
-													<div className="col-sm-4">
-														<div className="form-group fallback w-100">
-															<label
-																className="form-label"
-																htmlFor="uploadPanCard"
-															>
-																Upload Pan Card
-															</label>
-															<input
-																type="file"
-																className="form-control"
-																id="uploadPanCard"
-																data-default-file=""
-																onChange={handleFileChange}
-															/>
-															{errors.uploadPanCard && (
-																<p className="text-danger">
-																	{errors.uploadPanCard}
-																</p>
-															)}
+													) && (
+														<div className="col-sm-4">
+															<div className="form-group fallback w-100">
+																<label
+																	className="form-label"
+																	htmlFor="uploadPanCard"
+																>
+																	Upload Pan Card
+																</label>
+																<input
+																	type="file"
+																	className="form-control"
+																	id="uploadPanCard"
+																	data-default-file=""
+																	onChange={handleFileChange}
+																/>
+																{errors.uploadPanCard && (
+																	<p className="text-danger">
+																		{errors.uploadPanCard}
+																	</p>
+																)}
+															</div>
 														</div>
-													</div>
-													{/* )} */}
+													)}
 												</div>
 											</div>
 										</Accordion.Collapse>

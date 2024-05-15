@@ -154,7 +154,7 @@ const TransportSetting = () => {
 											<thead className="cus_stickythead">
 												<tr>
 													<th>Sno.</th>
-													<th>Pickup point</th>
+													<th>Transport Details</th>
 													<th>Actions</th>
 												</tr>
 											</thead>

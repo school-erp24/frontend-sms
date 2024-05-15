@@ -289,6 +289,7 @@ const ClassSetting = () => {
 															type="text"
 															className="form-control"
 															required
+															readOnly
 															defaultValue={
 																selectedClass ? selectedClass.class : ""
 															}
