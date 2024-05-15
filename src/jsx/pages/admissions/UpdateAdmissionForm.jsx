@@ -228,7 +228,7 @@ const UpdateAdmissionForm = () => {
 					};
 
 					setAdmissionDate(new Date(rowData.admissionDate));
-					setDOB(rowData.DOB);
+					setDOB(new Date(rowData.DOB));
 					setSelectedClass(rowData.className);
 					setSelectedSection(rowData.sectionName);
 					setSelectedStudentType(rowData.studentType);
@@ -272,10 +272,6 @@ const UpdateAdmissionForm = () => {
 	useEffect(() => {
 		console.log(formData);
 	}, [formData]);
-
-	useEffect(() => {
-		console.log(DOB);
-	}, [DOB]);
 
 	return (
 		<>
@@ -427,6 +423,36 @@ const UpdateAdmissionForm = () => {
 															</div>
 														</div>
 													)}
+
+													{/* DOB */}
+													<div className="col-sm-4">
+														<div className="form-group">
+															<label
+																className="form-label"
+																htmlFor="datepicker1"
+															>
+																Date of Birth
+																<span className="text-danger">*</span>
+															</label>
+															<div>
+																<DatePicker
+																	selected={DOB}
+																	onChange={(date) => {
+																		setDOB(date);
+																		setFormData((prevState) => ({
+																			...prevState,
+																			DOB: moment
+																				.utc(DOB)
+																				.local()
+																				.format("YYYY-MM-DD HH:mm:ss"),
+																		}));
+																	}}
+																	className="form-control"
+																	dateFormat="dd/MM/yy"
+																/>
+															</div>
+														</div>
+													</div>
 
 													<div className="col-sm-4">
 														<div className="form-group">
@@ -837,40 +863,6 @@ const UpdateAdmissionForm = () => {
 																			Female
 																		</label>
 																	</div>
-																</div>
-															</div>
-														</div>
-													)}
-
-													{/* DOB */}
-													{studentDetailsFields.find(
-														(row) =>
-															row.field === "D.O.B." && row.status === "1"
-													) && (
-														<div className="col-sm-4">
-															<div className="form-group">
-																<label
-																	className="form-label"
-																	htmlFor="datepicker1"
-																>
-																	Date of Birth
-																</label>
-																<div>
-																	<DatePicker
-																		selected={DOB}
-																		onChange={(date) => {
-																			setDOB(date);
-																			setFormData((prevState) => ({
-																				...prevState,
-																				DOB: moment
-																					.utc(DOB)
-																					.local()
-																					.format("YYYY-MM-DD HH:mm:ss"),
-																			}));
-																		}}
-																		className="form-control"
-																		dateFormat="dd/MM/yy"
-																	/>
 																</div>
 															</div>
 														</div>

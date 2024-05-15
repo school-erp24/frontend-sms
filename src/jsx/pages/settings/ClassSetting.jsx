@@ -229,7 +229,7 @@ const ClassSetting = () => {
 												{classSettings.map((section, index) => (
 													<tr key={section.id}>
 														<td>{section.class}</td>
-														<td>{section.activeSections.join(", ")}</td>
+														<td>{section.activeSections?.join(", ")}</td>
 
 														<td>
 															<span

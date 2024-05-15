@@ -158,6 +158,7 @@ const AdmissionList = () => {
 				setTableData(updatedRows);
 				setCurrentPage(resp.data.data.currentPno);
 				setFilterCriteria((prevCriteria) => null);
+				setSearch("");
 			})
 			.catch((error) => {
 				console.error("Error fetching enquiries:", error);
@@ -288,7 +289,12 @@ const AdmissionList = () => {
 										<div className="cus_flexcg8">
 											<label>
 												Search :
-												<input type="search" placeholder="" onChange={Search} />
+												<input
+													type="search"
+													placeholder=""
+													value={search}
+													onChange={Search}
+												/>
 											</label>
 										</div>
 									</div>

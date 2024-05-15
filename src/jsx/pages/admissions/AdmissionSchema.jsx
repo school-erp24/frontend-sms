@@ -7,7 +7,7 @@ export const validationAdmissionSchema = Yup.object({
 
 	session: Yup.string().required("Session is required"),
 
-	admissionNo: Yup.string().required("Field is required"),
+	// admissionNo: Yup.string().required("Field is required"),
 	// .matches(/^[0-9]+$/, "Admission no should have digits"), // Maybe removed
 
 	firstName: Yup.string()

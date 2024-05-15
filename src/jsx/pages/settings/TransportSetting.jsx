@@ -162,8 +162,7 @@ const TransportSetting = () => {
 												{transportSettings.map((transport, index) => (
 													<tr key={transport.id}>
 														<td>{index + 1}</td>
-														{/* <td>{transport.transport}</td> */}
-														<td>{transport.pickUp}</td>
+														<td>{transport.transport}</td>
 
 														<td>
 															<span

@@ -13,9 +13,9 @@ import { toast } from "react-toastify";
 import logoFull from "../../../assets/images/logo-full.png";
 
 function Login() {
-	const [email, setEmail] = useState("pms@gmail.com");
+	const [email, setEmail] = useState("gfschool@gmail.com");
 
-	const [pwd, setPwd] = useState("Pmschool@1");
+	const [pwd, setPwd] = useState("Gfschool@1");
 
 	// const [email, setEmail] = useState("");
 
