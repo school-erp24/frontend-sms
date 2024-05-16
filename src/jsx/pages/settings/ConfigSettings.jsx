@@ -16,19 +16,21 @@ const ConfigSetting = () => {
 
 	const handleAddConfig = (e) => {
 		e.preventDefault();
-		if (admissionNoSeq !== "" && rollNoSeq !== "") {
-			toast.error("Config already exists");
-			return;
-		}
 
 		if (admissionNoSeq && rollNoSeq) {
-			createConfigSettings({ admissionNoSeq, rollNoSeq }).then((res) => {
-				console.log(res);
-				getConfigData();
-			});
-
-			// setAdmissionNoSeq("");
-			// setRollNoSeq("");
+			createConfigSettings({ admissionNoSeq, rollNoSeq })
+				.then((res) => {
+					console.log(res);
+					getConfigData();
+					toast.success("Config added");
+				})
+				.catch((error) => {
+					if (error.response && error.response.status === 422) {
+						toast.error("Config already exists");
+					} else {
+						console.error("Error creating config settings:", error);
+					}
+				});
 		}
 	};
 
@@ -72,7 +74,6 @@ const ConfigSetting = () => {
 													placeholder=""
 													type="text"
 													className="form-control"
-													required
 													value={admissionNoSeq}
 													onChange={(e) => setAdmissionNoSeq(e.target.value)}
 													readOnly={configSettings[0]?.exist === 1}
@@ -89,7 +90,6 @@ const ConfigSetting = () => {
 													placeholder=""
 													type="text"
 													className="form-control"
-													required
 													value={rollNoSeq}
 													onChange={(e) => setRollNoSeq(e.target.value)}
 													readOnly={configSettings[1]?.exist === 1}
