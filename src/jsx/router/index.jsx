@@ -37,6 +37,7 @@ import ClassSetting from "../pages/settings/ClassSetting";
 import AdmissionSetting from "../pages/settings/AdmissionSetting";
 import StudentSetting from "../pages/settings/StudentSetting";
 import TransportSetting from "../pages/settings/TransportSetting";
+import ConfigSetting from "../pages/settings/ConfigSettings";
 
 /// App
 import AppProfile from "./../pages/apps/AppProfile";
@@ -131,6 +132,7 @@ const Markup = () => {
 		{ url: "admission-setting", component: <AdmissionSetting /> },
 		{ url: "student-setting", component: <StudentSetting /> },
 		{ url: "transport-setting", component: <TransportSetting /> },
+		{ url: "config-setting", component: <ConfigSetting /> },
 
 		/// Apps
 		{ url: "app-profile", component: <AppProfile /> },

@@ -400,6 +400,7 @@ const UpdateAdmissionForm = () => {
 																className="form-control"
 																value={formData.firstName}
 																onChange={handleChange}
+																maxLength="20"
 															/>
 															{errors.firstName && (
 																<p className="text-danger">
@@ -428,6 +429,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-control"
 																	value={formData.lastName}
 																	onChange={handleChange}
+																	maxLength="20"
 																/>
 															</div>
 														</div>
@@ -563,6 +565,7 @@ const UpdateAdmissionForm = () => {
 																className="form-control"
 																value={formData.fatherName}
 																onChange={handleChange}
+																maxLength="20"
 															/>
 															{errors.fatherName && (
 																<p className="text-danger">
@@ -607,7 +610,7 @@ const UpdateAdmissionForm = () => {
 													<div className="col-sm-4">
 														<div className="form-group">
 															<label className="form-label" htmlFor="staffNo">
-																Staff No.
+																Staff Contact No.
 															</label>
 															<input
 																placeholder="Enter Staff no"
@@ -973,22 +976,6 @@ const UpdateAdmissionForm = () => {
 														<div className="col-sm-4">
 															<div className="form-group">
 																<label className="form-label">Caste</label>
-																{/* <Select
-																	isSearchable={false}
-																	options={casteOptions}
-																	className="custom-react-select"
-																	value={{
-																		label: selectedCaste,
-																		value: selectedCaste,
-																	}}
-																	onChange={(selectedOption) => {
-																		setSelectedCaste(selectedOption.value);
-																		setFormData({
-																			...formData,
-																			caste: selectedOption.value,
-																		});
-																	}}
-																/> */}
 
 																<CreatableSelect
 																	isClearable
@@ -1012,7 +999,7 @@ const UpdateAdmissionForm = () => {
 																		setSelectedCaste(newValue);
 																	}}
 																	value={selectedCaste}
-																	noOptionsMessage={() => null}
+																	// noOptionsMessage={() => null}
 																	formatCreateLabel={() => undefined}
 																	promptTextCreator={() => false}
 																/>
@@ -1028,22 +1015,6 @@ const UpdateAdmissionForm = () => {
 														<div className="col-sm-4">
 															<div className="form-group">
 																<label className="form-label">Religion</label>
-																{/* <Select
-																	isSearchable={false}
-																	options={religionOptions}
-																	className="custom-react-select"
-																	value={{
-																		label: selectedReligion,
-																		value: selectedReligion,
-																	}}
-																	onChange={(selectedOption) => {
-																		setSelectedReligion(selectedOption.value);
-																		setFormData({
-																			...formData,
-																			religion: selectedOption.value,
-																		});
-																	}}
-																/> */}
 
 																<CreatableSelect
 																	isClearable
@@ -1067,7 +1038,7 @@ const UpdateAdmissionForm = () => {
 																		setSelectedReligion(newValue);
 																	}}
 																	value={selectedReligion}
-																	noOptionsMessage={() => null}
+																	// noOptionsMessage={() => null}
 																	formatCreateLabel={() => undefined}
 																	promptTextCreator={() => false}
 																/>
@@ -1368,6 +1339,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-control"
 																	value={formData.fatherName}
 																	onChange={handleChange}
+																	maxLength="20"
 																/>
 															</div>
 														</div>
@@ -1468,6 +1440,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-control"
 																	value={formData.fatherMobileNo}
 																	onChange={handleChange}
+																	maxLength="10"
 																/>
 																{errors.fatherMobileNo && (
 																	<p className="text-danger">
@@ -1555,6 +1528,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-control"
 																	value={formData.fatherAadharNo}
 																	onChange={handleChange}
+																	maxLength="12"
 																/>
 																{errors.fatherAadharNo && (
 																	<p className="text-danger">
@@ -1585,6 +1559,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-control"
 																	value={formData.motherName}
 																	onChange={handleChange}
+																	maxLength="20"
 																/>
 															</div>
 														</div>
@@ -1663,6 +1638,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-control"
 																	value={formData.motherMobileNo}
 																	onChange={handleChange}
+																	maxLength="10"
 																/>
 																{errors.motherMobileNo && (
 																	<p className="text-danger">
@@ -1750,6 +1726,7 @@ const UpdateAdmissionForm = () => {
 																	className="form-control"
 																	value={formData.motherAadharNo}
 																	onChange={handleChange}
+																	maxLength="12"
 																/>
 																{errors.motherAadharNo && (
 																	<p className="text-danger">
@@ -1907,6 +1884,10 @@ const UpdateAdmissionForm = () => {
 																		fontSize: "14px",
 																		marginLeft: "0.5rem",
 																		cursor: "pointer",
+																		color:
+																			formData.uploadPanCard !== ""
+																				? "#6a73fa"
+																				: "#888888",
 																	}}
 																	onClick={() => {
 																		openModal();
@@ -1970,6 +1951,10 @@ const UpdateAdmissionForm = () => {
 																		fontSize: "14px",
 																		marginLeft: "0.5rem",
 																		cursor: "pointer",
+																		color:
+																			formData.studentPhoto !== ""
+																				? "#6a73fa"
+																				: "#888888",
 																	}}
 																	onClick={() => {
 																		openModal();
@@ -2009,6 +1994,10 @@ const UpdateAdmissionForm = () => {
 																		fontSize: "14px",
 																		marginLeft: "0.5rem",
 																		cursor: "pointer",
+																		color:
+																			formData.aadharCard !== ""
+																				? "#6a73fa"
+																				: "#888888",
 																	}}
 																	onClick={() => {
 																		openModal();
@@ -2049,6 +2038,10 @@ const UpdateAdmissionForm = () => {
 																		fontSize: "14px",
 																		marginLeft: "0.5rem",
 																		cursor: "pointer",
+																		color:
+																			formData.birthCertificate !== ""
+																				? "#6a73fa"
+																				: "#888888",
 																	}}
 																	onClick={() => {
 																		openModal();
@@ -2089,6 +2082,10 @@ const UpdateAdmissionForm = () => {
 																		fontSize: "14px",
 																		marginLeft: "0.5rem",
 																		cursor: "pointer",
+																		color:
+																			formData.transferCertificate !== ""
+																				? "#6a73fa"
+																				: "#888888",
 																	}}
 																	onClick={() => {
 																		openModal();
@@ -2129,6 +2126,10 @@ const UpdateAdmissionForm = () => {
 																		fontSize: "14px",
 																		marginLeft: "0.5rem",
 																		cursor: "pointer",
+																		color:
+																			formData.casteCertificate !== ""
+																				? "#6a73fa"
+																				: "#888888",
 																	}}
 																	onClick={() => {
 																		openModal();
@@ -2169,6 +2170,10 @@ const UpdateAdmissionForm = () => {
 																		fontSize: "14px",
 																		marginLeft: "0.5rem",
 																		cursor: "pointer",
+																		color:
+																			formData.characterCertificate !== ""
+																				? "#6a73fa"
+																				: "#888888",
 																	}}
 																	onClick={() => {
 																		openModal();
@@ -2208,6 +2213,10 @@ const UpdateAdmissionForm = () => {
 																		fontSize: "14px",
 																		marginLeft: "0.5rem",
 																		cursor: "pointer",
+																		color:
+																			formData.fatherPhoto !== ""
+																				? "#6a73fa"
+																				: "#888888",
 																	}}
 																	onClick={() => {
 																		openModal();
@@ -2248,6 +2257,10 @@ const UpdateAdmissionForm = () => {
 																		fontSize: "14px",
 																		marginLeft: "0.5rem",
 																		cursor: "pointer",
+																		color:
+																			formData.fatherAadharCard !== ""
+																				? "#6a73fa"
+																				: "#888888",
 																	}}
 																	onClick={() => {
 																		openModal();
@@ -2287,6 +2300,10 @@ const UpdateAdmissionForm = () => {
 																		fontSize: "14px",
 																		marginLeft: "0.5rem",
 																		cursor: "pointer",
+																		color:
+																			formData.motherPhoto !== ""
+																				? "#6a73fa"
+																				: "#888888",
 																	}}
 																	onClick={() => {
 																		openModal();
@@ -2327,6 +2344,10 @@ const UpdateAdmissionForm = () => {
 																		fontSize: "14px",
 																		marginLeft: "0.5rem",
 																		cursor: "pointer",
+																		color:
+																			formData.motherAadharCard !== ""
+																				? "#6a73fa"
+																				: "#888888",
 																	}}
 																	onClick={() => {
 																		openModal();

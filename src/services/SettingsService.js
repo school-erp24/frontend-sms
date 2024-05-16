@@ -21,3 +21,11 @@ export function createClasses(classes) {
 export function updateClasses(classes) {
 	return AxiosInstance.post("/school/class/update", classes);
 }
+
+export function getConfigSettings() {
+	return AxiosInstance.get("/school/admin/settings/get");
+}
+
+export function createConfigSettings(config) {
+	return AxiosInstance.post("/school/admin/settings/create", config);
+}

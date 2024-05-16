@@ -170,6 +170,10 @@ export const MenuList = [
 				title: "Transport Setting",
 				to: "transport-setting",
 			},
+			{
+				title: "Config Setting",
+				to: "config-setting",
+			},
 		],
 	},
 ];
