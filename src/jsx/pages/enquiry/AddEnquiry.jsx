@@ -14,6 +14,7 @@ import {
 import { getClass } from "../../../services/CommonService";
 import { validationEnquirySchema } from "./EnquirySchema";
 import PageTitle from "../../layouts/PageTitle";
+import { toast } from "react-toastify";
 
 const AddEnquiry = () => {
 	const initialState = {
@@ -101,6 +102,14 @@ const AddEnquiry = () => {
 	};
 
 	const handleSubmit = (flag) => {
+		if (flag === "no") {
+			//setFormData(initialState);
+			setEnquiryModal(false);
+			//navigate("/enquiry-list");
+			//localStorage.removeItem("enquiry-form");
+			setErrors({});
+			return
+		}
 		createEnquiry({
 			...formData,
 			enquiryDate: moment
@@ -126,17 +135,11 @@ const AddEnquiry = () => {
 						window.scrollTo(0, 0);
 						setErrors({});
 					}
-					if (flag === "no") {
-						setFormData(initialState);
-						setEnquiryModal(false);
-						navigate("/enquiry-list");
-						localStorage.removeItem("enquiry-form");
-						setErrors({});
-					}
 				}
 			})
 			.catch((error) => {
 				console.error("Error fetching enquiries:", error);
+				toast.error(error.response.data.message || "Something went wrong")
 			});
 	};
 
