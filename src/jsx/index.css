@@ -1,3 +1,9 @@
+.custom-react-select input {
+  text-transform: uppercase;
+}
+
+
+
 .testimonial-one img {
   display: unset !important;
   width: 90%;
