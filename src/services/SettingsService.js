@@ -26,6 +26,6 @@ export function getConfigSettings() {
 	return AxiosInstance.get("/school/admin/settings/get");
 }
 
-export function createConfigSettings(config) {
-	return AxiosInstance.post("/school/admin/settings/create", config);
+export function updateConfigSettings(config) {
+	return AxiosInstance.post("/school/admin/settings/update", config);
 }
