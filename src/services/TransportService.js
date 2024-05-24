@@ -11,3 +11,6 @@ export function createTransportSetting(transport) {
 export function updateTransportSetting(transport) {
 	return AxiosInstance.post("/school/transport/update", transport);
 }
+export function deleteTransport(id) {
+	return AxiosInstance.post("/school/transport/delete", id);
+}

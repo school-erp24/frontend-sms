@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 import {
 	getConfigSettings,
-	createConfigSettings,
+	updateConfigSettings,
 } from "../../../services/SettingsService";
 import PageTitle from "../../layouts/PageTitle";
 
@@ -14,19 +14,19 @@ const ConfigSetting = () => {
 	const [admissionNoSeq, setAdmissionNoSeq] = useState("");
 	const [rollNoSeq, setRollNoSeq] = useState("");
 
-	const handleAddConfig = (e) => {
+	const handleUpdateConfig = (e) => {
 		e.preventDefault();
 
 		if (admissionNoSeq && rollNoSeq) {
-			createConfigSettings({ admissionNoSeq, rollNoSeq })
+			updateConfigSettings({ admissionNoSeq, rollNoSeq })
 				.then((res) => {
 					console.log(res);
 					getConfigData();
-					toast.success("Config added");
+					toast.success("Config updated");
 				})
 				.catch((error) => {
 					if (error.response && error.response.status === 422) {
-						toast.error("Config already exists");
+						toast.error("Students exist");
 					} else {
 						console.error("Error creating config settings:", error);
 					}
@@ -39,8 +39,7 @@ const ConfigSetting = () => {
 			.then((resp) => {
 				const rowData = resp.data.data;
 
-				console.log(rowData);
-				setConfigSettings(rowData);
+				// setConfigSettings(rowData);
 				if (rowData.length > 0) {
 					setAdmissionNoSeq(rowData[0].admissionNoSeq);
 					setRollNoSeq(rowData[1].rollNoSeq);
@@ -76,7 +75,6 @@ const ConfigSetting = () => {
 													className="form-control"
 													value={admissionNoSeq}
 													onChange={(e) => setAdmissionNoSeq(e.target.value)}
-													readOnly={configSettings[0]?.exist === 1}
 												/>
 											</div>
 										</div>
@@ -92,7 +90,6 @@ const ConfigSetting = () => {
 													className="form-control"
 													value={rollNoSeq}
 													onChange={(e) => setRollNoSeq(e.target.value)}
-													readOnly={configSettings[1]?.exist === 1}
 												/>
 											</div>
 										</div>
@@ -100,7 +97,7 @@ const ConfigSetting = () => {
 								</form>
 
 								<Link
-									onClick={handleAddConfig}
+									onClick={handleUpdateConfig}
 									className="btn btn-primary"
 									style={{
 										width: "max-content",
@@ -110,7 +107,7 @@ const ConfigSetting = () => {
 										border: "transparent",
 									}}
 								>
-									Add
+									Update
 								</Link>
 							</div>
 						</div>

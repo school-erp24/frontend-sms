@@ -34,6 +34,10 @@ export function getStudentType() {
 	return AxiosInstance.get("/school/student-type/get");
 }
 
+export function deleteStudentType(studentId) {
+	return AxiosInstance.post("/school/student-type/delete", studentId);
+}
+
 export function getStudentList(params) {
 	return AxiosInstance.get("/school/student/get", {
 		params: params,

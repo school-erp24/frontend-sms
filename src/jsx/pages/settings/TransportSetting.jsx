@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
 
-import {
-	createStudentType,
-	getStudentType,
-	updateStudentType,
-} from "../../../services/StudentService";
 import {
 	getTransportList,
 	createTransportSetting,
 	updateTransportSetting,
+	deleteTransport,
 } from "../../../services/TransportService";
 import PageTitle from "../../layouts/PageTitle";
 
@@ -20,9 +17,11 @@ const TransportSetting = () => {
 	const [pickUp, setPickUp] = useState("");
 	const [distance, setDistance] = useState("");
 	const [amount, setAmount] = useState("");
+	const [transportId, setTransportId] = useState("");
 
 	const [selectedTransport, setSelectedTransport] = useState({});
 	const [updateModal, setUpdateModal] = useState(false);
+	const [confirmModal, setConfirmModal] = useState(false);
 
 	const handleAddSection = (e) => {
 		e.preventDefault();
@@ -61,6 +60,19 @@ const TransportSetting = () => {
 			.catch((error) => {
 				console.error("Error fetching classes:", error);
 				setUpdateModal(false);
+			});
+	};
+
+	const deleteTransportData = () => {
+		deleteTransport({ id: transportId })
+			.then((resp) => {
+				toast.success("Data deleted");
+				setConfirmModal(false);
+				setTransportId("");
+				getTransportData();
+			})
+			.catch((error) => {
+				console.error("Error fetching classes:", error);
 			});
 	};
 
@@ -179,6 +191,20 @@ const TransportSetting = () => {
 															>
 																<i className="fa fa-pencil" />
 															</span>
+
+															<span
+																className="btn btn-xs sharp btn-danger me-1"
+																style={{
+																	backgroundColor: "white",
+																	color: "#ff1616",
+																}}
+																onClick={() => {
+																	setTransportId(transport.id);
+																	setConfirmModal(true);
+																}}
+															>
+																<i className="fa-regular fa-trash-can"></i>
+															</span>
 														</td>
 													</tr>
 												))}
@@ -294,6 +320,45 @@ const TransportSetting = () => {
 											}}
 										>
 											Submit
+										</Button>
+									</Modal.Footer>
+								</Modal>
+
+								<Modal
+									className="fade"
+									show={confirmModal}
+									onHide={setConfirmModal}
+									centered
+									size="md"
+								>
+									<Modal.Header>
+										<Modal.Title>Confirm</Modal.Title>
+										<Button
+											variant=""
+											className="btn-close"
+											onClick={() => setConfirmModal(false)}
+										></Button>
+									</Modal.Header>
+									<Modal.Body>
+										<p>Delete Transport Details?</p>
+									</Modal.Body>
+									<Modal.Footer>
+										<Button
+											onClick={() => {
+												setConfirmModal(false);
+												setTransportId("");
+											}}
+											variant="danger light"
+										>
+											No
+										</Button>
+										<Button
+											variant="primary"
+											onClick={() => {
+												deleteTransportData();
+											}}
+										>
+											Yes
 										</Button>
 									</Modal.Footer>
 								</Modal>

@@ -72,15 +72,22 @@ const AdmissionForm = () => {
 
 	const handleFileChange = (e) => {
 		const file = e.target.files[0];
-		new Compressor(file, {
-			quality: 0.8, // 0.6 can also be used
-			success: (compressedFile) => {
-				setFormData({
-					...formData,
-					[e.target.id]: compressedFile,
-				});
-			},
-		});
+		if (!file) {
+			setFormData({
+				...formData,
+				[e.target.id]: "",
+			});
+		} else {
+			new Compressor(file, {
+				quality: 0.8, // 0.6 can also be used
+				success: (compressedFile) => {
+					setFormData({
+						...formData,
+						[e.target.id]: compressedFile,
+					});
+				},
+			});
+		}
 	};
 
 	const handleGetSections = (id) => {

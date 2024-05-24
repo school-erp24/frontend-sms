@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 import {
 	createStudentType,
 	getStudentType,
 	updateStudentType,
+	deleteStudentType,
 } from "../../../services/StudentService";
 import PageTitle from "../../layouts/PageTitle";
 
@@ -14,7 +16,9 @@ const StudentSetting = () => {
 
 	const [studentType, setStudentType] = useState("");
 	const [selectedStudentType, setSelectedStudentType] = useState({});
+	const [studentId, setStudentId] = useState("");
 	const [updateModal, setUpdateModal] = useState(false);
+	const [confirmModal, setConfirmModal] = useState(false);
 
 	const handleAddSection = (e) => {
 		e.preventDefault();
@@ -35,6 +39,19 @@ const StudentSetting = () => {
 
 				console.log(rowData);
 				setStudentTypeSettings(rowData);
+			})
+			.catch((error) => {
+				console.error("Error fetching classes:", error);
+			});
+	};
+
+	const deleteStudentTypeData = () => {
+		deleteStudentType({ id: studentId })
+			.then((resp) => {
+				toast.success("Data deleted");
+				setConfirmModal(false);
+				setStudentId("");
+				getStudentTypeData();
 			})
 			.catch((error) => {
 				console.error("Error fetching classes:", error);
@@ -136,6 +153,19 @@ const StudentSetting = () => {
 															>
 																<i className="fa fa-pencil" />
 															</span>
+															<span
+																className="btn btn-xs sharp btn-danger me-1"
+																style={{
+																	backgroundColor: "white",
+																	color: "#ff1616",
+																}}
+																onClick={() => {
+																	setStudentId(student.id);
+																	setConfirmModal(true);
+																}}
+															>
+																<i className="fa-regular fa-trash-can"></i>
+															</span>
 														</td>
 													</tr>
 												))}
@@ -209,6 +239,45 @@ const StudentSetting = () => {
 											}}
 										>
 											Submit
+										</Button>
+									</Modal.Footer>
+								</Modal>
+
+								<Modal
+									className="fade"
+									show={confirmModal}
+									onHide={setConfirmModal}
+									centered
+									size="md"
+								>
+									<Modal.Header>
+										<Modal.Title>Confirm</Modal.Title>
+										<Button
+											variant=""
+											className="btn-close"
+											onClick={() => setConfirmModal(false)}
+										></Button>
+									</Modal.Header>
+									<Modal.Body>
+										<p>Delete Student type?</p>
+									</Modal.Body>
+									<Modal.Footer>
+										<Button
+											onClick={() => {
+												setConfirmModal(false);
+												setStudentId("");
+											}}
+											variant="danger light"
+										>
+											No
+										</Button>
+										<Button
+											variant="primary"
+											onClick={() => {
+												deleteStudentTypeData();
+											}}
+										>
+											Yes
 										</Button>
 									</Modal.Footer>
 								</Modal>
