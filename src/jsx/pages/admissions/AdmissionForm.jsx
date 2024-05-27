@@ -18,6 +18,7 @@ import {
 	getCaste,
 	getReligion,
 } from "../../../services/CommonService";
+import { getLatestSession } from "../../../services/SettingsService";
 import { getTransportList } from "../../../services/TransportService";
 import {
 	postAdmissionForm,
@@ -150,6 +151,21 @@ const AdmissionForm = () => {
 			setSubmitting(false);
 		}
 	};
+
+	useEffect(() => {
+		getLatestSession()
+			.then((resp) => {
+				const sessionData = resp.data.data[0].session;
+
+				setFormData({
+					...formData,
+					session: sessionData ? sessionData : "",
+				});
+			})
+			.catch((error) => {
+				console.error("Error fetching enquiries:", error);
+			});
+	}, []);
 
 	useEffect(() => {
 		getAdmissionSetting()

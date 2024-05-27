@@ -174,6 +174,11 @@ export const MenuList = [
 				title: "Config Setting",
 				to: "config-setting",
 			},
+
+			{
+				title: "Session Setting",
+				to: "session-setting",
+			},
 		],
 	},
 ];

@@ -29,3 +29,23 @@ export function getConfigSettings() {
 export function updateConfigSettings(config) {
 	return AxiosInstance.post("/school/admin/settings/update", config);
 }
+
+export function getLatestSession() {
+	return AxiosInstance.get("/school/session/get?admission=2");
+}
+
+export function getSessionList() {
+	return AxiosInstance.get("/school/session/get");
+}
+
+export function createSession(session) {
+	return AxiosInstance.post("/school/session/create", session);
+}
+
+export function updateSession(session) {
+	return AxiosInstance.post("/school/session/update", session);
+}
+
+export function deleteSession(session) {
+	return AxiosInstance.post("/school/session/delete", session);
+}

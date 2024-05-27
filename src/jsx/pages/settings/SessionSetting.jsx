@@ -4,58 +4,55 @@ import { Modal, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 import {
-	getTransportList,
-	createTransportSetting,
-	updateTransportSetting,
-	deleteTransport,
-} from "../../../services/TransportService";
+	getSessionList,
+	createSession,
+	updateSession,
+	deleteSession,
+} from "../../../services/SettingsService";
 import PageTitle from "../../layouts/PageTitle";
 
-const TransportSetting = () => {
-	const [transportSettings, setTransportSettings] = useState([]);
+const SessionSetting = () => {
+	const [sessionSettings, setSessionSettings] = useState([]);
 
-	const [pickUp, setPickUp] = useState("");
-	const [distance, setDistance] = useState("");
-	const [amount, setAmount] = useState("");
-	const [transportId, setTransportId] = useState("");
+	const [session, setSession] = useState("");
+	const [sessionId, setSessionId] = useState("");
 
-	const [selectedTransport, setSelectedTransport] = useState({});
+	const [selectedSession, setSelectedSession] = useState({});
+	console.log(selectedSession);
 	const [updateModal, setUpdateModal] = useState(false);
 	const [confirmModal, setConfirmModal] = useState(false);
 
 	const handleAddSection = (e) => {
 		e.preventDefault();
-		if (pickUp && distance && amount) {
-			createTransportSetting({ pickUp, distance, amount }).then((res) => {
+		if (session) {
+			createSession({ session }).then((res) => {
 				console.log(res);
-				getTransportData();
+				getSessionData();
 			});
 
-			setPickUp("");
-			setDistance("");
-			setAmount("");
+			setSession("");
 		}
 	};
 
-	const getTransportData = () => {
-		getTransportList()
+	const getSessionData = () => {
+		getSessionList()
 			.then((resp) => {
-				const rowData = resp.data.data.rows;
+				const rowData = resp.data.data;
 
 				console.log(rowData);
-				setTransportSettings(rowData);
+				setSessionSettings(rowData);
 			})
 			.catch((error) => {
 				console.error("Error fetching classes:", error);
 			});
 	};
 
-	const handleUpdateTransport = () => {
-		updateTransportSetting(selectedTransport)
+	const handleUpdateSession = () => {
+		updateSession(selectedSession)
 			.then((resp) => {
-				setSelectedTransport({});
+				setSelectedSession({});
 				setUpdateModal(false);
-				getTransportData();
+				getSessionData();
 			})
 			.catch((error) => {
 				console.error("Error fetching classes:", error);
@@ -63,13 +60,13 @@ const TransportSetting = () => {
 			});
 	};
 
-	const deleteTransportData = () => {
-		deleteTransport({ id: transportId })
+	const deleteSessionData = () => {
+		deleteSession({ id: sessionId })
 			.then((resp) => {
 				toast.success("Data deleted");
 				setConfirmModal(false);
-				setTransportId("");
-				getTransportData();
+				setSessionId("");
+				getSessionData();
 			})
 			.catch((error) => {
 				console.error("Error fetching classes:", error);
@@ -77,12 +74,12 @@ const TransportSetting = () => {
 	};
 
 	useEffect(() => {
-		getTransportData();
+		getSessionData();
 	}, []);
 
 	return (
 		<>
-			<PageTitle activeMenu={"Transport Setup"} motherMenu={"Settings"} />
+			<PageTitle activeMenu={"Session Setup"} motherMenu={"Settings"} />
 			<div className="row">
 				<div className="col-xl-12 col-xxl-12 col-sm-12">
 					<div className="card">
@@ -93,47 +90,15 @@ const TransportSetting = () => {
 										<div className="col-sm-6">
 											<div className="form-group">
 												<label className="form-label" htmlFor="class_field">
-													Pickpoint
+													Session
 												</label>
 												<input
 													placeholder=""
 													type="text"
 													className="form-control"
 													required
-													value={pickUp}
-													onChange={(e) => setPickUp(e.target.value)}
-												/>
-											</div>
-										</div>
-
-										<div className="col-sm-3">
-											<div className="form-group">
-												<label className="form-label" htmlFor="class_field">
-													Distance
-												</label>
-												<input
-													placeholder=""
-													type="text"
-													className="form-control"
-													required
-													value={distance}
-													onChange={(e) => setDistance(e.target.value)}
-												/>
-											</div>
-										</div>
-
-										<div className="col-sm-3">
-											<div className="form-group">
-												<label className="form-label" htmlFor="class_field">
-													Monthly amount
-												</label>
-												<input
-													placeholder=""
-													type="text"
-													className="form-control"
-													required
-													value={amount}
-													onChange={(e) => setAmount(e.target.value)}
+													value={session}
+													onChange={(e) => setSession(e.target.value)}
 												/>
 											</div>
 										</div>
@@ -166,25 +131,23 @@ const TransportSetting = () => {
 											<thead className="cus_stickythead">
 												<tr>
 													<th>Sno.</th>
-													<th>Transport Details</th>
+													<th>Session</th>
 													<th>Actions</th>
 												</tr>
 											</thead>
 											<tbody className="cus_up">
-												{transportSettings.map((transport, index) => (
-													<tr key={transport.id}>
+												{sessionSettings.map((session, index) => (
+													<tr key={session.id}>
 														<td>{index + 1}</td>
-														<td>{transport.transport}</td>
+														<td>{session.session}</td>
 
 														<td>
 															<span
 																className="btn btn-xs sharp btn-primary me-1"
 																onClick={() => {
-																	setSelectedTransport({
-																		id: transport.id,
-																		pickUp: transport.pickUp,
-																		distance: transport.distance,
-																		amount: transport.amount,
+																	setSelectedSession({
+																		id: session.id,
+																		session: session.session,
 																	});
 																	setUpdateModal(true);
 																}}
@@ -199,7 +162,7 @@ const TransportSetting = () => {
 																	color: "#ff1616",
 																}}
 																onClick={() => {
-																	setTransportId(transport.id);
+																	setSessionId(session.id);
 																	setConfirmModal(true);
 																}}
 															>
@@ -221,7 +184,7 @@ const TransportSetting = () => {
 									size="lg"
 								>
 									<Modal.Header>
-										<Modal.Title>Update Transport Details</Modal.Title>
+										<Modal.Title>Update Student Type</Modal.Title>
 										<Button
 											variant=""
 											className="btn-close"
@@ -241,60 +204,18 @@ const TransportSetting = () => {
 												<div className="col-sm-6">
 													<div className="form-group">
 														<label className="form-label" htmlFor="class_field">
-															Pickup
+															Session
 														</label>
 														<input
 															placeholder=""
 															type="text"
 															className="form-control"
 															required
-															value={selectedTransport.pickUp}
+															value={selectedSession.session}
 															onChange={(e) =>
-																setSelectedTransport({
-																	...selectedTransport,
-																	pickUp: e.target.value,
-																})
-															}
-														/>
-													</div>
-												</div>
-
-												<div className="col-sm-3">
-													<div className="form-group">
-														<label className="form-label" htmlFor="class_field">
-															Distance
-														</label>
-														<input
-															placeholder=""
-															type="text"
-															className="form-control"
-															required
-															value={selectedTransport.distance}
-															onChange={(e) =>
-																setSelectedTransport({
-																	...selectedTransport,
-																	distance: e.target.value,
-																})
-															}
-														/>
-													</div>
-												</div>
-
-												<div className="col-sm-3">
-													<div className="form-group">
-														<label className="form-label" htmlFor="class_field">
-															Amount
-														</label>
-														<input
-															placeholder=""
-															type="text"
-															className="form-control"
-															required
-															value={selectedTransport.amount}
-															onChange={(e) =>
-																setSelectedTransport({
-																	...selectedTransport,
-																	amount: e.target.value,
+																setSelectedSession({
+																	...selectedSession,
+																	session: e.target.value,
 																})
 															}
 														/>
@@ -307,7 +228,7 @@ const TransportSetting = () => {
 										<Button
 											onClick={() => {
 												setUpdateModal(false);
-												setSelectedTransport({});
+												setSelectedSession({});
 											}}
 											variant="danger light"
 										>
@@ -316,7 +237,7 @@ const TransportSetting = () => {
 										<Button
 											variant="primary"
 											onClick={() => {
-												handleUpdateTransport();
+												handleUpdateSession();
 											}}
 										>
 											Submit
@@ -340,13 +261,13 @@ const TransportSetting = () => {
 										></Button>
 									</Modal.Header>
 									<Modal.Body>
-										<p>Delete Transport Details?</p>
+										<p>Delete Session Details?</p>
 									</Modal.Body>
 									<Modal.Footer>
 										<Button
 											onClick={() => {
 												setConfirmModal(false);
-												setTransportId("");
+												setSessionId("");
 											}}
 											variant="danger light"
 										>
@@ -355,7 +276,7 @@ const TransportSetting = () => {
 										<Button
 											variant="primary"
 											onClick={() => {
-												deleteTransportData();
+												deleteSessionData();
 											}}
 										>
 											Yes
@@ -371,4 +292,4 @@ const TransportSetting = () => {
 	);
 };
 
-export default TransportSetting;
+export default SessionSetting;
