@@ -5,7 +5,7 @@ import moment from "moment";
 import { Accordion } from "react-bootstrap";
 import { toast } from "react-toastify";
 import PageTitle from "../../layouts/PageTitle";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import Compressor from "compressorjs";
 
@@ -1885,25 +1885,32 @@ const UpdateAdmissionForm = () => {
 																>
 																	Upload Pan Card
 																</label>
-																<i
-																	className="fa fa-eye"
-																	style={{
-																		fontSize: "14px",
-																		marginLeft: "0.5rem",
-																		cursor: "pointer",
-																		color:
-																			formData.uploadPanCard !== ""
-																				? "#6a73fa"
-																				: "#888888",
-																	}}
-																	onClick={() => {
-																		openModal();
-																		setModalContent({
-																			src: formData.uploadPanCard,
-																			name: "Pan Card",
-																		});
-																	}}
-																/>
+
+																{!(formData.uploadPanCard instanceof Blob) &&
+																	formData.uploadPanCard !== "" && (
+																		<Link
+																			to="#"
+																			className="btn btn-danger"
+																			style={{
+																				backgroundColor: "white",
+																				color: "#888888",
+																				borderColor: "#888888",
+																				padding: "1px 3px",
+																				fontSize: "10px",
+																				marginLeft: "0.5rem",
+																			}}
+																			onClick={() => {
+																				openModal();
+																				setModalContent({
+																					src: formData.uploadPanCard,
+																					name: "Pan Card",
+																				});
+																			}}
+																		>
+																			View Doc
+																		</Link>
+																	)}
+
 																<input
 																	type="file"
 																	className="form-control"
@@ -1952,25 +1959,32 @@ const UpdateAdmissionForm = () => {
 																>
 																	Student Photo
 																</label>
-																<i
-																	className="fa fa-eye"
-																	style={{
-																		fontSize: "14px",
-																		marginLeft: "0.5rem",
-																		cursor: "pointer",
-																		color:
-																			formData.studentPhoto !== ""
-																				? "#6a73fa"
-																				: "#888888",
-																	}}
-																	onClick={() => {
-																		openModal();
-																		setModalContent({
-																			src: formData.studentPhoto,
-																			name: "Student Photo",
-																		});
-																	}}
-																/>
+
+																{!(formData.studentPhoto instanceof Blob) &&
+																	formData.studentPhoto !== "" && (
+																		<Link
+																			to="#"
+																			className="btn btn-danger"
+																			style={{
+																				backgroundColor: "white",
+																				color: "#888888",
+																				borderColor: "#888888",
+																				padding: "1px 3px",
+																				fontSize: "10px",
+																				marginLeft: "0.5rem",
+																			}}
+																			onClick={() => {
+																				openModal();
+																				setModalContent({
+																					src: formData.studentPhoto,
+																					name: "Pan Card",
+																				});
+																			}}
+																		>
+																			View Doc
+																		</Link>
+																	)}
+
 																<input
 																	type="file"
 																	className="form-control"
@@ -1995,25 +2009,32 @@ const UpdateAdmissionForm = () => {
 																>
 																	Aadhar Card
 																</label>
-																<i
-																	className="fa fa-eye"
-																	style={{
-																		fontSize: "14px",
-																		marginLeft: "0.5rem",
-																		cursor: "pointer",
-																		color:
-																			formData.aadharCard !== ""
-																				? "#6a73fa"
-																				: "#888888",
-																	}}
-																	onClick={() => {
-																		openModal();
-																		setModalContent({
-																			src: formData.aadharCard,
-																			name: "Aadhar Card",
-																		});
-																	}}
-																/>
+
+																{!(formData.aadharCard instanceof Blob) &&
+																	formData.aadharCard !== "" && (
+																		<Link
+																			to="#"
+																			className="btn btn-danger"
+																			style={{
+																				backgroundColor: "white",
+																				color: "#888888",
+																				borderColor: "#888888",
+																				padding: "1px 3px",
+																				fontSize: "10px",
+																				marginLeft: "0.5rem",
+																			}}
+																			onClick={() => {
+																				openModal();
+																				setModalContent({
+																					src: formData.aadharCard,
+																					name: "Pan Card",
+																				});
+																			}}
+																		>
+																			View Doc
+																		</Link>
+																	)}
+
 																<input
 																	type="file"
 																	className="form-control"
@@ -2039,25 +2060,32 @@ const UpdateAdmissionForm = () => {
 																>
 																	Birth Certificate
 																</label>
-																<i
-																	className="fa fa-eye"
-																	style={{
-																		fontSize: "14px",
-																		marginLeft: "0.5rem",
-																		cursor: "pointer",
-																		color:
-																			formData.birthCertificate !== ""
-																				? "#6a73fa"
-																				: "#888888",
-																	}}
-																	onClick={() => {
-																		openModal();
-																		setModalContent({
-																			src: formData.birthCertificate,
-																			name: "Birth Certificate",
-																		});
-																	}}
-																/>
+
+																{!(formData.birthCertificate instanceof Blob) &&
+																	formData.birthCertificate !== "" && (
+																		<Link
+																			to="#"
+																			className="btn btn-danger"
+																			style={{
+																				backgroundColor: "white",
+																				color: "#888888",
+																				borderColor: "#888888",
+																				padding: "1px 3px",
+																				fontSize: "10px",
+																				marginLeft: "0.5rem",
+																			}}
+																			onClick={() => {
+																				openModal();
+																				setModalContent({
+																					src: formData.birthCertificate,
+																					name: "Pan Card",
+																				});
+																			}}
+																		>
+																			View Doc
+																		</Link>
+																	)}
+
 																<input
 																	type="file"
 																	className="form-control"
@@ -2083,25 +2111,34 @@ const UpdateAdmissionForm = () => {
 																>
 																	Transfer Certificate
 																</label>
-																<i
-																	className="fa fa-eye"
-																	style={{
-																		fontSize: "14px",
-																		marginLeft: "0.5rem",
-																		cursor: "pointer",
-																		color:
-																			formData.transferCertificate !== ""
-																				? "#6a73fa"
-																				: "#888888",
-																	}}
-																	onClick={() => {
-																		openModal();
-																		setModalContent({
-																			src: formData.transferCertificate,
-																			name: "Transfer Certificate",
-																		});
-																	}}
-																/>
+
+																{!(
+																	formData.transferCertificate instanceof Blob
+																) &&
+																	formData.transferCertificate !== "" && (
+																		<Link
+																			to="#"
+																			className="btn btn-danger"
+																			style={{
+																				backgroundColor: "white",
+																				color: "#888888",
+																				borderColor: "#888888",
+																				padding: "1px 3px",
+																				fontSize: "10px",
+																				marginLeft: "0.5rem",
+																			}}
+																			onClick={() => {
+																				openModal();
+																				setModalContent({
+																					src: formData.transferCertificate,
+																					name: "Pan Card",
+																				});
+																			}}
+																		>
+																			View Doc
+																		</Link>
+																	)}
+
 																<input
 																	type="file"
 																	className="form-control"
@@ -2127,25 +2164,32 @@ const UpdateAdmissionForm = () => {
 																>
 																	Caste Certificate
 																</label>
-																<i
-																	className="fa fa-eye"
-																	style={{
-																		fontSize: "14px",
-																		marginLeft: "0.5rem",
-																		cursor: "pointer",
-																		color:
-																			formData.casteCertificate !== ""
-																				? "#6a73fa"
-																				: "#888888",
-																	}}
-																	onClick={() => {
-																		openModal();
-																		setModalContent({
-																			src: formData.casteCertificate,
-																			name: "Caste Certificate",
-																		});
-																	}}
-																/>
+
+																{!(formData.casteCertificate instanceof Blob) &&
+																	formData.casteCertificate !== "" && (
+																		<Link
+																			to="#"
+																			className="btn btn-danger"
+																			style={{
+																				backgroundColor: "white",
+																				color: "#888888",
+																				borderColor: "#888888",
+																				padding: "1px 3px",
+																				fontSize: "10px",
+																				marginLeft: "0.5rem",
+																			}}
+																			onClick={() => {
+																				openModal();
+																				setModalContent({
+																					src: formData.casteCertificate,
+																					name: "Pan Card",
+																				});
+																			}}
+																		>
+																			View Doc
+																		</Link>
+																	)}
+
 																<input
 																	type="file"
 																	className="form-control"
@@ -2171,25 +2215,34 @@ const UpdateAdmissionForm = () => {
 																>
 																	Character Certificate
 																</label>
-																<i
-																	className="fa fa-eye"
-																	style={{
-																		fontSize: "14px",
-																		marginLeft: "0.5rem",
-																		cursor: "pointer",
-																		color:
-																			formData.characterCertificate !== ""
-																				? "#6a73fa"
-																				: "#888888",
-																	}}
-																	onClick={() => {
-																		openModal();
-																		setModalContent({
-																			src: formData.characterCertificate,
-																			name: "Character Certificate",
-																		});
-																	}}
-																/>
+
+																{!(
+																	formData.characterCertificate instanceof Blob
+																) &&
+																	formData.characterCertificate !== "" && (
+																		<Link
+																			to="#"
+																			className="btn btn-danger"
+																			style={{
+																				backgroundColor: "white",
+																				color: "#888888",
+																				borderColor: "#888888",
+																				padding: "1px 3px",
+																				fontSize: "10px",
+																				marginLeft: "0.5rem",
+																			}}
+																			onClick={() => {
+																				openModal();
+																				setModalContent({
+																					src: formData.characterCertificate,
+																					name: "Pan Card",
+																				});
+																			}}
+																		>
+																			View Doc
+																		</Link>
+																	)}
+
 																<input
 																	type="file"
 																	className="form-control"
@@ -2214,25 +2267,32 @@ const UpdateAdmissionForm = () => {
 																>
 																	Father Photo
 																</label>
-																<i
-																	className="fa fa-eye"
-																	style={{
-																		fontSize: "14px",
-																		marginLeft: "0.5rem",
-																		cursor: "pointer",
-																		color:
-																			formData.fatherPhoto !== ""
-																				? "#6a73fa"
-																				: "#888888",
-																	}}
-																	onClick={() => {
-																		openModal();
-																		setModalContent({
-																			src: formData.fatherPhoto,
-																			name: "Father Photo",
-																		});
-																	}}
-																/>
+
+																{!(formData.fatherPhoto instanceof Blob) &&
+																	formData.fatherPhoto !== "" && (
+																		<Link
+																			to="#"
+																			className="btn btn-danger"
+																			style={{
+																				backgroundColor: "white",
+																				color: "#888888",
+																				borderColor: "#888888",
+																				padding: "1px 3px",
+																				fontSize: "10px",
+																				marginLeft: "0.5rem",
+																			}}
+																			onClick={() => {
+																				openModal();
+																				setModalContent({
+																					src: formData.fatherPhoto,
+																					name: "Pan Card",
+																				});
+																			}}
+																		>
+																			View Doc
+																		</Link>
+																	)}
+
 																<input
 																	type="file"
 																	className="form-control"
@@ -2258,25 +2318,32 @@ const UpdateAdmissionForm = () => {
 																>
 																	Father Aadhar Card
 																</label>
-																<i
-																	className="fa fa-eye"
-																	style={{
-																		fontSize: "14px",
-																		marginLeft: "0.5rem",
-																		cursor: "pointer",
-																		color:
-																			formData.fatherAadharCard !== ""
-																				? "#6a73fa"
-																				: "#888888",
-																	}}
-																	onClick={() => {
-																		openModal();
-																		setModalContent({
-																			src: formData.fatherAadharCard,
-																			name: "Father Aadhar Card",
-																		});
-																	}}
-																/>
+
+																{!(formData.fatherAadharCard instanceof Blob) &&
+																	formData.fatherAadharCard !== "" && (
+																		<Link
+																			to="#"
+																			className="btn btn-danger"
+																			style={{
+																				backgroundColor: "white",
+																				color: "#888888",
+																				borderColor: "#888888",
+																				padding: "1px 3px",
+																				fontSize: "10px",
+																				marginLeft: "0.5rem",
+																			}}
+																			onClick={() => {
+																				openModal();
+																				setModalContent({
+																					src: formData.fatherAadharCard,
+																					name: "Pan Card",
+																				});
+																			}}
+																		>
+																			View Doc
+																		</Link>
+																	)}
+
 																<input
 																	type="file"
 																	className="form-control"
@@ -2301,25 +2368,32 @@ const UpdateAdmissionForm = () => {
 																>
 																	Mother Photo
 																</label>
-																<i
-																	className="fa fa-eye"
-																	style={{
-																		fontSize: "14px",
-																		marginLeft: "0.5rem",
-																		cursor: "pointer",
-																		color:
-																			formData.motherPhoto !== ""
-																				? "#6a73fa"
-																				: "#888888",
-																	}}
-																	onClick={() => {
-																		openModal();
-																		setModalContent({
-																			src: formData.motherPhoto,
-																			name: "Mother Photo",
-																		});
-																	}}
-																/>
+
+																{!(formData.motherPhoto instanceof Blob) &&
+																	formData.motherPhoto !== "" && (
+																		<Link
+																			to="#"
+																			className="btn btn-danger"
+																			style={{
+																				backgroundColor: "white",
+																				color: "#888888",
+																				borderColor: "#888888",
+																				padding: "1px 3px",
+																				fontSize: "10px",
+																				marginLeft: "0.5rem",
+																			}}
+																			onClick={() => {
+																				openModal();
+																				setModalContent({
+																					src: formData.motherPhoto,
+																					name: "Pan Card",
+																				});
+																			}}
+																		>
+																			View Doc
+																		</Link>
+																	)}
+
 																<input
 																	type="file"
 																	className="form-control"
@@ -2345,25 +2419,32 @@ const UpdateAdmissionForm = () => {
 																>
 																	Mother Aadhar Card
 																</label>
-																<i
-																	className="fa fa-eye"
-																	style={{
-																		fontSize: "14px",
-																		marginLeft: "0.5rem",
-																		cursor: "pointer",
-																		color:
-																			formData.motherAadharCard !== ""
-																				? "#6a73fa"
-																				: "#888888",
-																	}}
-																	onClick={() => {
-																		openModal();
-																		setModalContent({
-																			src: formData.motherAadharCard,
-																			name: "Mother Aadhar Card",
-																		});
-																	}}
-																/>
+
+																{!(formData.motherAadharCard instanceof Blob) &&
+																	formData.motherAadharCard !== "" && (
+																		<Link
+																			to="#"
+																			className="btn btn-danger"
+																			style={{
+																				backgroundColor: "white",
+																				color: "#888888",
+																				borderColor: "#888888",
+																				padding: "1px 3px",
+																				fontSize: "10px",
+																				marginLeft: "0.5rem",
+																			}}
+																			onClick={() => {
+																				openModal();
+																				setModalContent({
+																					src: formData.motherAadharCard,
+																					name: "Pan Card",
+																				});
+																			}}
+																		>
+																			View Doc
+																		</Link>
+																	)}
+
 																<input
 																	type="file"
 																	className="form-control"
