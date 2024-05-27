@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { DatePicker } from "rsuite";
-import { useLocation, useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import { useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
+import moment from "moment";
+import { toast } from "react-toastify";
 
 import {
 	getEnquiries,
 	updateEnquiry,
-	getClass,
 	getDistrict,
 	getVillage,
 } from "../../../services/EnquiryService";
+import { getClass } from "../../../services/CommonService";
 import { validationEnquirySchema } from "./EnquirySchema";
-
 import PageTitle from "../../layouts/PageTitle";
-import Select from "react-select";
-import CreatableSelect from "react-select/creatable";
 
 const UpdateEnquiry = () => {
-	const location = useLocation();
-	const data = location.state;
+	const { id } = useParams();
 	const navigate = useNavigate();
 
 	const [formData, setFormData] = useState({
@@ -37,6 +37,8 @@ const UpdateEnquiry = () => {
 	const [enquiryDate, setEnquiryDate] = useState(null);
 	const [followUpDate, setFollowUpDate] = useState(null);
 
+	const [classFlag, setClassFlag] = useState("");
+
 	const [creatableOptionsForVillage, setCreatableOptionsForVillage] = useState(
 		[]
 	);
@@ -53,7 +55,7 @@ const UpdateEnquiry = () => {
 		});
 	};
 
-	const handleChange1 = (field, value) => {
+	const handleDropdown = (field, value) => {
 		setFormData({
 			...formData,
 			[field]: value ? value.value : "",
@@ -124,20 +126,27 @@ const UpdateEnquiry = () => {
 	}, []);
 
 	useEffect(() => {
-		getEnquiries({ id: data.id })
+		getEnquiries({ id: id })
 			.then((resp) => {
-				setFormData(resp.data.data.rows[0]);
-
-				setEnquiryDate(new Date(resp.data.data.rows[0].enquiryDate));
-				setFollowUpDate(new Date(resp.data.data.rows[0].followUpDate));
-				setVillage({
-					value: resp.data.data.rows[0].villageOrCity,
-					label: resp.data.data.rows[0].villageOrCity,
-				});
-				setDistrict({
-					value: resp.data.data.rows[0].district,
-					label: resp.data.data.rows[0].district,
-				});
+				const rowData = resp.data?.data?.rows[0];
+				if (rowData) {
+					setFormData(rowData);
+					setEnquiryDate(new Date(rowData.enquiryDate));
+					setFollowUpDate(new Date(rowData.followUpDate));
+					setClassFlag(rowData.class);
+					console.log(rowData.class);
+					setVillage({
+						value: rowData.villageOrCity,
+						label: rowData.villageOrCity,
+					});
+					setDistrict({
+						value: rowData.district,
+						label: rowData.district,
+					});
+				} else {
+					toast.error("No data found");
+					navigate("/enquiry-list");
+				}
 			})
 			.catch((error) => {
 				console.error("Error fetching enquiries:", error);
@@ -160,34 +169,42 @@ const UpdateEnquiry = () => {
 						<div className="card-body">
 							<form onSubmit={(e) => handleSubmit(e)}>
 								<div className="row">
-									<div className="col-sm-6" style={{ zIndex: 0 }}>
+									{/* Enquiry Date */}
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label" htmlFor="datepicker">
 												Enquiry Date <span className="text-danger">*</span>
 											</label>
-											<div className="input-hasicon mb-xl-0 mb-3">
+											<div>
 												<DatePicker
-													placeholder="Enquiry Date"
-													className="picker-suit"
-													value={enquiryDate}
-													onChange={(date) => setEnquiryDate(date)}
-													disabledDate={(date) => date > new Date()}
+													showIcon
+													icon={"far fa-calendar"}
+													selected={enquiryDate}
+													onChange={(date) => {
+														setEnquiryDate(date);
+														setFormData((prevState) => ({
+															...prevState,
+															enquiryDate: moment
+																.utc(date)
+																.local()
+																.format("YYYY-MM-DD HH:mm:ss"),
+														}));
+													}}
+													className="form-control"
+													maxDate={new Date()}
+													dateFormat="dd/MM/yy"
 												/>
-
-												<div className="icon">
-													<i className="far fa-calendar" />
-												</div>
 											</div>
 										</div>
 									</div>
 
-									<div className="col-sm-6">
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label" htmlFor="name">
-												Name <span className="text-danger">*</span>
+												First Name <span className="text-danger">*</span>
 											</label>
 											<input
-												placeholder="Enter Name"
+												placeholder="Enter First Name"
 												id="name"
 												type="text"
 												className="form-control"
@@ -200,7 +217,23 @@ const UpdateEnquiry = () => {
 										</div>
 									</div>
 
-									<div className="col-sm-6">
+									<div className="col-sm-4">
+										<div className="form-group">
+											<label className="form-label" htmlFor="lastName">
+												Last Name
+											</label>
+											<input
+												placeholder="Enter Last Name"
+												id="lastName"
+												type="text"
+												className="form-control"
+												value={formData.lastName}
+												onChange={handleChange}
+											/>
+										</div>
+									</div>
+
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label" htmlFor="parentName">
 												Parent's Name <span className="text-danger">*</span>
@@ -219,16 +252,17 @@ const UpdateEnquiry = () => {
 										</div>
 									</div>
 
-									<div className="col-sm-6">
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label">
-												Class <span className="text-danger">*</span>
+												Seeking Class <span className="text-danger">*</span>
 											</label>
 											<Select
 												isSearchable={false}
-												defaultValue={{
-													value: data.class,
-													label: data.class,
+												placeholder=""
+												value={{
+													value: classFlag,
+													label: classFlag,
 												}}
 												options={options}
 												className="custom-react-select"
@@ -237,12 +271,13 @@ const UpdateEnquiry = () => {
 														...formData,
 														class: selectedOption.value,
 													});
+													setClassFlag(selectedOption.value);
 												}}
 											/>
 										</div>
 									</div>
 
-									<div className="col-sm-6">
+									<div className="col-sm-4">
 										<div className="form-group">
 											<label className="form-label" htmlFor="contactNo">
 												Contact Number <span className="text-danger">*</span>
@@ -253,13 +288,108 @@ const UpdateEnquiry = () => {
 												type="text"
 												className="form-control"
 												maxLength="10"
-												pattern="[0-9]{10}"
 												value={formData.contactNo}
 												onChange={handleChange}
 											/>
 											{errors.contactNo && (
 												<p className="text-danger">{errors.contactNo}</p>
 											)}
+										</div>
+									</div>
+
+									<div className="col-sm-4">
+										<div className="form-group">
+											<label className="form-label">Village / City</label>
+
+											<CreatableSelect
+												id="villageOrCity"
+												isClearable
+												placeholder=""
+												options={creatableOptionsForVillage}
+												className="custom-react-select"
+												onChange={(selectedOption) => {
+													handleDropdown("villageOrCity", selectedOption);
+													setVillage(selectedOption);
+												}}
+												onCreateOption={(inputValue) => {
+													const newValue = {
+														value: inputValue,
+														label: inputValue,
+													};
+													setCreatableOptionsForVillage([
+														...creatableOptionsForVillage,
+														newValue,
+													]);
+													handleDropdown("villageOrCity", newValue);
+													setVillage(newValue);
+												}}
+												value={village}
+												noOptionsMessage={() => null}
+												formatCreateLabel={() => undefined}
+												promptTextCreator={() => false}
+											/>
+										</div>
+									</div>
+
+									<div className="col-sm-4">
+										<div className="form-group">
+											<label className="form-label">District</label>
+
+											<CreatableSelect
+												id="district"
+												isClearable
+												placeholder=""
+												options={creatableOptionsForDistrict}
+												className="custom-react-select"
+												onChange={(selectedOption) => {
+													handleDropdown("district", selectedOption);
+													setDistrict(selectedOption);
+												}}
+												onCreateOption={(inputValue) => {
+													const newValue = {
+														value: inputValue,
+														label: inputValue,
+													};
+													setCreatableOptionsForDistrict([
+														...creatableOptionsForDistrict,
+														newValue,
+													]);
+													handleDropdown("district", newValue);
+													setDistrict(newValue);
+												}}
+												value={district}
+												noOptionsMessage={() => null}
+												formatCreateLabel={() => undefined}
+												promptTextCreator={() => false}
+											/>
+										</div>
+									</div>
+
+									<div className="col-sm-4" style={{ zIndex: 0 }}>
+										<div className="form-group">
+											<label className="form-label" htmlFor="followUpDate">
+												Follow-up Date
+											</label>
+											<div>
+												<DatePicker
+													showIcon
+													icon={"far fa-calendar"}
+													selected={followUpDate}
+													onChange={(date) => {
+														setFollowUpDate(date);
+														setFormData((prevState) => ({
+															...prevState,
+															followUpDate: moment
+																.utc(date)
+																.local()
+																.format("YYYY-MM-DD HH:mm:ss"),
+														}));
+													}}
+													className="form-control"
+													minDate={new Date().setDate(new Date().getDate() + 7)}
+													dateFormat="dd/MM/yy"
+												/>
+											</div>
 										</div>
 									</div>
 
@@ -281,116 +411,15 @@ const UpdateEnquiry = () => {
 
 									<div className="col-sm-6">
 										<div className="form-group">
-											<label className="form-label">Village / City</label>
-
-											<CreatableSelect
-												id="villageOrCity"
-												isClearable
-												options={creatableOptionsForVillage}
-												className="custom-react-select"
-												onChange={(selectedOption) => {
-													handleChange1("villageOrCity", selectedOption);
-													setVillage(selectedOption);
-												}}
-												onCreateOption={(inputValue) => {
-													const newValue = {
-														value: inputValue,
-														label: inputValue,
-													};
-													setCreatableOptionsForVillage([
-														...creatableOptionsForVillage,
-														newValue,
-													]);
-													handleChange1("villageOrCity", newValue);
-													setVillage(newValue);
-												}}
-												value={village}
-											/>
-										</div>
-									</div>
-
-									<div className="col-sm-6">
-										<div className="form-group">
-											<label className="form-label">District</label>
-
-											<CreatableSelect
-												id="district"
-												isClearable
-												options={creatableOptionsForDistrict}
-												className="custom-react-select"
-												onChange={(selectedOption) => {
-													handleChange1("district", selectedOption);
-													setDistrict(selectedOption);
-												}}
-												onCreateOption={(inputValue) => {
-													const newValue = {
-														value: inputValue,
-														label: inputValue,
-													};
-													setCreatableOptionsForDistrict([
-														...creatableOptionsForDistrict,
-														newValue,
-													]);
-													handleChange1("district", newValue);
-													setDistrict(newValue);
-												}}
-												value={district}
-											/>
-										</div>
-									</div>
-
-									<div className="col-sm-6" style={{ zIndex: 0 }}>
-										<div className="form-group">
-											<label className="form-label" htmlFor="followUpDate">
-												Follow-up Date
-											</label>
-											<div className="input-hasicon mb-xl-0 mb-3">
-												<DatePicker
-													placeholder="Follow up Date"
-													className="picker-suit"
-													value={followUpDate}
-													onChange={(date) => setFollowUpDate(date)}
-													disabledDate={(date) =>
-														date <
-														new Date(
-															new Date().setDate(new Date().getDate() - 1)
-														)
-													}
-												/>
-
-												<div className="icon">
-													<i className="far fa-calendar" />
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div className="col-sm-6">
-										<div className="form-group">
 											<label className="form-label" htmlFor="remarks">
 												Remarks
 											</label>
-											<input
+											<textarea
 												placeholder="Enter Remarks"
 												id="remarks"
 												type="text"
 												className="form-control"
 												value={formData.remarks}
-												onChange={handleChange}
-											/>
-										</div>
-									</div>
-
-									<div className="col-sm-6">
-										<div className="form-group">
-											<label className="form-label" htmlFor="parentConcern">
-												Parent's Concern
-											</label>
-											<textarea
-												placeholder="Enter Parent's Concern"
-												id="parentConcern"
-												className="form-control"
-												value={formData.parentConcern}
 												onChange={handleChange}
 											/>
 										</div>
@@ -402,7 +431,7 @@ const UpdateEnquiry = () => {
 										</button>
 										<button
 											className="btn btn-danger light"
-											onClick={() => navigate("/all-enquiries")}
+											onClick={() => navigate("/enquiry-list")}
 										>
 											Cancel
 										</button>

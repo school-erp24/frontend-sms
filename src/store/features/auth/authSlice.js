@@ -1,9 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
 	email: "",
 	accessToken: "",
-	refreshToken: "",
 	errorMessage: "",
 	successMessage: "",
 	showLoading: false,
@@ -15,43 +14,6 @@ export function extractErrorMessage(error) {
 }
 
 // temp
-
-export const checkAutoLogin = createAsyncThunk(
-	"auth/checkAutoLogin",
-	async (tokenDetails) => {
-		// const tokenDetailsString = localStorage.getItem("userDetails");
-
-		console.log(tokenDetails);
-
-		const tokenDetailsString = JSON.parse(tokenDetails);
-
-		console.log(tokenDetailsString);
-
-		if (!tokenDetails) {
-			// dispatch(logout());
-
-			return;
-		}
-
-		// navigate("/dashboard");
-
-		// let expireDate = new Date(tokenDetails.expireDate);
-		// let todaysDate = new Date();
-
-		// if (todaysDate > expireDate) {
-		// 	dispatch(logout());
-
-		// 	return;
-		// }
-
-		// dispatch(loginConfirmedAction(tokenDetails));
-
-		// const timer = expireDate.getTime() - todaysDate.getTime();
-		// runLogoutTimer(dispatch, timer, navigate);
-
-		return tokenDetailsString; // You can return any data you want from the async thunk
-	}
-);
 
 export const authSlice = createSlice({
 	name: "auth",
@@ -65,7 +27,6 @@ export const authSlice = createSlice({
 			localStorage.removeItem("userDetails");
 			state.email = "";
 			state.accessToken = "";
-			state.refreshToken = "";
 			state.errorMessage = "";
 			state.successMessage = "";
 		},
@@ -76,7 +37,6 @@ export const authSlice = createSlice({
 				const userDetails = JSON.parse(userDetailsString);
 				state.email = userDetails.email || "";
 				state.accessToken = userDetails.accessToken || "";
-				state.refreshToken = userDetails.refreshToken || "";
 				state.successMessage = "Login Successfully Completed";
 				state.showLoading = false;
 			}
@@ -97,23 +57,10 @@ export const {
 	toggleLoading,
 } = authSlice.actions;
 
+// Export selector
 export const selectIsAuthenticated = (state) => {
 	return !!state.auth.accessToken;
 };
 
 // Export reducer
 export default authSlice.reducer;
-
-// export function saveTokenInLocalStorage(tokenDetails) {
-// 	tokenDetails.expireDate = new Date(
-// 		new Date().getTime() + tokenDetails.expiresIn * 1000
-// 	);
-// 	localStorage.setItem("userDetails", JSON.stringify(tokenDetails));
-// }
-
-// export function runLogoutTimer(dispatch, timer, navigate) {
-// 	setTimeout(() => {
-// 		dispatch(Logout(navigate));
-// 		dispatch(logout());
-// 	}, timer);
-// }

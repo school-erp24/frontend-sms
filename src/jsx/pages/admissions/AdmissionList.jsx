@@ -2,27 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Row, Modal, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
-import moment from "moment";
 
 import Pagination from "../../components/Pagination";
-import { getEnquiries, deleteEnquiry } from "../../../services/EnquiryService";
+import { getAdmissionList } from "../../../services/StudentService";
 
 const theadData = [
-	{ heading: "Sr.no", sortingValue: "sno", sortable: true },
-	{ heading: "Enquiry Date", sortingValue: "enquiryDate", sortable: true },
-	{ heading: "Name", sortingValue: "name", sortable: true },
-	{ heading: "Parent's Name", sortingValue: "parentName", sortable: true },
-	{ heading: "Class", sortingValue: "class", sortable: true },
-	{ heading: "Mobile", sortingValue: "contactNo", sortable: true },
-	// { heading: "Previous School", sortingValue: "previousSchool", sortable: true }, commented for now
-	{ heading: "Village", sortingValue: "villageOrCity", sortable: true },
-	// { heading: "District", sortingValue: "district", sortable: true }, commented for now
-	{ heading: "Followup Date", sortingValue: "followUpDate", sortable: true },
-	// { heading: "Parent's concern", sortingValue: "parentConcern", sortable: true }, commented for now
+	{ heading: "Roll no.", sortingValue: "rollNo", sortable: true },
+	{ heading: "Student Name", sortingValue: "firstName", sortable: true },
+	{ heading: "Class", sortingValue: "className", sortable: true },
+	{ heading: "Section", sortingValue: "sectionName", sortable: true },
+	{ heading: "Father's Name", sortingValue: "fatherName", sortable: true },
+	{ heading: "Contact no", sortingValue: "contactNo", sortable: true },
+	{ heading: "Fees Status", sortingValue: "feeStatus", sortable: true }, // this too
 	{ heading: "Actions", sortingValue: "", sortable: false },
 ];
 
-const EnquiryList = () => {
+const AdmissionList = () => {
 	const navigate = useNavigate();
 
 	const [rows, setRows] = useState(10);
@@ -54,21 +49,13 @@ const EnquiryList = () => {
 	const SortData = (name) => {
 		const sortedPeople = [...tableData];
 		switch (name) {
-			case "sno":
-				sortedPeople.sort((a, b) => {
-					return a.id - b.id;
-				});
-				break;
-			case "enquiryDate":
-			case "name":
-			case "parentName":
-			case "class":
-			case "previousSchool":
-			case "villageOrCity":
-			case "district":
+			case "rollNo":
+			case "firstName":
+			case "className":
+			case "sectionName":
+			case "fatherName":
 			case "contactNo":
-			case "followUpDate":
-			case "parentConcern":
+			case "feeStatus":
 				sortedPeople.sort((a, b) => {
 					return iconData.complete
 						? a[name].localeCompare(b[name])
@@ -85,7 +72,7 @@ const EnquiryList = () => {
 	const Search = (e) => {
 		setSearch(e.target.value);
 
-		getEnquiries({
+		getAdmissionList({
 			limit: rows,
 			pno: 1,
 			searchString: e.target.value,
@@ -136,7 +123,7 @@ const EnquiryList = () => {
 			handleCheckedAll(false);
 		}
 
-		getEnquiries({
+		getAdmissionList({
 			limit: rows,
 			pno: page,
 			searchString: search,
@@ -156,7 +143,7 @@ const EnquiryList = () => {
 	};
 
 	const handleReset = () => {
-		getEnquiries({
+		getAdmissionList({
 			limit: rows,
 			pno: pageno,
 		})
@@ -179,7 +166,7 @@ const EnquiryList = () => {
 	};
 
 	const handleDateFilter = (start, end) => {
-		getEnquiries({
+		getAdmissionList({
 			limit: rows,
 			pno: 1,
 			fromDate: start,
@@ -204,34 +191,6 @@ const EnquiryList = () => {
 			});
 	};
 
-	const handleDelete = (ids) => {
-		deleteEnquiry(ids)
-			.then((resp) => {
-				if (resp.status === 200) {
-					getEnquiries({
-						limit: rows,
-						pno: 1,
-					})
-						.then((resp) => {
-							const updatedRows = resp.data.data.rows.map((row) => {
-								return { ...row, inputchecked: false };
-							});
-
-							setTotalRecords(resp.data.data.totalRecords);
-							setTableData(updatedRows);
-							setCurrentPage(resp.data.data.currentPno);
-						})
-						.catch((error) => {
-							console.error("Error fetching enquiries:", error);
-						});
-				}
-			})
-			.catch((error) => {
-				console.error("Error fetching enquiries:", error);
-			});
-		setBasicModal(false);
-	};
-
 	useEffect(() => {
 		if (startDate && endDate !== null) {
 			handleDateFilter(startDate, endDate);
@@ -245,7 +204,7 @@ const EnquiryList = () => {
 	}, [tableData]);
 
 	useEffect(() => {
-		getEnquiries({
+		getAdmissionList({
 			limit: rows,
 			pno: pageno,
 		})
@@ -255,6 +214,7 @@ const EnquiryList = () => {
 				});
 
 				setTotalRecords(resp.data.data.totalRecords);
+				console.log(updatedRows);
 				setTableData(updatedRows);
 				setCurrentPage(resp.data.data.currentPno);
 			})
@@ -263,41 +223,20 @@ const EnquiryList = () => {
 			});
 	}, []);
 
+	useEffect(() => {
+		console.log(tableData);
+	}, [tableData]);
+
 	return (
 		<>
 			<Row>
 				<div className="col-lg-12">
 					<div className="card">
 						<div className="card-header">
-							<h4 className="card-title">Enquiry List</h4>
+							<h4 className="card-title">Admission List</h4>
 							<span style={{ display: "flex", gap: ".5rem" }}>
 								<Link to={"/add-admission"} className="btn btn-primary">
 									+ Admission
-								</Link>
-
-								<Link to={"/add-enquiry"} className="btn btn-primary">
-									+ Add New
-								</Link>
-
-								<Link
-									to={""}
-									className="btn btn-primary"
-									style={{
-										backgroundColor: "white",
-										color: "#25D366",
-										borderColor: "#25D366",
-									}}
-								>
-									<i className="fa-brands fa-whatsapp"></i>
-								</Link>
-
-								<Link
-									to={"#"}
-									className="btn btn-danger"
-									style={{ backgroundColor: "white", color: "#ff1616" }}
-									onClick={() => setBasicModal(true)}
-								>
-									<i className="fa-regular fa-trash-can"></i>
 								</Link>
 							</span>
 						</div>
@@ -307,7 +246,7 @@ const EnquiryList = () => {
 									<div className="justify-content-between d-sm-flex">
 										<div className="cus_flexc">
 											<Link to={""} className="btn btn-primary">
-												Print
+												Browse
 											</Link>
 
 											<Link
@@ -320,7 +259,7 @@ const EnquiryList = () => {
 											</Link>
 										</div>
 
-										<div className="cus_flexcg8" style={{ zIndex: "2" }}>
+										{/* <div className="cus_flexcg8" style={{ zIndex: "2" }}>
 											<div className="cus_rangedp">
 												<label htmlFor="sdt">From:</label>
 
@@ -345,7 +284,7 @@ const EnquiryList = () => {
 													dateFormat="dd/MM/yy"
 												/>
 											</div>
-										</div>
+										</div> */}
 
 										<div className="cus_flexcg8">
 											<label>
@@ -369,67 +308,45 @@ const EnquiryList = () => {
 															key={ind}
 															onClick={() => {
 																if (item.sortable) {
-																	if (ind === 0) {
-																		// handleCheckedAll(unchecked);
-																	} else {
-																		SortData(item.sortingValue);
-																		setIconData((prevState) => ({
-																			complete: !prevState.complete,
-																			ind: ind,
-																		}));
-																	}
+																	SortData(item.sortingValue);
+																	setIconData((prevState) => ({
+																		complete: !prevState.complete,
+																		ind: ind,
+																	}));
 																}
 															}}
 														>
-															{ind === 0 ? (
-																<div className="form-check custom-checkbox cus_nolp">
-																	<input
-																		type="checkbox"
-																		className="cus_checkbox"
-																		id="checkAll"
-																		checked={!unchecked}
-																		onChange={(e) =>
-																			handleCheckedAll(e.target.checked)
-																		}
+															<span>
+																{item.heading}
+																{item.sortable && ind !== iconData.ind && (
+																	<i
+																		className="fa fa-sort ms-2 fs-12"
+																		style={{
+																			opacity: "0.3",
+																			cursor: "pointer",
+																		}}
 																	/>
-																	<label
-																		className="form-check-label"
-																		htmlFor="checkAll"
-																	></label>
-																</div>
-															) : (
-																<span>
-																	{item.heading}
-																	{item.sortable && ind !== iconData.ind && (
+																)}
+																{item.sortable &&
+																	ind === iconData.ind &&
+																	(iconData.complete ? (
 																		<i
-																			className="fa fa-sort ms-2 fs-12"
+																			className="fa fa-arrow-down ms-2 fs-12"
 																			style={{
-																				opacity: "0.3",
+																				opacity: "0.7",
 																				cursor: "pointer",
 																			}}
 																		/>
-																	)}
-																	{item.sortable &&
-																		ind === iconData.ind &&
-																		(iconData.complete ? (
-																			<i
-																				className="fa fa-arrow-down ms-2 fs-12"
-																				style={{
-																					opacity: "0.7",
-																					cursor: "pointer",
-																				}}
-																			/>
-																		) : (
-																			<i
-																				className="fa fa-arrow-up ms-2 fs-12"
-																				style={{
-																					opacity: "0.7",
-																					cursor: "pointer",
-																				}}
-																			/>
-																		))}
-																</span>
-															)}
+																	) : (
+																		<i
+																			className="fa fa-arrow-up ms-2 fs-12"
+																			style={{
+																				opacity: "0.7",
+																				cursor: "pointer",
+																			}}
+																		/>
+																	))}
+															</span>
 														</th>
 													))}
 												</tr>
@@ -437,55 +354,30 @@ const EnquiryList = () => {
 											<tbody className="cus_up">
 												{tableData.map((data, ind) => (
 													<tr key={ind}>
-														<td>
-															<div className="form-check custom-checkbox cus_nolp">
-																<input
-																	type="checkbox"
-																	className="cus_checkbox"
-																	id={`checkbox-${ind}`}
-																	checked={data.inputchecked}
-																	onChange={() => handleChecked(data.id)}
-																/>
-
-																<label
-																	className="form-check-label"
-																	htmlFor={`checkbox-${ind}`}
-																></label>
-															</div>
-														</td>
-
-														{/* Render other table cells */}
-
-														<td>
-															{moment(data.enquiryDate).format("DD/MM/YY")}
-														</td>
-														<td>{data.name}</td>
-														<td>{data.parentName}</td>
-														<td>{data.class}</td>
+														<td>{data.rollNo || "N/A"}</td>
+														<td>{data.firstName || "N/A"}</td>
+														<td>{data.className || "N/A"}</td>
+														<td>{data.sectionName || "N/A"}</td>
+														<td>{data.fatherName}</td>
 														<td>{data.contactNo}</td>
-														{/* <td>{data.previousSchool || "N/A"}</td> */}
-														<td>{data.villageOrCity || "N/A"}</td>
-														{/* <td>{data.district || "N/A"}</td> */}
-														<td>
-															{moment(data.followUpDate).format("DD/MM/YY") ||
-																"N/A"}
-
-															{moment(data.followUpDate).isSameOrBefore(
-																moment(),
-																"day"
-															) && <span className="text-danger">*</span>}
-														</td>
-														{/* <td>{data.parentConcern || "N/A"}</td> */}
+														<td>"PENDING"</td>
 
 														<td>
 															<span
 																className="btn btn-xs sharp btn-primary me-1"
 																onClick={() => {
-																	navigate(`/update-enquiry/${data.id}`);
+																	navigate(`/update-admission/${data.id}`);
 																}}
 															>
 																<i className="fa fa-pencil" />
 															</span>
+
+															{/* <span
+																className="btn btn-xs sharp btn-primary me-1"
+																onClick={() => {}}
+															>
+																<i className="fa fa-money-check" />
+															</span> */}
 														</td>
 													</tr>
 												))}
@@ -531,7 +423,7 @@ const EnquiryList = () => {
 									</Button>
 									<Button
 										variant="primary"
-										onClick={() => handleDelete({ id: selectedIds })}
+										// onClick={() => handleDelete({ id: selectedIds })}
 									>
 										Delete
 									</Button>
@@ -545,4 +437,4 @@ const EnquiryList = () => {
 	);
 };
 
-export default EnquiryList;
+export default AdmissionList;

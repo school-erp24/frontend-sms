@@ -1,10 +1,126 @@
-.ovrf-x {
-	overflow-x: scroll !important;
+/* React Date picker Styles */
+
+.react-datepicker-wrapper {
+	width: 100% !important;
 }
 
-.checkbox {
+.react-datepicker__input-container .react-datepicker__calendar-icon {
+	z-index: 1;
+	top: 50%;
+	left: 0%;
+	transform: translateY(-50%);
+}
+
+.cus_rangedp {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 150px;
+}
+
+/* React Select Styles */
+
+.Select-menu-outer .Select-create-option-placeholder {
+	display: none !important;
+}
+
+/* Overridden Styles */
+
+/* div, span, ol, ul {
+  scrollbar-width: thin;
+	scrollbar-width: auto !important;
+
+ } */
+
+.form-control:disabled,
+.form-control[readonly] {
+	background: #fff !important;
+}
+
+/* Hide scroll bar for sidebar */
+.dlabnav .dlabnav-scroll {
+	scrollbar-width: none !important;
+	scrollbar-color: transparent transparent !important;
+}
+
+.dlabnav .dlabnav-scroll::-webkit-scrollbar {
+	display: none !important;
+}
+
+body > * {
+	scrollbar-width: auto !important;
+	scrollbar-color: auto !important;
+}
+
+::-webkit-scrollbar {
+	width: 7px !important;
+	opacity: 0 !important ;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgb(163, 163, 163) !important;
+}
+
+.text-danger {
+	margin-top: 0.5rem;
+}
+
+/* Custom Styles */
+
+.cus_ovrfx {
+	/* overflow-x: scroll !important; */
+	overflow-x: hidden;
+	max-height: 380px !important;
+	margin-top: 0.5rem;
+}
+
+.cus_ovrfx > table > thead {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: #fff;
+}
+
+.cus_nolp {
+	padding-left: 0rem !important;
+}
+
+.cus_checkbox {
 	accent-color: #6a73fa;
 	cursor: pointer;
 	width: 16px;
 	height: 16px;
+}
+
+.cus_flexc {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.cus_flexcg8 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.cus_stickythead {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: #fff;
+}
+
+.cus_up {
+	text-transform: uppercase;
+}
+
+.form-group > input,
+textarea {
+	text-transform: uppercase;
+}
+
+.custom-react-select {
+	text-transform: uppercase;
 }

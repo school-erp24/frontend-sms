@@ -16,7 +16,7 @@ export const login = async (userData, dispatch) => {
 				"userDetails",
 				JSON.stringify(response.data.data[0])
 			);
-			dispatch(setUserDetailsFromLocalStorage()); // ad
+			dispatch(setUserDetailsFromLocalStorage());
 			return response.data.data[0];
 		}
 	} catch (error) {
