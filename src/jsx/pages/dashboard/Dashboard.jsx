@@ -191,19 +191,14 @@ const Dashboard2 = () => {
 			number: "360",
 			percent: "50%",
 			color: "danger",
-			to: "/enquiry-list",
-		},
-		{
-			title: "Total Course",
-			number: "28",
-			percent: "76%",
-			color: "red",
+			date: "",
 			to: "/enquiry-list",
 		},
 		{
 			title: "Fees Collection",
 			number: "21290$",
 			percent: "35%",
+			date: "",
 			color: "success",
 			to: "/enquiry-list",
 		},
@@ -213,15 +208,27 @@ const Dashboard2 = () => {
 		getFollowUp({ followUpDate: new Date().toISOString().split("T")[0] })
 			.then((resp) => {
 				const response = resp.data.data.followUps;
+				const studentData = resp.data.data.students;
 				const newData = {
 					title: "Pending Follow Ups",
 					number: response.count,
 					percent: response.date,
+					date: response.date,
 					color: "primary",
 					to: "/enquiry-list",
 				};
 
+				const student = {
+					title: "Student Count",
+					number: studentData.count,
+					percent: response.date,
+					date: response.date,
+					color: "red",
+					to: "/admission-list",
+				};
+
 				setCardData((prevCardData) => [newData, ...prevCardData]);
+				setCardData((prevCardData) => [student, ...prevCardData]);
 			})
 			.catch((error) => {
 				// console.error("Error fetching enquiries:", error);
@@ -242,6 +249,7 @@ const Dashboard2 = () => {
 										percent={item.percent}
 										color={item.color}
 										to={item.to}
+										date={item.date}
 									/>
 								</div>
 							</Col>
