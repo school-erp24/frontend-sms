@@ -35,7 +35,7 @@ const ProgressCard = (props) => {
 					style={{ width: props.percent }}
 				></div>
 			</div>
-			<small>As of {props.percent}</small>
+			{props.date && <small>As of {props.date}</small>}
 		</div>
 	);
 };
