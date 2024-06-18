@@ -126,6 +126,10 @@ export const MenuList = [
 				title: "Add Admission",
 				to: "add-admission",
 			},
+			{
+				title: "Bulk Admission",
+				to: "bulk-admission",
+			},
 
 			{
 				title: "Admission List",

@@ -53,6 +53,7 @@ import ApexChart from "./../pages/charts/apexcharts";
 
 /// Pages
 import Error404 from "./../pages/error/Error404";
+import BulkAdmission from "../pages/admissions/BulkAdmission";
 
 const Markup = () => {
 	const USER_TYPES = {
@@ -111,6 +112,10 @@ const Markup = () => {
 		{
 			url: "add-admission",
 			component: isUserTypeAllowed ? <AdmissionForm /> : <NoAccess />,
+		},
+		{
+			url: "bulk-admission",
+			component: isUserTypeAllowed ? <BulkAdmission /> : <NoAccess />,
 		},
 		{
 			url: "update-admission/:id",

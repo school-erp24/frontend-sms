@@ -1,5 +1,9 @@
 import AxiosInstance from "./AxiosInstance";
 
+export function postBulkAdmissionForm(body) {
+	return AxiosInstance.post("/school/student/create-bulk", body);
+}
+
 export function postAdmissionForm(formData) {
 	return AxiosInstance.post("/school/student/create", formData, {
 		headers: {

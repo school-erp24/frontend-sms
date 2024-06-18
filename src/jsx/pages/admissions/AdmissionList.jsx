@@ -355,7 +355,7 @@ const AdmissionList = () => {
 												{tableData.map((data, ind) => (
 													<tr key={ind}>
 														<td>{data.rollNo || "N/A"}</td>
-														<td>{data.firstName || "N/A"}</td>
+														<td>{data.firstName + " " + data.lastName || "N/A"}</td>
 														<td>{data.className || "N/A"}</td>
 														<td>{data.sectionName || "N/A"}</td>
 														<td>{data.fatherName}</td>

@@ -7,6 +7,7 @@ import Pagination from "../../components/Pagination";
 import { getAdmissionList } from "../../../services/StudentService";
 
 const theadData = [
+	{ heading: "Admission no.", sortingValue: "admissionNo", sortable: true },
 	{ heading: "Roll no.", sortingValue: "rollNo", sortable: true },
 	{ heading: "Student Name", sortingValue: "firstName", sortable: true },
 	{ heading: "Class", sortingValue: "className", sortable: true },
@@ -354,8 +355,9 @@ const StudentList = () => {
 											<tbody className="cus_up">
 												{tableData.map((data, ind) => (
 													<tr key={ind}>
+														<td>{data.admissionNo || "N/A"}</td>
 														<td>{data.rollNo || "N/A"}</td>
-														<td>{data.firstName || "N/A"}</td>
+														<td>{data.firstName + " " + data.lastName || "N/A"}</td>
 														<td>{data.className || "N/A"}</td>
 														<td>{data.sectionName || "N/A"}</td>
 														<td>{data.fatherName}</td>

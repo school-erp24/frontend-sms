@@ -2,6 +2,11 @@
   text-transform: uppercase;
 }
 
+/* Make sure this CSS is loaded after all other CSS files */
+table.display.dataTable.no-footer.w-100 tbody.cus_up tr.bg-red-important {
+  background-color: transparent;
+}
+
 
 
 .testimonial-one img {
